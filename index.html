@@ -1,0 +1,2972 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
+<title>Nurture AI</title>
+<!-- Final cleaned theme: unified green #20C7A6, consistent cards, light/dark support -->
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
+<script src="https://unpkg.com/@lottiefiles/lottie-player@latest/dist/lottie-player.js"></script>
+<style>
+* { margin:0; padding:0; box-sizing:border-box; }
+:root {
+  --primary: #7c3aed;
+  --primary-dark: #312e81;
+  --primary-light: #ede9fe;
+  --accent: #06b6d4;
+  --gold: #f97316;
+  --gold-light: #ffedd5;
+  --bg: #f8f7ff;
+  --card: #ffffff;
+  --text: #18112f;
+  --muted: #746c87;
+  --radius: 20px;
+}
+body {
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+  background: radial-gradient(circle at 20% 10%, #8b5cf6 0, transparent 25%), radial-gradient(circle at 82% 18%, #06b6d4 0, transparent 24%), linear-gradient(135deg,#080018,#160b35 55%,#001827);
+  display: flex;
+  flex-wrap: wrap;
+  gap: 24px;
+  padding: 24px;
+  justify-content: center;
+  align-items: flex-start;
+}
+
+/* ─── Phone Shell ─────────────────────────────── */
+.phone {
+  width: 375px;
+  height: 780px;
+  background: var(--bg);
+  border-radius: 44px;
+  overflow: hidden;
+  position: relative;
+  box-shadow: 0 40px 80px rgba(0,0,0,.5), inset 0 0 0 2px rgba(255,255,255,.08);
+  flex-shrink: 0;
+}
+.phone::before {
+  content: '';
+  position: absolute;
+  top: 0; left: 50%;
+  transform: translateX(-50%);
+  width: 120px; height: 30px;
+  background: #0d0d1a;
+  border-radius: 0 0 20px 20px;
+  z-index: 100;
+}
+.screen-label {
+  color: rgba(255,255,255,.45);
+  text-align: center;
+  font-size: 12px;
+  letter-spacing: 1px;
+  text-transform: uppercase;
+  margin-top: 10px;
+  font-weight: 500;
+}
+
+/* ─── Scrollable inner content ─────────────────── */
+.inner {
+  width: 100%; height: 100%;
+  overflow-y: auto;
+  overflow-x: hidden;
+  scrollbar-width: none;
+}
+.inner::-webkit-scrollbar { display: none; }
+
+/* ─── Status bar ─── */
+.status-bar {
+  display: flex; justify-content: space-between; align-items: center;
+  padding: 36px 24px 8px;
+  font-size: 12px; font-weight: 600;
+  position: sticky; top: 0; z-index: 10;
+}
+.status-bar.dark { color: white; }
+.status-bar.light { color: #1a2e1a; }
+.status-icons { display: flex; gap: 6px; align-items: center; }
+
+/* ─── Soft animated pattern ─── */
+.pattern-bg {
+  background-color: var(--primary-dark);
+  background-image: url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' fill-rule='evenodd'%3E%3Cg fill='%23ffffff' fill-opacity='0.05'%3E%3Cpath d='M30 0l30 30-30 30L0 30z'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E");
+}
+
+/* ─── Gradient helpers ─── */
+.grad-green { background: linear-gradient(145deg,#7c3aed,#06b6d4); }
+.grad-gold  { background: linear-gradient(145deg, #c9921a, #a07010); }
+.grad-teal  { background: linear-gradient(145deg, #0d6e6e, #0a5050); }
+.grad-soft  { background: linear-gradient(180deg, #e8f5ee 0%, #f0f4f0 100%); }
+
+/* ─── Bottom Nav ─── */
+.bnav {
+  position: sticky; bottom: 0;
+  background: white;
+  border-top: 1px solid #e8f0e8;
+  display: flex; justify-content: space-around;
+  padding: 10px 0 20px;
+  box-shadow: 0 -4px 20px rgba(0,0,0,.06);
+}
+.bnav-btn {
+  display: flex; flex-direction: column; align-items: center; gap: 4px;
+  cursor: pointer; opacity: .45; transition: opacity .2s;
+}
+.bnav-btn.active { opacity: 1; }
+.bnav-btn svg { width: 24px; height: 24px; }
+.bnav-btn span { font-size: 10px; font-weight: 600; color: var(--primary); }
+.bnav-dot { width: 5px; height: 5px; background: var(--primary); border-radius: 50%; margin-top: 2px; }
+
+/* ─── Card ─── */
+.card {
+  background: white;
+  border-radius: var(--radius);
+  padding: 18px;
+  box-shadow: 0 2px 12px rgba(0,0,0,.06);
+}
+
+/* ─── Progress ring ─── */
+.ring-wrap { position: relative; display: inline-flex; align-items: center; justify-content: center; }
+.ring-label {
+  position: absolute;
+  text-align: center;
+  font-weight: 700;
+  font-size: 18px;
+  color: var(--text);
+}
+.ring-sub { font-size: 9px; font-weight: 500; color: var(--muted); display: block; }
+
+/* ─── Pill badge ─── */
+.badge {
+  display: inline-block;
+  padding: 3px 10px;
+  border-radius: 20px;
+  font-size: 11px; font-weight: 600;
+}
+
+/* ─── Avatars ─── */
+.avatar {
+  width: 46px; height: 46px; border-radius: 50%;
+  display: flex; align-items: center; justify-content: center;
+  font-weight: 700; font-size: 18px; color: white; flex-shrink: 0;
+}
+
+/* ─── Input ─── */
+.inp {
+  width: 100%;
+  padding: 14px 16px;
+  border: 1.5px solid #e0ebe0;
+  border-radius: 14px;
+  font-size: 15px;
+  background: #f8fbf8;
+  outline: none;
+  color: var(--text);
+  transition: border-color .2s;
+}
+.inp:focus { border-color: var(--primary); background: white; }
+
+/* ─── Btn ─── */
+.btn-primary {
+  width: 100%; padding: 15px;
+  background: linear-gradient(135deg, #1a7a4a, #0f5c35);
+  color: white; border: none; border-radius: 16px;
+  font-size: 16px; font-weight: 700; cursor: pointer;
+  box-shadow: 0 6px 20px rgba(26,122,74,.35);
+  transition: transform .1s;
+}
+.btn-primary:active { transform: scale(.98); }
+
+/* ─── Chat bubble ─── */
+.bubble-user {
+  background: #f0f4f0; color: var(--text);
+  border-radius: 18px 18px 4px 18px;
+  padding: 12px 16px; font-size: 14px; max-width: 80%;
+  align-self: flex-start;
+}
+.bubble-ai {
+  background: linear-gradient(135deg, #1a7a4a, #0f5c35);
+  color: white;
+  border-radius: 18px 18px 18px 4px;
+  padding: 12px 16px; font-size: 14px; max-width: 80%;
+  align-self: flex-end;
+  box-shadow: 0 4px 12px rgba(26,122,74,.3);
+}
+
+/* ─── Task row ─── */
+.task-row {
+  display: flex; align-items: center; gap: 14px;
+  padding: 14px 0;
+  border-bottom: 1px solid #f0f4f0;
+}
+.task-row:last-child { border-bottom: none; }
+.task-check {
+  width: 26px; height: 26px; border-radius: 50%;
+  border: 2px solid #c8dcc8; flex-shrink: 0;
+  display: flex; align-items: center; justify-content: center;
+}
+.task-check.done { background: var(--primary); border-color: var(--primary); }
+
+/* ─── Progress bar ─── */
+.pbar-wrap { margin-bottom: 14px; }
+.pbar-top { display: flex; justify-content: space-between; margin-bottom: 6px; }
+.pbar-track { height: 8px; background: #e8f0e8; border-radius: 10px; overflow: hidden; }
+.pbar-fill { height: 100%; border-radius: 10px; transition: width .8s ease; }
+
+/* ─── Notification dot ─── */
+.notif { width: 8px; height: 8px; background: #ef4444; border-radius: 50%; }
+
+/* ─── Arabesqe decorative ─── */
+.arabesque {
+  position: absolute;
+  opacity: .08;
+  pointer-events: none;
+}
+
+
+/* ─── New Onboarding Flow Additions ───────────────── */
+.phone.flow-new { background:#f7fbf8; }
+.splash-logo {
+  width:112px;height:112px;border-radius:32px;
+  background:linear-gradient(145deg,#ffffff,#dff6ea);
+  display:flex;align-items:center;justify-content:center;
+  box-shadow:0 24px 60px rgba(15,92,53,.35), inset 0 0 0 1px rgba(255,255,255,.7);
+}
+.onboard-bg {
+  min-height:100%; position:relative; overflow:hidden; color:white;
+  background-size:cover; background-position:center;
+}
+.onboard-bg::after {
+  content:''; position:absolute; inset:0;
+  background:linear-gradient(180deg,rgba(6,35,26,.18) 0%,rgba(6,35,26,.25) 36%,rgba(6,35,26,.88) 100%);
+}
+.onboard-content { position:relative; z-index:2; height:100%; display:flex; flex-direction:column; justify-content:flex-end; padding:36px 24px 34px; }
+.dots { display:flex; gap:7px; justify-content:center; margin:20px 0; }
+.dot { width:7px; height:7px; border-radius:20px; background:rgba(255,255,255,.35); }
+.dot.active { width:24px; background:white; }
+.step-wrap { height:100%; display:flex; flex-direction:column; background:linear-gradient(180deg,#f8fcf9 0%,#edf7f1 100%); }
+.step-head { padding:36px 22px 12px; }
+.step-count { font-size:12px; font-weight:800; color:var(--primary); letter-spacing:.5px; text-transform:uppercase; }
+.step-title { font-size:28px; line-height:1.12; font-weight:900; color:var(--text); margin-top:8px; }
+.step-sub { color:var(--muted); font-size:14px; line-height:1.55; margin-top:8px; }
+.step-body { flex:1; padding:12px 22px 24px; display:flex; flex-direction:column; }
+.choice { background:white; border:1.5px solid #e1eee5; border-radius:20px; padding:16px; margin-bottom:12px; display:flex; align-items:center; gap:14px; box-shadow:0 8px 24px rgba(16,83,51,.05); }
+.choice.active { border-color:var(--primary); background:linear-gradient(135deg,#ffffff,#ecfbf3); box-shadow:0 12px 30px rgba(26,122,74,.13); }
+.choice-ico { width:44px; height:44px; border-radius:15px; display:flex; align-items:center; justify-content:center; background:var(--primary-light); color:var(--primary); font-size:22px; flex-shrink:0; }
+.choice.active .choice-ico { background:linear-gradient(135deg,#7c3aed,#06b6d4); color:white; }
+.choice-title { font-size:15px; font-weight:800; color:var(--text); }
+.choice-desc { font-size:12px; color:var(--muted); margin-top:2px; line-height:1.4; }
+.next-area { padding:0 22px 28px; }
+.progress-mini { height:6px; background:#dcece2; border-radius:20px; overflow:hidden; margin:12px 22px 0; }
+.progress-mini span { display:block; height:100%; background:linear-gradient(90deg,#1a7a4a,#c9921a); border-radius:20px; }
+.soft-input { width:100%; border:0; background:white; border-radius:22px; padding:18px 18px; font-size:18px; font-weight:700; color:var(--text); outline:none; box-shadow:0 10px 26px rgba(16,83,51,.07); }
+.chip-grid { display:flex; flex-wrap:wrap; gap:10px; }
+.big-chip { padding:13px 15px; border-radius:18px; background:white; border:1.5px solid #e1eee5; font-size:13px; font-weight:800; color:var(--text); box-shadow:0 8px 18px rgba(16,83,51,.05); }
+.big-chip.active { background:var(--primary); color:white; border-color:var(--primary); }
+.marquee { overflow:hidden; display:flex; gap:12px; padding:8px 0; }
+.marquee-track { display:flex; gap:12px; animation:marquee 16s linear infinite; }
+.story-card { min-width:230px; background:white; border-radius:22px; padding:16px; box-shadow:0 10px 26px rgba(16,83,51,.08); }
+@keyframes marquee { from { transform:translateX(0); } to { transform:translateX(-50%); } }
+.scan-card { background:rgba(255,255,255,.1); border:1px solid rgba(255,255,255,.18); backdrop-filter:blur(12px); border-radius:26px; padding:20px; }
+.scan-line { height:4px; border-radius:20px; background:linear-gradient(90deg,transparent,#86efac,transparent); animation:scan 1.7s ease-in-out infinite; }
+@keyframes scan { 0%{transform:translateX(-80%)} 100%{transform:translateX(80%)} }
+.secure-pill { display:inline-flex; align-items:center; gap:6px; background:rgba(255,255,255,.13); color:white; border-radius:999px; padding:8px 12px; font-size:12px; font-weight:800; }
+
+
+
+/* ─── Neutral Neon + Glassmorphism Refinement ───────────────── */
+:root{
+  --violet:#7c3aed; --cyan:#06b6d4; --orange:#f97316; --pink:#ec4899;
+  --glass:rgba(255,255,255,.18); --glass-border:rgba(255,255,255,.28);
+}
+@keyframes drift { 0%,100%{transform:translate3d(0,0,0) rotate(0)} 50%{transform:translate3d(12px,-22px,0) rotate(8deg)} }
+@keyframes floatSoft { 0%,100%{transform:translateY(0)} 50%{transform:translateY(-14px)} }
+@keyframes glowPulse { 0%,100%{box-shadow:0 0 22px rgba(124,58,237,.32),0 0 44px rgba(6,182,212,.18)} 50%{box-shadow:0 0 34px rgba(6,182,212,.45),0 0 70px rgba(236,72,153,.22)} }
+@keyframes gradientShift { 0%{background-position:0% 50%} 50%{background-position:100% 50%} 100%{background-position:0% 50%} }
+@keyframes shineSweep { 0%{transform:translateX(-130%) rotate(18deg)} 100%{transform:translateX(170%) rotate(18deg)} }
+@keyframes bubbleRise { 0%{transform:translateY(30px) scale(.9);opacity:.18} 80%{opacity:.38} 100%{transform:translateY(-80px) scale(1.08);opacity:.06} }
+.phone{background:linear-gradient(180deg,#fbfaff 0%,#f2f8ff 100%);box-shadow:0 34px 84px rgba(0,0,0,.42),0 0 0 1px rgba(255,255,255,.08),0 0 44px rgba(124,58,237,.16)}
+.phone::after{content:'';position:absolute;inset:auto -60px -80px auto;width:190px;height:190px;border-radius:50%;background:radial-gradient(circle,#22d3ee55,transparent 68%);pointer-events:none;animation:drift 9s ease-in-out infinite;z-index:0}.inner{position:relative;z-index:1}.card,.choice,.story-card,.soft-input{backdrop-filter:blur(18px);-webkit-backdrop-filter:blur(18px);border:1px solid rgba(255,255,255,.55);box-shadow:0 18px 45px rgba(30,21,84,.09)}.btn-primary{background:linear-gradient(135deg,#7c3aed,#06b6d4 55%,#f97316);background-size:220% 220%;animation:none;position:relative;overflow:hidden;border:0}.btn-primary::after{content:'';position:absolute;top:-45%;left:0;width:32%;height:190%;background:linear-gradient(90deg,transparent,rgba(255,255,255,.48),transparent);animation:shineSweep 3.8s ease-in-out infinite}.choice-ico{background:linear-gradient(135deg,rgba(124,58,237,.12),rgba(6,182,212,.13));color:#7c3aed;font-size:18px}.choice.active .choice-ico{background:linear-gradient(135deg,#7c3aed,#06b6d4);color:#fff;box-shadow:0 0 24px rgba(6,182,212,.35)}.onboard-bg{display:flex;flex-direction:column;background-position:center;background-size:cover}.onboard-bg::before{content:'';position:absolute;inset:0;background:radial-gradient(circle at 24% 12%,rgba(255,255,255,.22),transparent 24%),radial-gradient(circle at 84% 28%,rgba(249,115,22,.24),transparent 23%);z-index:1;pointer-events:none}.onboard-bg::after{background:linear-gradient(180deg,rgba(8,0,34,.08) 0%,rgba(8,0,34,.16) 36%,rgba(8,0,34,.34) 64%,rgba(8,0,34,.52) 100%)}.onboard-content{justify-content:flex-end;padding:0 22px 28px;margin-top:auto}.onboard-bottom-card{position:relative;z-index:3;width:100%;padding:8px 0 0;background:transparent !important;border:none !important;backdrop-filter:none !important;-webkit-backdrop-filter:none !important;box-shadow:none !important;animation:none !important}.onboard-bottom-card h2,.onboard-bottom-card p,.onboard-bottom-card .secure-pill{filter:drop-shadow(0 8px 18px rgba(0,0,0,.28))}.dots{justify-content:flex-start;margin:18px 0}.dot{height:8px;width:8px;background:rgba(255,255,255,.48)}.dot.active{width:32px;background:linear-gradient(90deg,#fff,#a5f3fc)}.secure-pill{background:rgba(255,255,255,.10);border:1px solid rgba(255,255,255,.18);backdrop-filter:blur(8px);box-shadow:0 8px 20px rgba(0,0,0,.10);gap:8px}.step-wrap{background:radial-gradient(circle at 15% 10%,rgba(6,182,212,.18),transparent 28%),radial-gradient(circle at 88% 18%,rgba(249,115,22,.14),transparent 26%),linear-gradient(180deg,#fbfaff,#eff8ff)}.step-head{position:relative}.step-title{letter-spacing:-.9px;background:linear-gradient(90deg,#18112f,#5b21b6,#0891b2);-webkit-background-clip:text;background-clip:text;color:transparent}.step-count{color:#7c3aed}.progress-mini{height:7px;background:rgba(124,58,237,.12)}.progress-mini span{background:#20C7A6;box-shadow:0 0 18px rgba(6,182,212,.35)}.big-chip.active{background:linear-gradient(135deg,#7c3aed,#06b6d4);border-color:transparent;box-shadow:0 13px 28px rgba(124,58,237,.18)}.splash-logo.neon-orb{background:rgba(255,255,255,.18);border:1px solid rgba(255,255,255,.35);backdrop-filter:blur(22px);animation:glowPulse 3.5s ease-in-out infinite,floatSoft 7s ease-in-out infinite}.big-fa-mark{width:72px;height:72px;border-radius:26px;background:rgba(255,255,255,.18);display:flex;align-items:center;justify-content:center;font-size:34px;margin-bottom:12px;box-shadow:0 0 34px rgba(255,255,255,.24)}.scan-card{background:linear-gradient(145deg,rgba(255,255,255,.18),rgba(255,255,255,.08));border:1px solid rgba(255,255,255,.3);box-shadow:0 24px 70px rgba(0,0,0,.22)}.scan-line{background:linear-gradient(90deg,transparent,#fff,#22d3ee,#f97316,transparent);box-shadow:0 0 28px rgba(34,211,238,.75)}.bnav{background:rgba(255,255,255,.78);backdrop-filter:blur(22px);border-top:1px solid rgba(124,58,237,.12)}.bnav-dot{background:#7c3aed;box-shadow:0 0 12px rgba(124,58,237,.6)}
+.float-bubbles::before,.float-bubbles::after{content:'';position:absolute;border-radius:999px;pointer-events:none;z-index:0}.float-bubbles::before{width:120px;height:120px;left:-34px;bottom:110px;background:radial-gradient(circle,#ec489955,transparent 70%);animation:bubbleRise 9s ease-in-out infinite}.float-bubbles::after{width:96px;height:96px;right:-24px;top:140px;background:radial-gradient(circle,#06b6d466,transparent 70%);animation:bubbleRise 11s ease-in-out infinite reverse}
+
+
+/* ==== Enhanced onboarding components ==== */
+.role-grid{display:grid;grid-template-columns:1fr 1fr;gap:14px}
+.role-card{background:rgba(255,255,255,.86);border:1px solid rgba(124,58,237,.12);border-radius:28px;padding:18px 14px;min-height:170px;display:flex;flex-direction:column;align-items:flex-start;justify-content:space-between;box-shadow:0 16px 34px rgba(40,18,90,.08);position:relative;overflow:hidden}
+.role-card.full{grid-column:1/-1;min-height:120px;flex-direction:row;align-items:center;gap:14px}
+.role-card.active{border-color:rgba(124,58,237,.45);box-shadow:0 20px 40px rgba(124,58,237,.18), inset 0 0 0 1px rgba(255,255,255,.55);background:linear-gradient(145deg,rgba(255,255,255,.95),rgba(237,233,254,.95))}
+.role-card::after,.gender-card::after,.check-card::after,.testimonial-card::after{content:'';position:absolute;inset:auto -15% -45% auto;width:130px;height:130px;border-radius:50%;background:radial-gradient(circle,rgba(255,255,255,.28),transparent 65%);pointer-events:none}
+.role-icon{width:68px;height:68px;border-radius:24px;display:flex;align-items:center;justify-content:center;font-size:28px;color:white;background:linear-gradient(145deg,#8b5cf6,#06b6d4);box-shadow:0 16px 28px rgba(79,70,229,.3)}
+.role-card.full .role-icon{width:58px;height:58px;font-size:24px}
+.role-card h4,.gender-card h4,.check-card h4{font-size:17px;color:#140f2e;font-weight:900}
+.role-card p,.gender-card p,.check-card p{font-size:12px;line-height:1.5;color:#766d89;margin-top:4px}
+.testimonial-slider{overflow:hidden;border-radius:26px;padding:4px 0}
+.testimonial-track{display:flex;gap:14px;width:max-content;animation:slide-left 26s linear infinite}
+.testimonial-track.reverse{animation:slide-right 24s linear infinite}
+@keyframes slide-left{from{transform:translateX(0)}to{transform:translateX(-50%)}}
+@keyframes slide-right{from{transform:translateX(-50%)}to{transform:translateX(0)}}
+.testimonial-card{min-width:260px;background:rgba(255,255,255,.88);backdrop-filter:blur(14px);border:1px solid rgba(124,58,237,.12);border-radius:26px;padding:18px;box-shadow:0 16px 34px rgba(40,18,90,.08);position:relative;overflow:hidden}
+.testimonial-head{display:flex;align-items:center;gap:12px;margin-bottom:12px}
+.avatar-sm{width:44px;height:44px;border-radius:50%;background:linear-gradient(145deg,#8b5cf6,#ec4899);display:flex;align-items:center;justify-content:center;color:#fff;font-weight:800}
+.stars{display:flex;gap:3px;color:#f59e0b;font-size:12px;margin-top:4px}
+.name-grid{display:grid;grid-template-columns:1fr;gap:12px}
+.name-box{background:#fff;border-radius:24px;padding:16px 16px 12px;box-shadow:0 16px 34px rgba(40,18,90,.08)}
+.field-label{display:block;font-size:11px;font-weight:800;letter-spacing:.6px;color:#7b7191;text-transform:uppercase;margin-bottom:8px}
+.gender-grid{display:grid;grid-template-columns:1fr 1fr;gap:14px}
+.gender-card{background:rgba(255,255,255,.9);border:1px solid rgba(124,58,237,.12);border-radius:28px;padding:18px;min-height:182px;display:flex;flex-direction:column;justify-content:space-between;position:relative;overflow:hidden;box-shadow:0 16px 34px rgba(40,18,90,.08)}
+.gender-card.active{border-color:rgba(124,58,237,.45);background:linear-gradient(145deg,rgba(255,255,255,.95),rgba(237,233,254,.95));box-shadow:0 20px 40px rgba(124,58,237,.18)}
+.gender-card .role-icon{width:60px;height:60px;border-radius:20px;font-size:24px}
+.gender-card.full{grid-column:1/-1;min-height:112px;flex-direction:row;align-items:center;gap:12px}
+.calendar-shell{background:rgba(255,255,255,.9);border:1px solid rgba(124,58,237,.16);border-radius:34px;padding:18px;box-shadow:0 16px 36px rgba(40,18,90,.09)}
+.calendar-top{display:flex;align-items:center;justify-content:space-between;margin-bottom:16px}
+.circle-btn{width:38px;height:38px;border-radius:50%;display:flex;align-items:center;justify-content:center;background:linear-gradient(145deg,#ede9fe,#cffafe);color:#6d28d9;font-size:14px}
+.calendar-week{display:grid;grid-template-columns:repeat(7,1fr);gap:8px;margin-bottom:10px}
+.calendar-week span{font-size:11px;font-weight:800;color:#8c83a0;text-align:center}
+.calendar-grid{display:grid;grid-template-columns:repeat(7,1fr);gap:8px}
+.cal-day{height:42px;border-radius:16px;background:#f8f7ff;display:flex;align-items:center;justify-content:center;font-size:13px;font-weight:800;color:#31264d;border:1px solid transparent}
+.cal-day.muted{opacity:.35}
+.cal-day.active{background:linear-gradient(145deg,#8b5cf6,#06b6d4);color:#fff;box-shadow:0 14px 24px rgba(99,102,241,.28)}
+.cal-day.today{border-color:rgba(124,58,237,.35)}
+.hero-select{background:linear-gradient(145deg,rgba(255,255,255,.92),rgba(236,244,255,.88));border-radius:34px;padding:18px;box-shadow:0 16px 36px rgba(40,18,90,.09)}
+.hero-options{display:grid;grid-template-columns:1fr;gap:12px;margin-top:16px}
+.hero-option{display:flex;align-items:center;gap:14px;background:#fff;border:1px solid rgba(124,58,237,.12);border-radius:22px;padding:16px;box-shadow:0 12px 24px rgba(40,18,90,.06)}
+.hero-option.active{border-color:rgba(124,58,237,.45);background:linear-gradient(145deg,#fff,rgba(237,233,254,.9))}
+.dual-slider{display:flex;flex-direction:column;gap:14px}
+.story-card{min-width:235px;background:rgba(255,255,255,.88);backdrop-filter:blur(14px);border:1px solid rgba(124,58,237,.12);border-radius:24px;padding:16px;box-shadow:0 16px 32px rgba(40,18,90,.08)}
+.story-card h5{font-size:14px;font-weight:900;color:#160f30;margin-bottom:8px}
+.story-card p{font-size:12px;line-height:1.55;color:#736c86}
+.scroll-cards{display:flex;flex-direction:column;gap:12px;max-height:405px;overflow:auto;padding-right:4px}
+.scroll-cards::-webkit-scrollbar{width:6px}.scroll-cards::-webkit-scrollbar-thumb{background:rgba(124,58,237,.25);border-radius:20px}
+.insight-card{background:rgba(255,255,255,.88);backdrop-filter:blur(14px);border:1px solid rgba(124,58,237,.12);border-radius:24px;padding:16px;box-shadow:0 12px 30px rgba(40,18,90,.08);display:flex;gap:12px;align-items:flex-start}
+.insight-card i{width:44px;height:44px;border-radius:16px;background:linear-gradient(145deg,#8b5cf6,#06b6d4);display:flex;align-items:center;justify-content:center;color:#fff;flex-shrink:0}
+.check-grid{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+.check-card{background:rgba(255,255,255,.88);border:1px solid rgba(124,58,237,.12);border-radius:24px;padding:16px;min-height:120px;position:relative;overflow:hidden;box-shadow:0 14px 30px rgba(40,18,90,.08)}
+.check-card.active{background:linear-gradient(145deg,rgba(255,255,255,.96),rgba(237,233,254,.95));border-color:rgba(124,58,237,.45);box-shadow:0 18px 34px rgba(124,58,237,.16)}
+.check-card .tick{position:absolute;top:14px;right:14px;width:24px;height:24px;border-radius:50%;background:rgba(124,58,237,.08);color:#7c3aed;display:flex;align-items:center;justify-content:center;font-size:12px}
+.check-card.active .tick{background:linear-gradient(145deg,#8b5cf6,#06b6d4);color:#fff}
+.check-card .mini-icon{width:46px;height:46px;border-radius:16px;display:flex;align-items:center;justify-content:center;color:#fff;font-size:18px;background:linear-gradient(145deg,#8b5cf6,#06b6d4);margin-bottom:12px;box-shadow:0 14px 24px rgba(99,102,241,.24)}
+.final-wrap{display:flex;flex-direction:column;gap:16px}
+.final-percent{background:rgba(255,255,255,.88);border:1px solid rgba(124,58,237,.12);border-radius:28px;padding:18px;box-shadow:0 16px 32px rgba(40,18,90,.08)}
+.final-row{margin-top:14px}
+.final-row-top{display:flex;justify-content:space-between;align-items:center;margin-bottom:6px}
+.final-bar{height:10px;background:#ece8fb;border-radius:16px;overflow:hidden}
+.final-bar span{display:block;height:100%;border-radius:16px;background:#20C7A6;animation:bar-fill 2.8s ease forwards;transform-origin:left;transform:scaleX(0)}
+.final-bar span.delay-2{animation-delay:.3s}.final-bar span.delay-3{animation-delay:.6s}.final-bar span.delay-4{animation-delay:.9s}
+@keyframes bar-fill{to{transform:scaleX(1)}}
+.metric-cards{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+.metric-card{background:rgba(255,255,255,.88);border:1px solid rgba(124,58,237,.12);border-radius:24px;padding:16px;box-shadow:0 12px 28px rgba(40,18,90,.08)}
+.metric-card .num{font-size:32px;font-weight:900;background:linear-gradient(90deg,#8b5cf6,#06b6d4);-webkit-background-clip:text;background-clip:text;color:transparent;animation:pulse-num 1.8s ease infinite alternate}
+@keyframes pulse-num{from{transform:translateY(0)}to{transform:translateY(-3px)}}
+.analysis-list{display:flex;flex-direction:column;gap:12px;margin-top:18px}
+.analysis-item{display:flex;align-items:center;gap:12px;background:rgba(255,255,255,.12);border:1px solid rgba(255,255,255,.16);backdrop-filter:blur(12px);border-radius:22px;padding:14px 16px;opacity:0;transform:translateY(12px);animation:analysis-in .7s ease forwards}
+.analysis-item:nth-child(1){animation-delay:.15s}.analysis-item:nth-child(2){animation-delay:.45s}.analysis-item:nth-child(3){animation-delay:.75s}.analysis-item:nth-child(4){animation-delay:1.05s}.analysis-item:nth-child(5){animation-delay:1.35s}.analysis-item:nth-child(6){animation-delay:1.65s}
+@keyframes analysis-in{to{opacity:1;transform:translateY(0)}}
+.analysis-check{width:34px;height:34px;border-radius:50%;display:flex;align-items:center;justify-content:center;background:linear-gradient(145deg,#22c55e,#06b6d4);color:#fff;box-shadow:0 10px 24px rgba(34,197,94,.35);animation:check-pop .8s ease infinite alternate}
+@keyframes check-pop{from{transform:scale(.96)}to{transform:scale(1.06)}}
+.subtle-note{background:rgba(255,255,255,.88);border:1px solid rgba(124,58,237,.12);border-radius:22px;padding:14px 16px;box-shadow:0 12px 24px rgba(40,18,90,.06);font-size:13px;line-height:1.55;color:#6f6882}
+
+
+/* Swipeable full review cards */
+.swipe-reviews{display:flex;gap:16px;overflow-x:auto;scroll-snap-type:x mandatory;-webkit-overflow-scrolling:touch;padding-bottom:8px;scrollbar-width:none}
+.swipe-reviews::-webkit-scrollbar{display:none}
+.review-full-card{min-width:100%;scroll-snap-align:center;background:linear-gradient(145deg,rgba(255,255,255,.92),rgba(245,243,255,.94));border:1px solid rgba(124,58,237,.14);border-radius:32px;padding:22px;box-shadow:0 18px 40px rgba(40,18,90,.10);position:relative;overflow:hidden;min-height:430px;display:flex;flex-direction:column;justify-content:space-between}
+.review-full-card::before{content:'';position:absolute;top:-40px;right:-28px;width:140px;height:140px;border-radius:50%;background:radial-gradient(circle,rgba(6,182,212,.18),transparent 70%)}
+.review-full-card::after{content:'';position:absolute;bottom:-44px;left:-30px;width:150px;height:150px;border-radius:50%;background:radial-gradient(circle,rgba(124,58,237,.16),transparent 70%)}
+.review-top{display:flex;align-items:center;justify-content:space-between;position:relative;z-index:1}
+.review-user{display:flex;align-items:center;gap:14px}
+.review-avatar{width:58px;height:58px;border-radius:50%;display:flex;align-items:center;justify-content:center;color:#fff;font-weight:800;font-size:20px;box-shadow:0 14px 24px rgba(99,102,241,.24)}
+.review-tag{padding:7px 12px;border-radius:999px;background:rgba(124,58,237,.08);color:#6d28d9;font-size:11px;font-weight:800;letter-spacing:.4px;text-transform:uppercase}
+.review-body{position:relative;z-index:1;margin-top:18px}
+.review-quote{font-size:22px;line-height:1.5;color:#201535;font-weight:700;letter-spacing:-.2px}
+.review-meta{display:flex;gap:10px;flex-wrap:wrap;margin-top:16px}
+.review-chip{padding:8px 12px;border-radius:999px;background:rgba(6,182,212,.08);color:#0f5b6a;font-size:12px;font-weight:700}
+.review-bottom{position:relative;z-index:1;display:flex;justify-content:space-between;align-items:flex-end;gap:12px;margin-top:20px}
+.swipe-hint{display:flex;align-items:center;gap:8px;color:#7a7190;font-size:12px;font-weight:700;margin-top:14px}
+.mini-dots{display:flex;gap:8px;justify-content:center;margin-top:14px}.mini-dots span{width:8px;height:8px;border-radius:50%;background:#d7d2ea}.mini-dots span.active{width:26px;border-radius:999px;background:linear-gradient(90deg,#8b5cf6,#06b6d4)}
+
+
+/* ==== Clean simplification overrides ==== */
+.role-grid.clean-one,.gender-grid.clean-one,.stack-cards{display:flex;flex-direction:column;gap:12px}
+.role-card.clean,.gender-card.clean{min-height:auto;padding:16px 16px;border-radius:22px;display:flex;flex-direction:row;align-items:center;gap:14px;background:#fff;border:1px solid rgba(124,58,237,.12);box-shadow:0 10px 22px rgba(40,18,90,.06)}
+.role-card.clean.active,.gender-card.clean.active{background:linear-gradient(145deg,#fff,rgba(245,243,255,.95));border-color:rgba(124,58,237,.35);box-shadow:0 14px 26px rgba(124,58,237,.10)}
+.role-card.clean::after,.gender-card.clean::after{display:none}
+.role-card.clean .role-icon,.gender-card.clean .role-icon{width:56px;height:56px;border-radius:18px;font-size:22px;flex-shrink:0}
+.role-card.clean h4,.gender-card.clean h4{font-size:16px;margin:0}
+.role-card.clean p,.gender-card.clean p{display:none}
+
+.review-full-card.simple{min-height:360px;padding:18px;border-radius:24px;box-shadow:0 12px 26px rgba(40,18,90,.08)}
+.review-full-card.simple .review-quote{font-size:18px;line-height:1.6;font-weight:600}
+.review-full-card.simple .review-chip{background:#f3f4f6;color:#4b5563}
+.review-full-card.simple .review-tag{background:#f3f0ff}
+.review-full-card.simple::before,.review-full-card.simple::after{opacity:.7}
+.swipe-hint.simple{font-size:11px;margin-top:10px}
+
+.tiny-scroll-cards{display:flex;flex-direction:column;gap:10px;max-height:430px;overflow:auto;padding-right:2px}
+.tiny-scroll-cards::-webkit-scrollbar{width:5px}.tiny-scroll-cards::-webkit-scrollbar-thumb{background:rgba(124,58,237,.18);border-radius:999px}
+.tiny-card{display:flex;gap:12px;align-items:flex-start;border-radius:18px;padding:12px 12px;background:#fff;border:1px solid rgba(124,58,237,.10);box-shadow:0 10px 22px rgba(40,18,90,.05)}
+.tiny-card i{width:36px;height:36px;border-radius:12px;display:flex;align-items:center;justify-content:center;color:#fff;flex-shrink:0}
+.tiny-card h5{font-size:13px;font-weight:800;color:#1f1735;margin-bottom:4px}.tiny-card p{font-size:11px;color:#6f6882;line-height:1.45}
+.c1{background:#eef2ff}.c2{background:#ecfeff}.c3{background:#fff7ed}.c4{background:#fdf2f8}.c5{background:#f0fdf4}.c6{background:#eff6ff}.c7{background:#faf5ff}.c8{background:#fefce8}
+.i1{background:linear-gradient(145deg,#8b5cf6,#6366f1)}.i2{background:linear-gradient(145deg,#06b6d4,#3b82f6)}.i3{background:linear-gradient(145deg,#f97316,#fb7185)}.i4{background:linear-gradient(145deg,#ec4899,#f43f5e)}.i5{background:linear-gradient(145deg,#22c55e,#14b8a6)}.i6{background:linear-gradient(145deg,#3b82f6,#6366f1)}.i7{background:linear-gradient(145deg,#a855f7,#ec4899)}.i8{background:linear-gradient(145deg,#eab308,#f97316)}
+
+.simple-check-list{display:flex;flex-direction:column;gap:10px}
+.simple-check-card{display:flex;align-items:center;gap:14px;padding:14px 14px;border-radius:18px;background:#fff;border:1px solid rgba(124,58,237,.10);box-shadow:0 8px 18px rgba(40,18,90,.05)}
+.simple-check-card.active{border-color:rgba(124,58,237,.28)}
+.simple-check-card .check-box{width:24px;height:24px;border-radius:8px;border:1.8px solid #c9c3dc;display:flex;align-items:center;justify-content:center;flex-shrink:0;background:#fff;color:#fff;font-size:12px}
+.simple-check-card.active .check-box{background:linear-gradient(145deg,#8b5cf6,#06b6d4);border-color:transparent}
+.simple-check-card .mini-icon{width:42px;height:42px;border-radius:14px;display:flex;align-items:center;justify-content:center;color:#fff;flex-shrink:0;font-size:16px}
+.simple-check-card h4{font-size:14px;color:#1e1634;margin-bottom:3px}.simple-check-card p{font-size:11px;color:#6f6882;line-height:1.45}
+
+.analysis-mini-grid{display:flex;flex-direction:column;gap:10px;margin-top:18px}
+.analysis-mini-card{background:rgba(255,255,255,.12);border:1px solid rgba(255,255,255,.16);backdrop-filter:blur(10px);border-radius:18px;padding:12px 14px;box-shadow:0 12px 22px rgba(0,0,0,.10)}
+.analysis-mini-top{display:flex;align-items:center;justify-content:space-between;gap:10px}.analysis-mini-top h5{font-size:13px;font-weight:700}.analysis-mini-top span{font-size:11px;opacity:.8}
+.mini-progress{height:6px;background:rgba(255,255,255,.12);border-radius:999px;overflow:hidden;margin-top:9px}.mini-progress span{display:block;height:100%;border-radius:999px;background:#20C7A6}
+
+
+/* ==== Simple decent screens: first child + case studies ==== */
+.simple-panel{
+  background:#fff;
+  border:1px solid rgba(124,58,237,.10);
+  border-radius:24px;
+  padding:18px;
+  box-shadow:0 10px 22px rgba(40,18,90,.06);
+}
+.simple-choice-list{display:flex;flex-direction:column;gap:12px}
+.simple-choice-row{
+  display:flex;
+  align-items:center;
+  gap:14px;
+  padding:15px;
+  border-radius:18px;
+  background:#f9fafb;
+  border:1px solid #edf0f5;
+}
+.simple-choice-row.active{
+  background:#f5f3ff;
+  border-color:rgba(124,58,237,.35);
+}
+.simple-radio{
+  width:22px;
+  height:22px;
+  border-radius:50%;
+  border:2px solid #c9c3dc;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  flex-shrink:0;
+  background:#fff;
+}
+.simple-choice-row.active .simple-radio{border-color:#7c3aed}
+.simple-choice-row.active .simple-radio::after{
+  content:'';
+  width:10px;
+  height:10px;
+  border-radius:50%;
+  background:#7c3aed;
+}
+.simple-row-icon{
+  width:42px;
+  height:42px;
+  border-radius:14px;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  color:#fff;
+  flex-shrink:0;
+}
+.simple-choice-row h4{
+  font-size:15px;
+  color:#1e1634;
+  margin-bottom:3px;
+}
+.simple-choice-row p{
+  font-size:12px;
+  color:#6f6882;
+  line-height:1.45;
+}
+.simple-info-box{
+  margin-top:14px;
+  padding:14px;
+  border-radius:18px;
+  background:#f8fafc;
+  border:1px solid #edf0f5;
+  color:#6f6882;
+  font-size:12px;
+  line-height:1.55;
+}
+.case-list{display:flex;flex-direction:column;gap:11px}
+.case-row{
+  display:flex;
+  gap:12px;
+  align-items:flex-start;
+  padding:14px;
+  border-radius:18px;
+  background:#fff;
+  border:1px solid rgba(124,58,237,.10);
+  box-shadow:0 8px 18px rgba(40,18,90,.045);
+}
+.case-icon{
+  width:38px;
+  height:38px;
+  border-radius:13px;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  color:#fff;
+  flex-shrink:0;
+  font-size:15px;
+}
+.case-row h5{
+  font-size:14px;
+  font-weight:800;
+  color:#1e1634;
+  margin-bottom:4px;
+}
+.case-row p{
+  font-size:12px;
+  color:#6f6882;
+  line-height:1.45;
+}
+.case-note{
+  margin-top:12px;
+  padding:13px 14px;
+  border-radius:18px;
+  background:#f5f3ff;
+  color:#655b7b;
+  font-size:12px;
+  line-height:1.5;
+}
+
+
+/* ==== Global Browser Light / Dark Toggle ==== */
+.theme-toggle-wrap{
+  position:fixed;
+  top:18px;
+  right:18px;
+  z-index:9999;
+  display:flex;
+  align-items:center;
+  gap:10px;
+  padding:8px 10px 8px 12px;
+  border-radius:999px;
+  background:rgba(255,255,255,.16);
+  border:1px solid rgba(255,255,255,.24);
+  backdrop-filter:blur(18px);
+  -webkit-backdrop-filter:blur(18px);
+  box-shadow:0 18px 44px rgba(0,0,0,.22);
+  color:#fff;
+  font-size:12px;
+  font-weight:800;
+  letter-spacing:.2px;
+}
+.theme-switch{
+  width:58px;
+  height:32px;
+  border-radius:999px;
+  border:0;
+  cursor:pointer;
+  position:relative;
+  background:linear-gradient(145deg,#fbbf24,#f97316);
+  box-shadow:inset 0 0 0 1px rgba(255,255,255,.35),0 8px 20px rgba(0,0,0,.18);
+  transition:.25s ease;
+}
+.theme-switch span{
+  position:absolute;
+  top:4px;
+  left:4px;
+  width:24px;
+  height:24px;
+  border-radius:50%;
+  background:#fff;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  color:#f97316;
+  font-size:12px;
+  box-shadow:0 6px 12px rgba(0,0,0,.22);
+  transition:.25s ease;
+}
+body.dark-mode .theme-switch{
+  background:linear-gradient(145deg,#312e81,#06b6d4);
+}
+body.dark-mode .theme-switch span{
+  left:30px;
+  color:#312e81;
+}
+
+/* Light mode base */
+body.light-mode{
+  background:radial-gradient(circle at 20% 10%, #ddd6fe 0, transparent 24%),
+             radial-gradient(circle at 82% 18%, #bae6fd 0, transparent 24%),
+             linear-gradient(135deg,#f8fafc,#eef2ff 55%,#ecfeff);
+}
+body.light-mode .screen-label{color:rgba(31,41,55,.55);}
+body.light-mode .theme-toggle-wrap{
+  background:rgba(255,255,255,.78);
+  border-color:rgba(124,58,237,.16);
+  color:#31264d;
+}
+
+/* Dark mode global surface */
+body.dark-mode{
+  background:radial-gradient(circle at 18% 12%, #4c1d95 0, transparent 26%),
+             radial-gradient(circle at 82% 18%, #164e63 0, transparent 24%),
+             linear-gradient(135deg,#050816,#100520 55%,#061722);
+}
+body.dark-mode .phone{
+  background:linear-gradient(180deg,#161526 0%,#0d1223 100%);
+  box-shadow:0 34px 84px rgba(0,0,0,.62),0 0 0 1px rgba(255,255,255,.08),0 0 44px rgba(34,211,238,.10);
+}
+body.dark-mode .step-wrap{
+  background:radial-gradient(circle at 15% 10%,rgba(6,182,212,.12),transparent 28%),
+             radial-gradient(circle at 88% 18%,rgba(249,115,22,.10),transparent 26%),
+             linear-gradient(180deg,#151327,#0d1223);
+}
+body.dark-mode .status-bar.light,
+body.dark-mode .step-title,
+body.dark-mode .choice-title,
+body.dark-mode .simple-choice-row h4,
+body.dark-mode .case-row h5,
+body.dark-mode .simple-check-card h4,
+body.dark-mode .tiny-card h5,
+body.dark-mode .review-full-card.simple strong,
+body.dark-mode .card h2,
+body.dark-mode .card p,
+body.dark-mode .name-box,
+body.dark-mode .calendar-shell h4{
+  color:#f8fafc !important;
+}
+body.dark-mode .step-sub,
+body.dark-mode .simple-choice-row p,
+body.dark-mode .case-row p,
+body.dark-mode .simple-info-box,
+body.dark-mode .case-note,
+body.dark-mode .simple-check-card p,
+body.dark-mode .tiny-card p,
+body.dark-mode .review-full-card.simple p,
+body.dark-mode .field-label{
+  color:#b9b5c9 !important;
+}
+body.dark-mode .card,
+body.dark-mode .choice,
+body.dark-mode .simple-panel,
+body.dark-mode .simple-choice-row,
+body.dark-mode .case-row,
+body.dark-mode .name-box,
+body.dark-mode .calendar-shell,
+body.dark-mode .tiny-card,
+body.dark-mode .simple-check-card,
+body.dark-mode .review-full-card.simple,
+body.dark-mode .final-percent,
+body.dark-mode .metric-card,
+body.dark-mode .subtle-note,
+body.dark-mode .hero-select,
+body.dark-mode .hero-option{
+  background:rgba(255,255,255,.08) !important;
+  border-color:rgba(255,255,255,.10) !important;
+  color:#f8fafc !important;
+  box-shadow:0 14px 34px rgba(0,0,0,.24) !important;
+}
+body.dark-mode .simple-choice-row.active,
+body.dark-mode .gender-card.clean.active,
+body.dark-mode .role-card.clean.active,
+body.dark-mode .simple-check-card.active,
+body.dark-mode .choice.active{
+  background:rgba(124,58,237,.18) !important;
+  border-color:rgba(139,92,246,.44) !important;
+}
+body.dark-mode .soft-input,
+body.dark-mode .inp{
+  background:rgba(255,255,255,.08) !important;
+  border-color:rgba(255,255,255,.12) !important;
+  color:#fff !important;
+}
+body.dark-mode .soft-input::placeholder,
+body.dark-mode .inp::placeholder{color:rgba(255,255,255,.48);}
+body.dark-mode .cal-day{
+  background:rgba(255,255,255,.08);
+  color:#e5e7eb;
+}
+body.dark-mode .cal-day.muted{opacity:.28;}
+body.dark-mode .cal-day.active{
+  background:linear-gradient(145deg,#8b5cf6,#06b6d4);
+  color:#fff;
+}
+body.dark-mode .bnav{
+  background:rgba(14,18,33,.78);
+  border-color:rgba(255,255,255,.10);
+}
+body.dark-mode .bnav-btn span{color:#c4b5fd;}
+body.dark-mode .screen-label{color:rgba(255,255,255,.42);}
+body.dark-mode .progress-mini{background:rgba(255,255,255,.09);}
+body.dark-mode .pbar-track,
+body.dark-mode .final-bar,
+body.dark-mode .mini-progress{
+  background:rgba(255,255,255,.10) !important;
+}
+body.dark-mode .badge{
+  background:rgba(124,58,237,.18) !important;
+  color:#ddd6fe !important;
+}
+body.dark-mode .avatar,
+body.dark-mode [style*="background:#f0e8ff"],
+body.dark-mode [style*="background:#e8f5ee"],
+body.dark-mode [style*="background:#fee2e2"]{
+  background:rgba(255,255,255,.10) !important;
+}
+
+
+/* ==== Reference-style simple choice screens ==== */
+.ref-step-wrap{background:linear-gradient(180deg,#ffffff 0%,#fbfbfd 100%);min-height:100%;display:flex;flex-direction:column}
+.ref-topbar{padding:2px 22px 0}
+.ref-back-row{display:flex;align-items:center;justify-content:center;position:relative;padding:10px 0 14px}
+.ref-back-btn{position:absolute;left:0;top:50%;transform:translateY(-50%);width:34px;height:34px;border-radius:50%;display:flex;align-items:center;justify-content:center;color:#26223a;background:transparent;font-size:18px}
+.ref-step-title{font-size:18px;font-weight:800;color:#221b36}
+.ref-progress-line{height:5px;background:#dcf2ea;border-radius:999px;overflow:hidden;margin:0 -22px}
+.ref-progress-line span{display:block;height:100%;background:#20C7A6;border-radius:999px}
+.ref-content-center{padding:42px 24px 0;text-align:center}
+.ref-big-title{font-size:22px;line-height:1.25;font-weight:900;letter-spacing:-.4px;color:#4c2f8f}
+.ref-big-sub{font-size:14px;line-height:1.6;color:#767082;margin-top:14px}
+.ref-bottom-actions{margin-top:auto;padding:18px 22px 24px;display:flex;flex-direction:column;gap:14px}
+.ref-action-grid{display:grid;grid-template-columns:1fr 1fr;gap:14px}
+.ref-action-card{border:none;border-radius:16px;padding:18px 14px;min-height:78px;display:flex;align-items:center;justify-content:center;gap:10px;font-size:15px;font-weight:800;letter-spacing:.2px;box-shadow:none}
+.ref-action-card i{font-size:18px}
+.ref-action-card.pink{background:#fbeef5;color:#e3569b}
+.ref-action-card.blue{background:#eaf5fc;color:#2fa8ea}
+.ref-action-card.lilac{background:#f1effd;color:#7b5ce3}
+.ref-action-card.mint{background:#ecfbf6;color:#16A98C}
+.ref-action-card.active{box-shadow:inset 0 0 0 2px rgba(0,0,0,.04)}
+.ref-action-full{width:100%;background:#f6f2df;color:#e2b316;border:none;border-radius:16px;padding:19px 14px;font-size:15px;font-weight:900;letter-spacing:.4px;text-align:center}
+.ref-action-full.neutral{background:#f4f4f5;color:#6b7280}
+body.dark-mode .ref-step-wrap{background:linear-gradient(180deg,#0f1220 0%,#0a1020 100%)}
+body.dark-mode .ref-step-title{color:#f5f7fb}
+body.dark-mode .ref-big-title{color:#c9b5ff}
+body.dark-mode .ref-big-sub{color:#b3afc2}
+body.dark-mode .ref-back-btn{color:#f5f7fb}
+body.dark-mode .ref-progress-line{background:rgba(255,255,255,.12)}
+body.dark-mode .ref-progress-line span{background:#20C7A6}
+body.dark-mode .ref-action-card.pink{background:#3b2031;color:#ff9cca}
+body.dark-mode .ref-action-card.blue{background:#142839;color:#78cfff}
+body.dark-mode .ref-action-card.lilac{background:#2a2340;color:#ccb9ff}
+body.dark-mode .ref-action-card.mint{background:#133229;color:#73ebc4}
+body.dark-mode .ref-action-full{background:#40381b;color:#ffd84f}
+body.dark-mode .ref-action-full.neutral{background:#1d2334;color:#c9ced9}
+
+
+/* ==== Unified green stepper + simple green buttons ==== */
+:root{
+  --step-green:#20C7A6;
+  --step-green-dark:#16A98C;
+  --step-green-soft:#DDF8F1;
+}
+
+/* All progress / steppers */
+.progress-mini span,
+.ref-progress-line span,
+.pbar-fill,
+.final-bar span,
+.mini-progress span{
+  background:var(--step-green) !important;
+  box-shadow:none !important;
+}
+.progress-mini,
+.ref-progress-line{
+  background:var(--step-green-soft) !important;
+}
+
+/* Remove button glow and animated gradient */
+.btn-primary{
+  background:var(--step-green) !important;
+  background-size:auto !important;
+  animation:none !important;
+  box-shadow:none !important;
+  border:none !important;
+  color:#fff !important;
+}
+.btn-primary::after{
+  display:none !important;
+}
+.btn-primary:hover{
+  background:var(--step-green-dark) !important;
+}
+.btn-primary:active{
+  transform:scale(.98);
+}
+
+/* Secondary / reference style bottom buttons keep same green direction */
+.ref-action-card.active{
+  box-shadow:none !important;
+}
+.ref-action-full{
+  background:var(--step-green-soft) !important;
+  color:var(--step-green-dark) !important;
+}
+.ref-action-card.mint{
+  background:var(--step-green-soft) !important;
+  color:var(--step-green-dark) !important;
+}
+
+/* Active checkbox and selected items use same green */
+.simple-check-card.active .check-box,
+.choice.active .choice-ico,
+.analysis-check,
+.task-check.done{
+  background:var(--step-green) !important;
+  border-color:var(--step-green) !important;
+  box-shadow:none !important;
+}
+.big-chip.active,
+.cal-day.active{
+  background:var(--step-green) !important;
+  border-color:var(--step-green) !important;
+  box-shadow:none !important;
+}
+
+/* Dark mode stepper/button green stays same */
+body.dark-mode .progress-mini,
+body.dark-mode .ref-progress-line{
+  background:rgba(32,199,166,.18) !important;
+}
+body.dark-mode .progress-mini span,
+body.dark-mode .ref-progress-line span,
+body.dark-mode .pbar-fill,
+body.dark-mode .final-bar span,
+body.dark-mode .mini-progress span{
+  background:var(--step-green) !important;
+  box-shadow:none !important;
+}
+body.dark-mode .btn-primary{
+  background:var(--step-green) !important;
+  box-shadow:none !important;
+  animation:none !important;
+}
+body.dark-mode .btn-primary:hover{
+  background:var(--step-green-dark) !important;
+}
+
+
+/* ==== Browser 100% compact preview mode ==== */
+/* This makes the mockup board look like browser 50% zoom while browser stays at 100%. */
+:root{ --preview-scale:.50; --phone-w:375px; --phone-h:780px; }
+
+body.preview-compact{
+  gap:12px !important;
+  padding:18px !important;
+  align-items:flex-start;
+}
+body.preview-compact > div:not(.theme-toggle-wrap){
+  width:calc(var(--phone-w) * var(--preview-scale));
+  height:calc((var(--phone-h) + 34px) * var(--preview-scale));
+  position:relative;
+  flex:0 0 calc(var(--phone-w) * var(--preview-scale));
+}
+body.preview-compact > div:not(.theme-toggle-wrap) .phone{
+  transform:scale(var(--preview-scale));
+  transform-origin:top left;
+}
+body.preview-compact > div:not(.theme-toggle-wrap) .screen-label{
+  position:absolute;
+  top:calc(var(--phone-h) * var(--preview-scale) + 5px);
+  left:0;
+  width:calc(var(--phone-w) * var(--preview-scale));
+  margin:0;
+  font-size:10px;
+}
+
+/* Keep theme toggle normal size */
+body.preview-compact .theme-toggle-wrap{
+  transform:none !important;
+}
+
+
+body.dark-mode [style*="background:linear-gradient(145deg,#ffffff,#f4fffb)"]{
+  background:rgba(255,255,255,.08) !important;
+  border-color:rgba(32,199,166,.28) !important;
+}
+
+
+/* ===================================================================
+   FINAL DESIGN CLEANUP — unified theme, colors, spacing, and surfaces
+   =================================================================== */
+:root{
+  --brand:#20C7A6;
+  --brand-dark:#16A98C;
+  --brand-soft:#DDF8F1;
+  --brand-soft-2:#F1FFFB;
+  --ink:#18112F;
+  --ink-2:#2B2440;
+  --muted:#746C87;
+  --surface:#FFFFFF;
+  --surface-soft:#F8FAFC;
+  --line:#E9EEF5;
+  --shadow:0 10px 24px rgba(40,18,90,.06);
+  --shadow-soft:0 6px 16px rgba(40,18,90,.045);
+  --radius-card:22px;
+}
+
+/* Global board */
+body{
+  font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;
+}
+body.light-mode,
+body.preview-compact.light-mode{
+  background:
+    radial-gradient(circle at 18% 12%, rgba(32,199,166,.20) 0, transparent 22%),
+    radial-gradient(circle at 86% 14%, rgba(124,58,237,.12) 0, transparent 22%),
+    linear-gradient(135deg,#F8FAFC,#EEFDF9 54%,#F5F3FF) !important;
+}
+
+/* Phone shell and screen base */
+.phone{
+  background:linear-gradient(180deg,#FFFFFF 0%,#F8FAFC 100%) !important;
+  box-shadow:0 28px 70px rgba(15,23,42,.28),0 0 0 1px rgba(255,255,255,.55) !important;
+}
+.phone::after,
+.float-bubbles::before,
+.float-bubbles::after{
+  display:none !important;
+}
+.inner{background:transparent !important;}
+
+/* Main onboarding and app surfaces */
+.step-wrap,
+.ref-step-wrap{
+  background:linear-gradient(180deg,#FFFFFF 0%,#FAFFFD 100%) !important;
+}
+.card,
+.choice,
+.simple-panel,
+.simple-choice-row,
+.case-row,
+.name-box,
+.calendar-shell,
+.tiny-card,
+.simple-check-card,
+.review-full-card.simple,
+.final-percent,
+.metric-card,
+.subtle-note,
+.hero-select,
+.hero-option,
+.insight-card,
+.story-card,
+.scan-card{
+  background:var(--surface) !important;
+  border:1px solid var(--line) !important;
+  box-shadow:var(--shadow-soft) !important;
+  backdrop-filter:none !important;
+  -webkit-backdrop-filter:none !important;
+}
+
+/* Consistent typography */
+.step-title,
+.ref-big-title{
+  color:var(--ink) !important;
+  background:none !important;
+  -webkit-background-clip:initial !important;
+  background-clip:initial !important;
+  letter-spacing:-.4px;
+}
+.step-count,
+.ref-step-title{
+  color:var(--brand-dark) !important;
+}
+.step-sub,
+.ref-big-sub,
+.choice-desc,
+.simple-choice-row p,
+.case-row p,
+.simple-info-box,
+.case-note,
+.simple-check-card p,
+.tiny-card p,
+.review-full-card.simple p,
+.field-label,
+.subtle-note{
+  color:var(--muted) !important;
+}
+.choice-title,
+.simple-choice-row h4,
+.case-row h5,
+.simple-check-card h4,
+.tiny-card h5,
+.review-full-card.simple strong,
+.card h2,
+.name-box,
+.calendar-shell h4{
+  color:var(--ink) !important;
+}
+
+/* Unified stepper/progress */
+.progress-mini,
+.ref-progress-line{
+  background:var(--brand-soft) !important;
+  box-shadow:none !important;
+}
+.progress-mini span,
+.ref-progress-line span,
+.pbar-fill,
+.final-bar span,
+.mini-progress span{
+  background:var(--brand) !important;
+  box-shadow:none !important;
+}
+
+/* Buttons: no glow, no animated shine */
+.btn-primary{
+  background:var(--brand) !important;
+  color:#fff !important;
+  border:none !important;
+  border-radius:16px !important;
+  box-shadow:none !important;
+  animation:none !important;
+  font-weight:800;
+}
+.btn-primary::after{display:none !important;}
+.btn-primary:hover{background:var(--brand-dark) !important;}
+.btn-primary:active{transform:scale(.98);}
+
+/* Reference style option buttons */
+.ref-action-card{
+  box-shadow:none !important;
+  border:1px solid transparent !important;
+}
+.ref-action-card.pink{background:#FDECF5 !important;color:#E3569B !important;}
+.ref-action-card.blue{background:#EAF7FF !important;color:#2FA8EA !important;}
+.ref-action-card.lilac{background:#F2EEFF !important;color:#7B5CE3 !important;}
+.ref-action-card.mint{background:var(--brand-soft) !important;color:var(--brand-dark) !important;}
+.ref-action-card.active{
+  border-color:rgba(32,199,166,.36) !important;
+  box-shadow:inset 0 0 0 1px rgba(32,199,166,.16) !important;
+}
+.ref-action-full{
+  background:var(--brand-soft) !important;
+  color:var(--brand-dark) !important;
+  box-shadow:none !important;
+}
+
+/* Icons and selections */
+.role-icon,
+.simple-row-icon,
+.case-icon,
+.simple-check-card .mini-icon,
+.tiny-card i{
+  box-shadow:none !important;
+}
+.choice.active,
+.simple-choice-row.active,
+.gender-card.clean.active,
+.role-card.clean.active,
+.simple-check-card.active,
+.hero-option.active{
+  background:var(--brand-soft-2) !important;
+  border-color:rgba(32,199,166,.36) !important;
+  box-shadow:var(--shadow-soft) !important;
+}
+.simple-check-card.active .check-box,
+.choice.active .choice-ico,
+.task-check.done{
+  background:var(--brand) !important;
+  border-color:var(--brand) !important;
+  box-shadow:none !important;
+}
+.simple-choice-row.active .simple-radio{border-color:var(--brand) !important;}
+.simple-choice-row.active .simple-radio::after{background:var(--brand) !important;}
+.choice-ico{
+  background:var(--brand-soft) !important;
+  color:var(--brand-dark) !important;
+}
+.choice.active .choice-ico{
+  background:var(--brand) !important;
+  color:#fff !important;
+}
+
+/* Cards with soft color backgrounds should remain subtle */
+.c1{background:#F5F3FF !important;}
+.c2{background:#ECFEFF !important;}
+.c3{background:#FFF7ED !important;}
+.c4{background:#FDF2F8 !important;}
+.c5{background:#F0FDF4 !important;}
+.c6{background:#EFF6FF !important;}
+.c7{background:#FAF5FF !important;}
+.c8{background:#FEFCE8 !important;}
+
+/* Calendar */
+.cal-day{
+  background:#F8FAFC !important;
+  color:var(--ink-2) !important;
+  border:1px solid transparent !important;
+}
+.cal-day.active{
+  background:var(--brand) !important;
+  color:#fff !important;
+  box-shadow:none !important;
+}
+.cal-day.today{
+  border-color:rgba(32,199,166,.38) !important;
+}
+
+/* Onboarding image screens: direct content on image, clean overlay */
+.onboard-bg::before{display:none !important;}
+.onboard-bg::after{
+  background:linear-gradient(180deg,rgba(0,0,0,.04) 0%,rgba(0,0,0,.14) 42%,rgba(0,0,0,.50) 100%) !important;
+}
+.onboard-bottom-card{
+  background:transparent !important;
+  border:none !important;
+  box-shadow:none !important;
+  backdrop-filter:none !important;
+}
+.onboard-bottom-card h2,
+.onboard-bottom-card p{
+  text-shadow:0 3px 14px rgba(0,0,0,.35);
+}
+.secure-pill{
+  background:rgba(255,255,255,.16) !important;
+  border:1px solid rgba(255,255,255,.24) !important;
+  box-shadow:none !important;
+}
+
+/* Bottom nav */
+.bnav{
+  background:rgba(255,255,255,.92) !important;
+  border-top:1px solid var(--line) !important;
+  box-shadow:0 -8px 22px rgba(15,23,42,.06) !important;
+  backdrop-filter:blur(12px);
+}
+.bnav-btn span{color:var(--brand-dark) !important;}
+.bnav-dot{background:var(--brand) !important;box-shadow:none !important;}
+
+/* Remove old Islamic/legacy text artifacts from looking off */
+.pattern-bg{background-image:none !important;}
+.arabesque{display:none !important;}
+
+/* Theme toggle consistency */
+.theme-toggle-wrap{
+  box-shadow:0 12px 30px rgba(15,23,42,.16) !important;
+}
+.theme-switch{
+  background:var(--brand) !important;
+  box-shadow:none !important;
+}
+.theme-switch span{color:var(--brand-dark) !important;}
+
+/* Dark mode final consistent theme */
+body.dark-mode,
+body.preview-compact.dark-mode{
+  background:
+    radial-gradient(circle at 18% 12%, rgba(32,199,166,.14) 0, transparent 24%),
+    radial-gradient(circle at 86% 14%, rgba(124,58,237,.16) 0, transparent 24%),
+    linear-gradient(135deg,#060914,#0B1020 56%,#061A18) !important;
+}
+body.dark-mode .phone{
+  background:linear-gradient(180deg,#111827 0%,#0B1020 100%) !important;
+  box-shadow:0 28px 70px rgba(0,0,0,.52),0 0 0 1px rgba(255,255,255,.06) !important;
+}
+body.dark-mode .step-wrap,
+body.dark-mode .ref-step-wrap{
+  background:linear-gradient(180deg,#111827 0%,#0B1020 100%) !important;
+}
+body.dark-mode .card,
+body.dark-mode .choice,
+body.dark-mode .simple-panel,
+body.dark-mode .simple-choice-row,
+body.dark-mode .case-row,
+body.dark-mode .name-box,
+body.dark-mode .calendar-shell,
+body.dark-mode .tiny-card,
+body.dark-mode .simple-check-card,
+body.dark-mode .review-full-card.simple,
+body.dark-mode .final-percent,
+body.dark-mode .metric-card,
+body.dark-mode .subtle-note,
+body.dark-mode .hero-select,
+body.dark-mode .hero-option,
+body.dark-mode .insight-card,
+body.dark-mode .story-card,
+body.dark-mode .scan-card{
+  background:#151B2B !important;
+  border-color:#243047 !important;
+  box-shadow:none !important;
+}
+body.dark-mode .step-title,
+body.dark-mode .ref-big-title,
+body.dark-mode .choice-title,
+body.dark-mode .simple-choice-row h4,
+body.dark-mode .case-row h5,
+body.dark-mode .simple-check-card h4,
+body.dark-mode .tiny-card h5,
+body.dark-mode .review-full-card.simple strong,
+body.dark-mode .card h2,
+body.dark-mode .name-box,
+body.dark-mode .calendar-shell h4,
+body.dark-mode .ref-step-title{
+  color:#F8FAFC !important;
+}
+body.dark-mode .step-count{color:var(--brand) !important;}
+body.dark-mode .step-sub,
+body.dark-mode .ref-big-sub,
+body.dark-mode .choice-desc,
+body.dark-mode .simple-choice-row p,
+body.dark-mode .case-row p,
+body.dark-mode .simple-info-box,
+body.dark-mode .case-note,
+body.dark-mode .simple-check-card p,
+body.dark-mode .tiny-card p,
+body.dark-mode .review-full-card.simple p,
+body.dark-mode .field-label,
+body.dark-mode .subtle-note{
+  color:#B7C0D3 !important;
+}
+body.dark-mode .progress-mini,
+body.dark-mode .ref-progress-line{
+  background:rgba(32,199,166,.20) !important;
+}
+body.dark-mode .choice.active,
+body.dark-mode .simple-choice-row.active,
+body.dark-mode .gender-card.clean.active,
+body.dark-mode .role-card.clean.active,
+body.dark-mode .simple-check-card.active,
+body.dark-mode .hero-option.active{
+  background:rgba(32,199,166,.12) !important;
+  border-color:rgba(32,199,166,.35) !important;
+}
+body.dark-mode .soft-input,
+body.dark-mode .inp{
+  background:#111827 !important;
+  border-color:#243047 !important;
+  color:#F8FAFC !important;
+}
+body.dark-mode .cal-day{
+  background:#111827 !important;
+  color:#E5E7EB !important;
+}
+body.dark-mode .cal-day.active{
+  background:var(--brand) !important;
+  color:#fff !important;
+}
+body.dark-mode .bnav{
+  background:rgba(17,24,39,.94) !important;
+  border-color:#243047 !important;
+}
+body.dark-mode .theme-toggle-wrap{
+  background:rgba(21,27,43,.82) !important;
+  border-color:#243047 !important;
+  color:#F8FAFC !important;
+}
+body.dark-mode .screen-label{color:rgba(255,255,255,.42) !important;}
+
+/* Small readability fixes */
+.screen-label{font-weight:700;}
+.status-bar{background:transparent !important;}
+.ref-content-center{padding-top:44px;}
+.ref-bottom-actions{padding-bottom:28px;}
+
+
+/* ==== Final step heading normalization + analyzing circular progress ==== */
+.step-head,
+.ref-topbar{
+  padding-top:0 !important;
+}
+.step-head .step-count,
+.ref-step-title{
+  font-size:18px !important;
+  line-height:1.2 !important;
+  font-weight:800 !important;
+  text-align:center !important;
+  color:#221B36 !important;
+  letter-spacing:0 !important;
+  text-transform:none !important;
+}
+.step-head .step-count{
+  display:block;
+  margin:0 auto 14px !important;
+}
+.step-head{
+  padding:10px 22px 12px !important;
+}
+.progress-mini{
+  margin:0 !important;
+  height:5px !important;
+  border-radius:999px !important;
+}
+.ref-progress-line{
+  height:5px !important;
+  border-radius:999px !important;
+}
+
+/* In normal step screens, match reference layout: status, centered step title, then progress */
+.step-wrap .status-bar.light + .progress-mini{
+  margin-top:8px !important;
+}
+.step-title{
+  margin-top:38px !important;
+  text-align:center !important;
+  font-size:28px !important;
+  line-height:1.18 !important;
+  font-weight:900 !important;
+}
+.step-sub{
+  text-align:center !important;
+  max-width:310px;
+  margin:12px auto 0 !important;
+  font-size:14px !important;
+  line-height:1.58 !important;
+}
+
+/* Dark mode same heading style */
+body.dark-mode .step-head .step-count,
+body.dark-mode .ref-step-title{
+  color:#F8FAFC !important;
+}
+
+/* Circular analyzing progress */
+.analyze-circle-wrap{
+  width:178px;
+  height:178px;
+  margin:18px auto 10px;
+  position:relative;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+}
+.analyze-circle{
+  position:absolute;
+  inset:0;
+  border-radius:50%;
+  background:
+    conic-gradient(from 0deg, #20C7A6 0deg, #20C7A6 95deg, rgba(32,199,166,.22) 96deg, rgba(32,199,166,.22) 180deg, #7DD3FC 181deg, #7DD3FC 250deg, rgba(255,255,255,.13) 251deg 360deg);
+  animation:analyze-spin 2.2s linear infinite;
+  box-shadow:0 0 0 1px rgba(255,255,255,.12),0 14px 34px rgba(0,0,0,.18);
+}
+.analyze-circle::after{
+  content:'';
+  position:absolute;
+  inset:13px;
+  border-radius:50%;
+  background:linear-gradient(145deg,rgba(17,24,39,.96),rgba(15,23,42,.92));
+  border:1px solid rgba(255,255,255,.12);
+}
+.analyze-inner{
+  position:relative;
+  z-index:2;
+  width:118px;
+  height:118px;
+  border-radius:50%;
+  display:flex;
+  flex-direction:column;
+  align-items:center;
+  justify-content:center;
+  background:rgba(255,255,255,.06);
+  border:1px solid rgba(255,255,255,.12);
+}
+.analyze-inner strong{
+  font-size:30px;
+  font-weight:900;
+  color:#fff;
+}
+.analyze-inner span{
+  font-size:11px;
+  font-weight:700;
+  color:rgba(255,255,255,.72);
+  margin-top:2px;
+}
+.analyze-pulse{
+  position:absolute;
+  inset:-12px;
+  border-radius:50%;
+  border:1px solid rgba(32,199,166,.22);
+  animation:analyze-pulse 1.8s ease-in-out infinite;
+}
+@keyframes analyze-spin{
+  to{transform:rotate(360deg)}
+}
+@keyframes analyze-pulse{
+  0%,100%{transform:scale(.94);opacity:.35}
+  50%{transform:scale(1.07);opacity:.8}
+}
+.analysis-mini-card{
+  animation:analysis-soft 2.6s ease-in-out infinite;
+}
+.analysis-mini-card:nth-child(2){animation-delay:.2s}
+.analysis-mini-card:nth-child(3){animation-delay:.4s}
+.analysis-mini-card:nth-child(4){animation-delay:.6s}
+.analysis-mini-card:nth-child(5){animation-delay:.8s}
+.analysis-mini-card:nth-child(6){animation-delay:1s}
+@keyframes analysis-soft{
+  0%,100%{transform:translateY(0);border-color:rgba(255,255,255,.16)}
+  50%{transform:translateY(-2px);border-color:rgba(32,199,166,.38)}
+}
+
+/* Light mode circle if analyzing screen viewed on light background later */
+body.light-mode .analyze-circle::after{
+  background:linear-gradient(145deg,#111827,#0f172a);
+}
+
+</style>
+</head>
+<body class="light-mode preview-compact">
+<div class="theme-toggle-wrap">
+  <span id="themeLabel">Light</span>
+  <button class="theme-switch" id="themeToggle" type="button" aria-label="Toggle light and dark mode">
+    <span id="themeIcon"><i class="fa-solid fa-sun"></i></span>
+  </button>
+</div>
+
+
+<!-- ═══════════════════════════════════════════
+     NEW FLOW — SPLASH
+══════════════════════════════════════════════ -->
+<div>
+<div class="phone flow-new float-bubbles">
+  <div class="inner">
+    <div style="height:100%;background:radial-gradient(circle at 20% 10%,#22d3ee 0,transparent 26%),radial-gradient(circle at 80% 25%,#f97316 0,transparent 23%),linear-gradient(140deg,#7c3aed,#111827 70%);display:flex;flex-direction:column;align-items:center;justify-content:center;color:white;position:relative;overflow:hidden;">
+      <div style="position:absolute;width:320px;height:320px;border:1px solid rgba(255,255,255,.08);border-radius:50%;top:80px;"></div>
+      <div class="splash-logo neon-orb"><lottie-player src="https://assets10.lottiefiles.com/packages/lf20_kkflmtur.json" background="transparent" speed="1" style="width:86px;height:86px" loop autoplay></lottie-player></div>
+      <h1 style="font-size:34px;font-weight:900;margin-top:24px;letter-spacing:-.5px;">Nurture AI</h1>
+      <p style="font-size:14px;color:rgba(255,255,255,.72);margin-top:8px;">Personal parenting guidance for every child</p>
+      <div style="position:absolute;bottom:46px;display:flex;gap:8px;align-items:center;color:rgba(255,255,255,.72);font-size:12px;font-weight:700;">
+        <span style="width:7px;height:7px;border-radius:50%;background:#86efac;box-shadow:0 0 18px #86efac;"></span> Secure • Personal • AI Guided
+      </div>
+    </div>
+  </div>
+</div>
+<p class="screen-label">Splash</p>
+</div>
+
+<!-- ═══════════════════════════════════════════
+     NEW FLOW — ONBOARDING 1
+══════════════════════════════════════════════ -->
+<div>
+<div class="phone flow-new float-bubbles">
+  <div class="inner">
+    <div class="onboard-bg" style="background-image:url('https://images.unsplash.com/photo-1503454537195-1dcabb73ffb9?auto=format&fit=crop&w=900&q=80');">
+      <div class="status-bar dark"><span>9:41</span><div class="status-icons"><svg viewBox="0 0 24 24" width="16" height="16" fill="currentColor"><rect x="2" y="7" width="16" height="10" rx="2"/><path d="M20 10.5v3a2 2 0 000-3z"/></svg></div></div>
+      <div class="onboard-content"><div class="onboard-bottom-card">
+        <span class="secure-pill"><i class="fa-solid fa-layer-group"></i> Step 1 of 3</span>
+        <h2 style="font-size:34px;line-height:1.08;font-weight:900;margin-top:18px;letter-spacing:-.8px;">Understand your child deeply</h2>
+        <p style="font-size:15px;line-height:1.6;color:rgba(255,255,255,.82);margin-top:12px;">Get personalized guidance based on your child’s age, behavior, emotions, and daily challenges.</p>
+        <div class="dots"><span class="dot active"></span><span class="dot "></span><span class="dot "></span></div>
+        <button class="btn-primary" style="background:white;color:var(--primary);box-shadow:0 12px 30px rgba(0,0,0,.25);">Continue</button>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+<p class="screen-label">Onboarding 1</p>
+</div>
+
+<!-- ═══════════════════════════════════════════
+     NEW FLOW — ONBOARDING 2
+══════════════════════════════════════════════ -->
+<div>
+<div class="phone flow-new float-bubbles">
+  <div class="inner">
+    <div class="onboard-bg" style="background-image:url('https://images.unsplash.com/photo-1609220136736-443140cffec6?auto=format&fit=crop&w=900&q=80');">
+      <div class="status-bar dark"><span>9:41</span><div class="status-icons"><svg viewBox="0 0 24 24" width="16" height="16" fill="currentColor"><rect x="2" y="7" width="16" height="10" rx="2"/><path d="M20 10.5v3a2 2 0 000-3z"/></svg></div></div>
+      <div class="onboard-content"><div class="onboard-bottom-card">
+        <span class="secure-pill"><i class="fa-solid fa-layer-group"></i> Step 2 of 3</span>
+        <h2 style="font-size:34px;line-height:1.08;font-weight:900;margin-top:18px;letter-spacing:-.8px;">Parenting support that feels personal</h2>
+        <p style="font-size:15px;line-height:1.6;color:rgba(255,255,255,.82);margin-top:12px;">Nurture AI turns your answers into gentle, practical steps you can actually use at home.</p>
+        <div class="dots"><span class="dot "></span><span class="dot active"></span><span class="dot "></span></div>
+        <button class="btn-primary" style="background:white;color:var(--primary);box-shadow:0 12px 30px rgba(0,0,0,.25);">Continue</button>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+<p class="screen-label">Onboarding 2</p>
+</div>
+
+<!-- ═══════════════════════════════════════════
+     NEW FLOW — ONBOARDING 3
+══════════════════════════════════════════════ -->
+<div>
+<div class="phone flow-new float-bubbles">
+  <div class="inner">
+    <div class="onboard-bg" style="background-image:url('https://images.unsplash.com/photo-1542810634-71277d95dcbb?auto=format&fit=crop&w=900&q=80');">
+      <div class="status-bar dark"><span>9:41</span><div class="status-icons"><svg viewBox="0 0 24 24" width="16" height="16" fill="currentColor"><rect x="2" y="7" width="16" height="10" rx="2"/><path d="M20 10.5v3a2 2 0 000-3z"/></svg></div></div>
+      <div class="onboard-content"><div class="onboard-bottom-card">
+        <span class="secure-pill"><i class="fa-solid fa-layer-group"></i> Step 3 of 3</span>
+        <h2 style="font-size:34px;line-height:1.08;font-weight:900;margin-top:18px;letter-spacing:-.8px;">Build calm, confident routines</h2>
+        <p style="font-size:15px;line-height:1.6;color:rgba(255,255,255,.82);margin-top:12px;">Track focus areas, understand stress, and receive guidance that supports both parent and child.</p>
+        <div class="dots"><span class="dot "></span><span class="dot "></span><span class="dot active"></span></div>
+        <button class="btn-primary" style="background:white;color:var(--primary);box-shadow:0 12px 30px rgba(0,0,0,.25);">Continue</button>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+<p class="screen-label">Onboarding 3</p>
+</div>
+
+<!-- ═══════════════════════════════════════════
+     NEW FLOW — ONBOARDING STEP 01
+══════════════════════════════════════════════ -->
+<div>
+<div class="phone flow-new float-bubbles">
+  <div class="inner">
+    <div class="ref-step-wrap">
+      <div class="status-bar light"><span>9:41</span><div class="status-icons"><svg viewBox="0 0 24 24" width="16" height="16" fill="currentColor"><rect x="2" y="7" width="16" height="10" rx="2"/><path d="M20 10.5v3a2 2 0 000-3z"/></svg></div></div>
+      <div class="ref-topbar">
+        <div class="ref-back-row">
+          <div class="ref-back-btn"><i class="fa-solid fa-chevron-left"></i></div>
+          <div class="ref-step-title">Step 1 of 13</div>
+        </div>
+        <div class="ref-progress-line"><span style="width:8%"></span></div>
+      </div>
+      <div class="ref-content-center">
+        <h2 class="ref-big-title">Your role</h2>
+        <p class="ref-big-sub">Choose who will be using the app most often so we can personalize the experience.</p>
+      </div>
+      <div class="ref-bottom-actions">
+        <div class="ref-action-grid">
+          <button class="ref-action-card pink active"><i class="fa-solid fa-person-dress"></i> MOM</button>
+          <button class="ref-action-card blue"><i class="fa-solid fa-user"></i> DADA</button>
+        </div>
+        <button class="ref-action-full neutral"><i class="fa-solid fa-people-roof" style="margin-right:8px;"></i> OTHER</button>
+      </div>
+    </div>
+  </div>
+</div>
+<p class="screen-label">Onboarding Step 01</p>
+</div>
+
+<!-- ═══════════════════════════════════════════
+     NEW FLOW — ONBOARDING STEP 02
+══════════════════════════════════════════════ -->
+<div>
+<div class="phone flow-new float-bubbles">
+  <div class="inner">
+    <div class="step-wrap">
+      <div class="status-bar light"><span>9:41</span><div class="status-icons"><svg viewBox="0 0 24 24" width="16" height="16" fill="currentColor"><rect x="2" y="7" width="16" height="10" rx="2"/><path d="M20 10.5v3a2 2 0 000-3z"/></svg></div></div>
+      <div class="progress-mini"><span style="width:36%"></span></div>
+      <div class="step-head"><p class="step-count">Step 2 of 13</p><h2 class="step-title">Loved by parents</h2><p class="step-sub">Swipe to read a few simple parent reviews.</p></div>
+      <div class="step-body">
+        <div class="swipe-reviews">
+          <div class="review-full-card simple">
+            <div>
+              <div class="review-top"><div class="review-user"><div class="review-avatar" style="background:linear-gradient(145deg,#8b5cf6,#ec4899)">AM</div><div><strong style="font-size:17px;color:#1b1432;">Areeba M.</strong><div class="stars" style="margin-top:6px;"><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i></div></div></div><span class="review-tag">Mother of 2</span></div>
+              <div class="review-body"><p class="review-quote">“The advice felt practical and calm. It helped me improve bedtime and daily routines without feeling overwhelmed.”</p><div class="review-meta"><span class="review-chip">Bedtime</span><span class="review-chip">Routine</span></div></div>
+            </div>
+            <div class="review-bottom"><div><strong style="display:block;color:#1b1432;font-size:14px;">Result</strong><p style="font-size:13px;color:#766d89;line-height:1.55;margin-top:6px;">Less stress and better structure at home.</p></div><i class="fa-solid fa-quote-right" style="font-size:24px;color:#8b5cf6;"></i></div>
+          </div>
+          <div class="review-full-card simple">
+            <div>
+              <div class="review-top"><div class="review-user"><div class="review-avatar" style="background:linear-gradient(145deg,#06b6d4,#3b82f6)">HK</div><div><strong style="font-size:17px;color:#1b1432;">Hina K.</strong><div class="stars" style="margin-top:6px;"><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i></div></div></div><span class="review-tag">Working Parent</span></div>
+              <div class="review-body"><p class="review-quote">“I liked how it also considered my stress and gave me realistic steps for screen time and homework.”</p><div class="review-meta"><span class="review-chip">Screen time</span><span class="review-chip">Homework</span></div></div>
+            </div>
+            <div class="review-bottom"><div><strong style="display:block;color:#1b1432;font-size:14px;">Result</strong><p style="font-size:13px;color:#766d89;line-height:1.55;margin-top:6px;">Smoother evenings and fewer daily conflicts.</p></div><i class="fa-solid fa-quote-right" style="font-size:24px;color:#06b6d4;"></i></div>
+          </div>
+          <div class="review-full-card simple">
+            <div>
+              <div class="review-top"><div class="review-user"><div class="review-avatar" style="background:linear-gradient(145deg,#fb7185,#f97316)">SN</div><div><strong style="font-size:17px;color:#1b1432;">Sarah N.</strong><div class="stars" style="margin-top:6px;"><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i></div></div></div><span class="review-tag">Parent of 1</span></div>
+              <div class="review-body"><p class="review-quote">“The profile felt personal and helped me know exactly what to focus on first.”</p><div class="review-meta"><span class="review-chip">Emotions</span><span class="review-chip">Guidance</span></div></div>
+            </div>
+            <div class="review-bottom"><div><strong style="display:block;color:#1b1432;font-size:14px;">Result</strong><p style="font-size:13px;color:#766d89;line-height:1.55;margin-top:6px;">More calm reactions and better connection.</p></div><i class="fa-solid fa-quote-right" style="font-size:24px;color:#f97316;"></i></div>
+          </div>
+        </div>
+        <div class="mini-dots"><span class="active"></span><span></span><span></span></div>
+        <div class="swipe-hint simple"><i class="fa-solid fa-hand-pointer"></i> Swipe cards</div>
+      </div>
+      <div class="next-area"><button class="btn-primary">Continue</button></div>
+    </div>
+  </div>
+</div>
+<p class="screen-label">Onboarding Step 02</p>
+</div>
+
+<!-- ═══════════════════════════════════════════
+     NEW FLOW — ONBOARDING STEP 03
+══════════════════════════════════════════════ -->
+<div>
+<div class="phone flow-new float-bubbles">
+  <div class="inner">
+    <div class="step-wrap">
+      <div class="status-bar light"><span>9:41</span><div class="status-icons"><svg viewBox="0 0 24 24" width="16" height="16" fill="currentColor"><rect x="2" y="7" width="16" height="10" rx="2"/><path d="M20 10.5v3a2 2 0 000-3z"/></svg></div></div>
+      <div class="progress-mini"><span style="width:42%"></span></div>
+      <div class="step-head"><p class="step-count">Step 3 of 13</p><h2 class="step-title">Child name</h2><p class="step-sub">Add the full name so your profile and reports feel more personal.</p></div>
+      <div class="step-body">
+        <div class="name-grid">
+          <div class="name-box"><label class="field-label">First name</label><input class="soft-input" placeholder="First name" value="Ahmed" style="box-shadow:none;background:#f8f7ff"></div>
+          <div class="name-box"><label class="field-label">Middle name</label><input class="soft-input" placeholder="Middle name" value="Ali" style="box-shadow:none;background:#f8f7ff"></div>
+          <div class="name-box"><label class="field-label">Last name</label><input class="soft-input" placeholder="Last name" value="Khan" style="box-shadow:none;background:#f8f7ff"></div>
+        </div>
+        <div class="subtle-note" style="margin-top:16px;">This name will appear in your child profile, progress plan, and personalized parenting recommendations.</div>
+      </div>
+      <div class="next-area"><button class="btn-primary">Continue</button></div>
+    </div>
+  </div>
+</div>
+<p class="screen-label">Onboarding Step 03</p>
+</div>
+
+<!-- ═══════════════════════════════════════════
+     NEW FLOW — ONBOARDING STEP 04
+══════════════════════════════════════════════ -->
+<div>
+<div class="phone flow-new float-bubbles">
+  <div class="inner">
+    <div class="ref-step-wrap">
+      <div class="status-bar light"><span>9:41</span><div class="status-icons"><svg viewBox="0 0 24 24" width="16" height="16" fill="currentColor"><rect x="2" y="7" width="16" height="10" rx="2"/><path d="M20 10.5v3a2 2 0 000-3z"/></svg></div></div>
+      <div class="ref-topbar">
+        <div class="ref-back-row">
+          <div class="ref-back-btn"><i class="fa-solid fa-chevron-left"></i></div>
+          <div class="ref-step-title">Step 4 of 13</div>
+        </div>
+        <div class="ref-progress-line"><span style="width:31%"></span></div>
+      </div>
+      <div class="ref-content-center">
+        <h2 class="ref-big-title">Baby's gender</h2>
+        <p class="ref-big-sub">This helps us fine-tune your child’s activities and recommendations.</p>
+      </div>
+      <div class="ref-bottom-actions">
+        <div class="ref-action-grid">
+          <button class="ref-action-card pink"><i class="fa-solid fa-venus"></i> GIRL</button>
+          <button class="ref-action-card blue active"><i class="fa-solid fa-mars"></i> BOY</button>
+        </div>
+        <button class="ref-action-full">SKIP</button>
+      </div>
+    </div>
+  </div>
+</div>
+<p class="screen-label">Onboarding Step 04</p>
+</div>
+
+<!-- ═══════════════════════════════════════════
+     NEW FLOW — ONBOARDING STEP 05
+══════════════════════════════════════════════ -->
+<div>
+<div class="phone flow-new float-bubbles">
+  <div class="inner">
+    <div class="step-wrap">
+      <div class="status-bar light"><span>9:41</span><div class="status-icons"><svg viewBox="0 0 24 24" width="16" height="16" fill="currentColor"><rect x="2" y="7" width="16" height="10" rx="2"/><path d="M20 10.5v3a2 2 0 000-3z"/></svg></div></div>
+      <div class="progress-mini"><span style="width:54%"></span></div>
+      <div class="step-head"><p class="step-count">Step 5 of 13</p><h2 class="step-title">Date of birth</h2><p class="step-sub">A full-screen calendar makes it easy to pick the right date and age stage.</p></div>
+      <div class="step-body" style="padding-top:6px;">
+        <div class="calendar-shell">
+          <div class="calendar-top"><div><div style="font-size:12px;font-weight:800;color:#8b7fa6;letter-spacing:.4px;text-transform:uppercase;">Birth date</div><h4 style="font-size:23px;color:#161032;font-weight:900;margin-top:4px;">12 August 2020</h4></div><div style="display:flex;gap:8px;"><div class="circle-btn"><i class="fa-solid fa-chevron-left"></i></div><div class="circle-btn"><i class="fa-solid fa-chevron-right"></i></div></div></div>
+          <div class="calendar-week"><span>Su</span><span>Mo</span><span>Tu</span><span>We</span><span>Th</span><span>Fr</span><span>Sa</span></div>
+          <div class="calendar-grid">
+            <div class="cal-day muted">26</div><div class="cal-day muted">27</div><div class="cal-day muted">28</div><div class="cal-day muted">29</div><div class="cal-day muted">30</div><div class="cal-day muted">31</div><div class="cal-day">1</div>
+            <div class="cal-day">2</div><div class="cal-day">3</div><div class="cal-day">4</div><div class="cal-day">5</div><div class="cal-day">6</div><div class="cal-day">7</div><div class="cal-day">8</div>
+            <div class="cal-day">9</div><div class="cal-day">10</div><div class="cal-day">11</div><div class="cal-day active">12</div><div class="cal-day">13</div><div class="cal-day">14</div><div class="cal-day">15</div>
+            <div class="cal-day">16</div><div class="cal-day">17</div><div class="cal-day">18</div><div class="cal-day today">19</div><div class="cal-day">20</div><div class="cal-day">21</div><div class="cal-day">22</div>
+            <div class="cal-day">23</div><div class="cal-day">24</div><div class="cal-day">25</div><div class="cal-day">26</div><div class="cal-day">27</div><div class="cal-day">28</div><div class="cal-day">29</div>
+            <div class="cal-day">30</div><div class="cal-day">31</div><div class="cal-day muted">1</div><div class="cal-day muted">2</div><div class="cal-day muted">3</div><div class="cal-day muted">4</div><div class="cal-day muted">5</div>
+          </div>
+          <div class="subtle-note" style="margin-top:14px;">Age is used for stage-based suggestions, milestones, routines, and challenge-specific recommendations.</div>
+        </div>
+      </div>
+      <div class="next-area"><button class="btn-primary">Continue</button></div>
+    </div>
+  </div>
+</div>
+<p class="screen-label">Onboarding Step 05</p>
+</div>
+
+<!-- ═══════════════════════════════════════════
+     NEW FLOW — ONBOARDING STEP 06
+══════════════════════════════════════════════ -->
+<div>
+<div class="phone flow-new float-bubbles">
+  <div class="inner">
+    <div class="step-wrap">
+      <div class="status-bar light"><span>9:41</span><div class="status-icons"><svg viewBox="0 0 24 24" width="16" height="16" fill="currentColor"><rect x="2" y="7" width="16" height="10" rx="2"/><path d="M20 10.5v3a2 2 0 000-3z"/></svg></div></div>
+      <div class="progress-mini"><span style="width:60%"></span></div>
+      <div class="step-head"><p class="step-count">Step 6 of 13</p><h2 class="step-title">Is this your first child?</h2><p class="step-sub">This helps us adjust the guidance level.</p></div>
+      <div class="step-body">
+        <div class="simple-panel">
+          <div class="simple-choice-list">
+            <div class="simple-choice-row active">
+              <div class="simple-radio"></div>
+              <div class="simple-row-icon" style="background:linear-gradient(145deg,#8b5cf6,#6366f1);"><i class="fa-solid fa-seedling"></i></div>
+              <div>
+                <h4>Yes, first child</h4>
+                <p>Show simple, step-by-step guidance.</p>
+              </div>
+            </div>
+            <div class="simple-choice-row">
+              <div class="simple-radio"></div>
+              <div class="simple-row-icon" style="background:linear-gradient(145deg,#06b6d4,#3b82f6);"><i class="fa-solid fa-children"></i></div>
+              <div>
+                <h4>No, not first child</h4>
+                <p>Use more direct and practical suggestions.</p>
+              </div>
+            </div>
+          </div>
+          <div class="simple-info-box">
+            Your answer only changes the tone and depth of guidance. You can update this later from the child profile.
+          </div>
+        </div>
+      </div>
+      <div class="next-area"><button class="btn-primary">Continue</button></div>
+    </div>
+  </div>
+</div>
+<p class="screen-label">Onboarding Step 06</p>
+</div>
+
+<!-- ═══════════════════════════════════════════
+     NEW FLOW — ONBOARDING STEP 07
+══════════════════════════════════════════════ -->
+<div>
+<div class="phone flow-new float-bubbles">
+  <div class="inner">
+    <div class="step-wrap">
+      <div class="status-bar light"><span>9:41</span><div class="status-icons"><svg viewBox="0 0 24 24" width="16" height="16" fill="currentColor"><rect x="2" y="7" width="16" height="10" rx="2"/><path d="M20 10.5v3a2 2 0 000-3z"/></svg></div></div>
+      <div class="progress-mini"><span style="width:66%"></span></div>
+      <div class="step-head"><p class="step-count">Step 7 of 13</p><h2 class="step-title">Case studies</h2><p class="step-sub">Common parenting situations this app can help with.</p></div>
+      <div class="step-body">
+        <div class="case-list">
+          <div class="case-row">
+            <div class="case-icon" style="background:linear-gradient(145deg,#8b5cf6,#6366f1);"><i class="fa-solid fa-mobile-screen-button"></i></div>
+            <div>
+              <h5>Screen-time battles</h5>
+              <p>Create calmer limits and smoother device transitions.</p>
+            </div>
+          </div>
+          <div class="case-row">
+            <div class="case-icon" style="background:linear-gradient(145deg,#06b6d4,#3b82f6);"><i class="fa-solid fa-bed"></i></div>
+            <div>
+              <h5>Bedtime resistance</h5>
+              <p>Build a predictable night routine that feels easier.</p>
+            </div>
+          </div>
+          <div class="case-row">
+            <div class="case-icon" style="background:linear-gradient(145deg,#fb7185,#f97316);"><i class="fa-solid fa-fire"></i></div>
+            <div>
+              <h5>Anger moments</h5>
+              <p>Use simple calming steps before things escalate.</p>
+            </div>
+          </div>
+          <div class="case-row">
+            <div class="case-icon" style="background:linear-gradient(145deg,#22c55e,#14b8a6);"><i class="fa-solid fa-book-open"></i></div>
+            <div>
+              <h5>Homework stress</h5>
+              <p>Turn study time into smaller, manageable tasks.</p>
+            </div>
+          </div>
+          <div class="case-row">
+            <div class="case-icon" style="background:linear-gradient(145deg,#ec4899,#a855f7);"><i class="fa-solid fa-heart"></i></div>
+            <div>
+              <h5>Low confidence</h5>
+              <p>Support your child with small wins and encouragement.</p>
+            </div>
+          </div>
+        </div>
+        <div class="case-note">
+          These examples help the app understand which type of guidance will be most useful for your family.
+        </div>
+      </div>
+      <div class="next-area"><button class="btn-primary">Continue</button></div>
+    </div>
+  </div>
+</div>
+<p class="screen-label">Onboarding Step 07</p>
+</div>
+
+<!-- ═══════════════════════════════════════════
+     NEW FLOW — ONBOARDING STEP 08
+══════════════════════════════════════════════ -->
+<div>
+<div class="phone flow-new float-bubbles">
+  <div class="inner">
+    <div class="step-wrap">
+      <div class="status-bar light"><span>9:41</span><div class="status-icons"><svg viewBox="0 0 24 24" width="16" height="16" fill="currentColor"><rect x="2" y="7" width="16" height="10" rx="2"/><path d="M20 10.5v3a2 2 0 000-3z"/></svg></div></div>
+      <div class="progress-mini"><span style="width:72%"></span></div>
+      <div class="step-head"><p class="step-count">Step 8 of 13</p><h2 class="step-title">Excellent news</h2><p class="step-sub">We’ve already found helpful patterns for similar kids.</p></div>
+      <div class="step-body">
+        <div class="tiny-scroll-cards">
+          <div class="tiny-card c1"><i class="fa-solid fa-brain i1"></i><div><h5>Emotion support</h5><p>Short calming steps often work well for similar profiles.</p></div></div>
+          <div class="tiny-card c2"><i class="fa-solid fa-book-open i2"></i><div><h5>Learning routine</h5><p>Simple focus blocks help improve homework consistency.</p></div></div>
+          <div class="tiny-card c3"><i class="fa-solid fa-bed i3"></i><div><h5>Better sleep</h5><p>Predictable bedtime rituals usually reduce resistance.</p></div></div>
+          <div class="tiny-card c4"><i class="fa-solid fa-mobile-screen-button i4"></i><div><h5>Screen balance</h5><p>Structured limits can ease device-related conflict.</p></div></div>
+          <div class="tiny-card c5"><i class="fa-solid fa-heart i5"></i><div><h5>Confidence</h5><p>Small wins and praise build trust and self-esteem.</p></div></div>
+          <div class="tiny-card c6"><i class="fa-solid fa-users i6"></i><div><h5>Social behavior</h5><p>Guided practice helps with sharing and cooperation.</p></div></div>
+          <div class="tiny-card c7"><i class="fa-solid fa-school i7"></i><div><h5>School readiness</h5><p>Morning structure improves transitions and focus.</p></div></div>
+          <div class="tiny-card c8"><i class="fa-solid fa-shield-heart i8"></i><div><h5>Parent support</h5><p>Your stress pattern will shape how advice is delivered.</p></div></div>
+        </div>
+      </div>
+      <div class="next-area"><button class="btn-primary">Continue</button></div>
+    </div>
+  </div>
+</div>
+<p class="screen-label">Onboarding Step 08</p>
+</div>
+
+<!-- ═══════════════════════════════════════════
+     NEW FLOW — ONBOARDING STEP 09
+══════════════════════════════════════════════ -->
+<div>
+<div class="phone flow-new float-bubbles">
+  <div class="inner">
+    <div class="step-wrap">
+      <div class="status-bar light"><span>9:41</span><div class="status-icons"><svg viewBox="0 0 24 24" width="16" height="16" fill="currentColor"><rect x="2" y="7" width="16" height="10" rx="2"/><path d="M20 10.5v3a2 2 0 000-3z"/></svg></div></div>
+      <div class="progress-mini"><span style="width:78%"></span></div>
+      <div class="step-head"><p class="step-count">Step 9 of 13</p><h2 class="step-title">Focus areas</h2><p class="step-sub">Select all that apply.</p></div>
+      <div class="step-body">
+        <div class="simple-check-list">
+          <div class="simple-check-card active c1"><div class="check-box"><i class="fa-solid fa-check"></i></div><div class="mini-icon i1"><i class="fa-solid fa-brain"></i></div><div><h4>Emotional control</h4><p>Meltdowns, anger, and calming skills.</p></div></div>
+          <div class="simple-check-card active c2"><div class="check-box"><i class="fa-solid fa-check"></i></div><div class="mini-icon i2"><i class="fa-solid fa-mobile-screen-button"></i></div><div><h4>Screen time</h4><p>Limits, transitions, and device routines.</p></div></div>
+          <div class="simple-check-card c3"><div class="check-box"><i class="fa-solid fa-check"></i></div><div class="mini-icon i3"><i class="fa-solid fa-book-open"></i></div><div><h4>Learning habits</h4><p>Homework, focus, and consistency.</p></div></div>
+          <div class="simple-check-card c4"><div class="check-box"><i class="fa-solid fa-check"></i></div><div class="mini-icon i4"><i class="fa-solid fa-bed"></i></div><div><h4>Sleep routine</h4><p>Bedtime flow and sleep quality.</p></div></div>
+          <div class="simple-check-card active c5"><div class="check-box"><i class="fa-solid fa-check"></i></div><div class="mini-icon i5"><i class="fa-solid fa-heart"></i></div><div><h4>Confidence</h4><p>Self-esteem and encouragement.</p></div></div>
+          <div class="simple-check-card c6"><div class="check-box"><i class="fa-solid fa-check"></i></div><div class="mini-icon i6"><i class="fa-solid fa-house"></i></div><div><h4>Home routine</h4><p>Mornings, chores, and transitions.</p></div></div>
+        </div>
+      </div>
+      <div class="next-area"><button class="btn-primary">Continue</button></div>
+    </div>
+  </div>
+</div>
+<p class="screen-label">Onboarding Step 09</p>
+</div>
+
+<!-- ═══════════════════════════════════════════
+     NEW FLOW — ONBOARDING STEP 10
+══════════════════════════════════════════════ -->
+<div>
+<div class="phone flow-new float-bubbles">
+  <div class="inner">
+    <div class="step-wrap">
+      <div class="status-bar light"><span>9:41</span><div class="status-icons"><svg viewBox="0 0 24 24" width="16" height="16" fill="currentColor"><rect x="2" y="7" width="16" height="10" rx="2"/><path d="M20 10.5v3a2 2 0 000-3z"/></svg></div></div>
+      <div class="progress-mini"><span style="width:84%"></span></div>
+      <div class="step-head"><p class="step-count">Step 10 of 13</p><h2 class="step-title">Challenges</h2><p class="step-sub">Select current challenges.</p></div>
+      <div class="step-body">
+        <div class="simple-check-list">
+          <div class="simple-check-card active c1"><div class="check-box"><i class="fa-solid fa-check"></i></div><div class="mini-icon i1"><i class="fa-solid fa-volcano"></i></div><div><h4>Tantrums</h4><p>Big emotional reactions.</p></div></div>
+          <div class="simple-check-card c2"><div class="check-box"><i class="fa-solid fa-check"></i></div><div class="mini-icon i2"><i class="fa-solid fa-ear-listen"></i></div><div><h4>Not listening</h4><p>Instructions are often ignored.</p></div></div>
+          <div class="simple-check-card active c3"><div class="check-box"><i class="fa-solid fa-check"></i></div><div class="mini-icon i3"><i class="fa-solid fa-tablet-screen-button"></i></div><div><h4>Too much screen time</h4><p>Devices cause daily conflict.</p></div></div>
+          <div class="simple-check-card c4"><div class="check-box"><i class="fa-solid fa-check"></i></div><div class="mini-icon i4"><i class="fa-solid fa-bed"></i></div><div><h4>Sleep struggles</h4><p>Resistance and poor sleep flow.</p></div></div>
+          <div class="simple-check-card c5"><div class="check-box"><i class="fa-solid fa-check"></i></div><div class="mini-icon i5"><i class="fa-solid fa-people-pulling"></i></div><div><h4>Sibling fights</h4><p>Conflict and frequent arguing.</p></div></div>
+          <div class="simple-check-card active c6"><div class="check-box"><i class="fa-solid fa-check"></i></div><div class="mini-icon i6"><i class="fa-solid fa-face-frown-open"></i></div><div><h4>Low confidence</h4><p>Self-doubt and hesitation.</p></div></div>
+        </div>
+      </div>
+      <div class="next-area"><button class="btn-primary">Continue</button></div>
+    </div>
+  </div>
+</div>
+<p class="screen-label">Onboarding Step 10</p>
+</div>
+
+<!-- ═══════════════════════════════════════════
+     NEW FLOW — ONBOARDING STEP 11
+══════════════════════════════════════════════ -->
+<div>
+<div class="phone flow-new float-bubbles">
+  <div class="inner">
+    <div class="step-wrap">
+      <div class="status-bar light"><span>9:41</span><div class="status-icons"><svg viewBox="0 0 24 24" width="16" height="16" fill="currentColor"><rect x="2" y="7" width="16" height="10" rx="2"/><path d="M20 10.5v3a2 2 0 000-3z"/></svg></div></div>
+      <div class="progress-mini"><span style="width:90%"></span></div>
+      <div class="step-head"><p class="step-count">Step 11 of 13</p><h2 class="step-title">Stress level</h2><p class="step-sub">How are you feeling lately?</p></div>
+      <div class="step-body">
+        <div class="simple-check-list">
+          <div class="simple-check-card active c1"><div class="check-box"><i class="fa-solid fa-check"></i></div><div class="mini-icon i1"><i class="fa-solid fa-bolt"></i></div><div><h4>Very stressful</h4></div></div>
+          <div class="simple-check-card active c2"><div class="check-box"><i class="fa-solid fa-check"></i></div><div class="mini-icon i2"><i class="fa-solid fa-fire"></i></div><div><h4>Angry</h4></div></div>
+          <div class="simple-check-card c3"><div class="check-box"><i class="fa-solid fa-check"></i></div><div class="mini-icon i3"><i class="fa-solid fa-hourglass-half"></i></div><div><h4>Overwhelmed</h4></div></div>
+          <div class="simple-check-card c4"><div class="check-box"><i class="fa-solid fa-check"></i></div><div class="mini-icon i4"><i class="fa-solid fa-cloud-rain"></i></div><div><h4>Drained</h4></div></div>
+          <div class="simple-check-card c5"><div class="check-box"><i class="fa-solid fa-check"></i></div><div class="mini-icon i5"><i class="fa-solid fa-face-meh"></i></div><div><h4>Confused</h4></div></div>
+          <div class="simple-check-card c6"><div class="check-box"><i class="fa-solid fa-check"></i></div><div class="mini-icon i6"><i class="fa-solid fa-heart-crack"></i></div><div><h4>Guilty</h4></div></div>
+          <div class="simple-check-card active c7"><div class="check-box"><i class="fa-solid fa-check"></i></div><div class="mini-icon i7"><i class="fa-solid fa-face-tired"></i></div><div><h4>Tired</h4></div></div>
+          <div class="simple-check-card c8"><div class="check-box"><i class="fa-solid fa-check"></i></div><div class="mini-icon i8"><i class="fa-solid fa-hand-holding-heart"></i></div><div><h4>Need support</h4></div></div>
+        </div>
+      </div>
+      <div class="next-area"><button class="btn-primary">Continue</button></div>
+    </div>
+  </div>
+</div>
+<p class="screen-label">Onboarding Step 11</p>
+</div>
+
+<!-- ═══════════════════════════════════════════
+     NEW FLOW — ONBOARDING STEP 12
+══════════════════════════════════════════════ -->
+<div>
+<div class="phone flow-new float-bubbles">
+  <div class="inner">
+    <div class="step-wrap">
+      <div class="status-bar light"><span>9:41</span><div class="status-icons"><svg viewBox="0 0 24 24" width="16" height="16" fill="currentColor"><rect x="2" y="7" width="16" height="10" rx="2"/><path d="M20 10.5v3a2 2 0 000-3z"/></svg></div></div>
+      <div class="progress-mini"><span style="width:96%"></span></div>
+      <div class="step-head"><p class="step-count">Step 12 of 13</p><h2 class="step-title">Stress management</h2><p class="step-sub">How are you managing stress right now?</p></div>
+      <div class="step-body"><div class="chip-grid"><span class="big-chip active">Talking to spouse</span><span class="big-chip active">Quiet reflection</span><span class="big-chip ">Deep breathing</span><span class="big-chip ">Ignoring it</span><span class="big-chip ">Reading advice</span><span class="big-chip ">Family support</span><span class="big-chip active">I am not managing well</span></div></div>
+      <div class="next-area"><button class="btn-primary">Continue</button></div>
+    </div>
+  </div>
+</div>
+<p class="screen-label">Onboarding Step 12</p>
+</div>
+
+<!-- ═══════════════════════════════════════════
+     NEW FLOW — ONBOARDING STEP 13
+══════════════════════════════════════════════ -->
+<div>
+<div class="phone flow-new float-bubbles">
+  <div class="inner">
+    <div class="step-wrap">
+      <div class="status-bar light"><span>9:41</span><div class="status-icons"><svg viewBox="0 0 24 24" width="16" height="16" fill="currentColor"><rect x="2" y="7" width="16" height="10" rx="2"/><path d="M20 10.5v3a2 2 0 000-3z"/></svg></div></div>
+      <div class="progress-mini"><span style="width:100%"></span></div>
+      <div class="step-head"><p class="step-count">Step 13 of 13</p><h2 class="step-title">Final personalization</h2><p class="step-sub">Here’s what the app has already understood before generating the full plan.</p></div>
+      <div class="step-body">
+        <div class="final-wrap">
+          <div class="metric-cards">
+            <div class="metric-card"><div class="num">92%</div><p style="font-size:12px;color:#746c87;margin-top:6px;">Profile completeness</p></div>
+            <div class="metric-card"><div class="num">8/10</div><p style="font-size:12px;color:#746c87;margin-top:6px;">Analysis confidence</p></div>
+          </div>
+          <div class="final-percent">
+            <div class="final-row"><div class="final-row-top"><strong>Behavior pattern match</strong><span>86%</span></div><div class="final-bar"><span style="width:86%"></span></div></div>
+            <div class="final-row"><div class="final-row-top"><strong>Routine personalization</strong><span>79%</span></div><div class="final-bar"><span class="delay-2" style="width:79%"></span></div></div>
+            <div class="final-row"><div class="final-row-top"><strong>Stress-aware guidance</strong><span>91%</span></div><div class="final-bar"><span class="delay-3" style="width:91%"></span></div></div>
+            <div class="final-row"><div class="final-row-top"><strong>Child-stage alignment</strong><span>94%</span></div><div class="final-bar"><span class="delay-4" style="width:94%"></span></div></div>
+          </div>
+          <div class="subtle-note"><strong>Ready to generate:</strong> a calmer daily routine, challenge-specific tips, and a parent-sensitive plan matched to Ahmed’s age and your stress profile.</div>
+        </div>
+      </div>
+      <div class="next-area"><button class="btn-primary">Continue</button></div>
+    </div>
+  </div>
+</div>
+<p class="screen-label">Onboarding Step 13</p>
+</div>
+
+<!-- ═══════════════════════════════════════════
+     NEW FLOW — ANALYZING DATA
+══════════════════════════════════════════════ -->
+<div>
+<div class="phone flow-new float-bubbles">
+  <div class="inner">
+    <div style="height:100%;background:radial-gradient(circle at 18% 10%,rgba(32,199,166,.26) 0,transparent 28%),radial-gradient(circle at 82% 20%,rgba(125,211,252,.18) 0,transparent 25%),linear-gradient(140deg,#0f172a,#111827 70%);color:white;display:flex;flex-direction:column;position:relative;overflow:hidden;">
+      <div class="status-bar dark"><span>9:41</span><div class="status-icons"><svg viewBox="0 0 24 24" width="16" height="16" fill="currentColor"><rect x="2" y="7" width="16" height="10" rx="2"/><path d="M20 10.5v3a2 2 0 000-3z"/></svg></div></div>
+      <div style="flex:1;display:flex;flex-direction:column;justify-content:center;padding:22px;">
+        <span class="secure-pill"><i class="fa-solid fa-lock"></i> Secure analysis in progress</span>
+
+        <div class="analyze-circle-wrap">
+          <div class="analyze-pulse"></div>
+          <div class="analyze-circle"></div>
+          <div class="analyze-inner">
+            <strong>78%</strong>
+            <span>Analyzing</span>
+          </div>
+        </div>
+
+        <h2 style="font-size:27px;line-height:1.15;font-weight:900;margin-top:8px;text-align:center;">Analyzing Ahmed’s profile...</h2>
+        <p style="font-size:13px;line-height:1.6;color:rgba(255,255,255,.78);margin:8px auto 0;text-align:center;max-width:300px;">We’re processing your answers to build a personal child guidance plan.</p>
+
+        <div class="analysis-mini-grid">
+          <div class="analysis-mini-card"><div class="analysis-mini-top"><h5>Age & stage match</h5><span>92%</span></div><div class="mini-progress"><span style="width:92%"></span></div></div>
+          <div class="analysis-mini-card"><div class="analysis-mini-top"><h5>Focus areas</h5><span>84%</span></div><div class="mini-progress"><span style="width:84%"></span></div></div>
+          <div class="analysis-mini-card"><div class="analysis-mini-top"><h5>Challenges</h5><span>76%</span></div><div class="mini-progress"><span style="width:76%"></span></div></div>
+          <div class="analysis-mini-card"><div class="analysis-mini-top"><h5>Stress pattern</h5><span>81%</span></div><div class="mini-progress"><span style="width:81%"></span></div></div>
+          <div class="analysis-mini-card"><div class="analysis-mini-top"><h5>Routine suggestions</h5><span>68%</span></div><div class="mini-progress"><span style="width:68%"></span></div></div>
+          <div class="analysis-mini-card"><div class="analysis-mini-top"><h5>Personalized plan</h5><span>73%</span></div><div class="mini-progress"><span style="width:73%"></span></div></div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+<p class="screen-label">Analyzing Data</p>
+</div>
+
+<!-- ═══════════════════════════════════════════
+     NEW FLOW — EMAIL CAPTURE
+══════════════════════════════════════════════ -->
+<div>
+<div class="phone flow-new float-bubbles">
+  <div class="inner">
+    <div class="step-wrap">
+      <div class="status-bar light"><span>9:41</span><div class="status-icons"><svg viewBox="0 0 24 24" width="16" height="16" fill="currentColor"><rect x="2" y="7" width="16" height="10" rx="2"/><path d="M20 10.5v3a2 2 0 000-3z"/></svg></div></div>
+      <div style="padding-top:54px;text-align:center;"><lottie-player src="https://assets9.lottiefiles.com/packages/lf20_vybwn7df.json" background="transparent" speed="1" style="width:140px;height:140px;margin:auto" loop autoplay></lottie-player></div><div class="step-head" style="padding-top:10px;"><p class="step-count">Your report is ready</p><h2 class="step-title">Where should we send Ahmed’s personal plan?</h2><p class="step-sub">Enter your email to save progress, receive your profile summary, and continue securely.</p></div>
+      <div class="step-body">
+        <input class="soft-input" placeholder="parent@email.com" value="parent@email.com" style="font-size:16px;">
+        <div class="choice active" style="margin-top:18px;"><div class="choice-ico"><i class="fa-solid fa-calendar-check"></i></div><div><p class="choice-title">Your data stays secure</p><p class="choice-desc">We only use it to personalize your parenting guidance experience.</p></div></div>
+      </div>
+      <div class="next-area"><button class="btn-primary">Continue to Login</button></div>
+    </div>
+  </div>
+</div>
+<p class="screen-label">Email Capture</p>
+</div>
+
+<!-- ═══════════════════════════════════════════
+     EXISTING MAIN APP SCREENS PRESERVED BELOW
+     Login, Dashboard, Add Child, Child Profile, AI Chat, Tasks, Progress, Settings
+══════════════════════════════════════════════ -->
+
+
+<!-- ═══════════════════════════════════════════
+     SCREEN 1 — LOGIN
+══════════════════════════════════════════════ -->
+<div>
+<div class="phone">
+  <div class="inner">
+    <!-- Hero gradient -->
+    <div style="height:320px; background:linear-gradient(135deg,#7c3aed 0%,#06b6d4 54%,#f97316 100%); position:relative; overflow:hidden; flex-shrink:0;">
+      <!-- Decorative circles -->
+      <div style="position:absolute;width:260px;height:260px;border-radius:50%;border:1px solid rgba(255,255,255,.12);top:-60px;right:-60px;"></div>
+      <div style="position:absolute;width:180px;height:180px;border-radius:50%;border:1px solid rgba(255,255,255,.1);top:20px;right:-20px;"></div>
+      <div style="position:absolute;width:120px;height:120px;border-radius:50%;border:1px solid rgba(255,255,255,.08);bottom:30px;left:-30px;"></div>
+      <!-- Status bar -->
+      <div class="status-bar dark">
+        <span>9:41</span>
+        <div class="status-icons">
+          <svg viewBox="0 0 24 24" width="16" height="16" fill="white"><path d="M1.5 8.5C5.5 4.5 10 3 12 3s6.5 1.5 10.5 5.5l-2 2C17 7 14.5 6 12 6s-5 1-8.5 4.5l-2-2zm4 4C7.5 10.5 9.5 9 12 9s4.5 1.5 6.5 3.5l-2 2C15 13 13.5 12 12 12s-3 1-4.5 2.5l-2-2zm4 4C10.5 15.5 11 15 12 15s1.5.5 2 1l-2 2-2-2z"/></svg>
+          <svg viewBox="0 0 24 24" width="16" height="16" fill="white"><rect x="2" y="7" width="16" height="10" rx="2"/><path d="M20 10.5v3a2 2 0 000-3z"/></svg>
+        </div>
+      </div>
+      <!-- Animated brand mark -->
+      <div style="position:absolute;bottom:18px;left:50%;transform:translateX(-50%);text-align:center;">
+        <lottie-player src="https://assets10.lottiefiles.com/packages/lf20_kkflmtur.json" background="transparent" speed="1" style="width:100px;height:100px" loop autoplay></lottie-player>
+      </div>
+    </div>
+
+    <!-- Form card -->
+    <div style="padding:24px; margin-top:-20px; position:relative;">
+      <div class="card" style="border-radius:28px; padding:28px;">
+        <h2 style="font-size:26px;font-weight:800;color:var(--text);margin-bottom:4px;">Welcome back</h2>
+        <p style="color:var(--muted);font-size:14px;margin-bottom:24px;">Sign in to your parenting journey</p>
+
+        <label style="font-size:12px;font-weight:600;color:var(--muted);letter-spacing:.5px;">EMAIL</label>
+        <div style="position:relative;margin-top:6px;margin-bottom:16px;">
+          <div style="position:absolute;left:14px;top:50%;transform:translateY(-50%);">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#6b7b6b" stroke-width="2"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/></svg>
+          </div>
+          <input class="inp" placeholder="parent@email.com" style="padding-left:44px;">
+        </div>
+
+        <label style="font-size:12px;font-weight:600;color:var(--muted);letter-spacing:.5px;">PASSWORD</label>
+        <div style="position:relative;margin-top:6px;margin-bottom:24px;">
+          <div style="position:absolute;left:14px;top:50%;transform:translateY(-50%);">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#6b7b6b" stroke-width="2"><rect x="3" y="11" width="18" height="11" rx="2"/><path d="M7 11V7a5 5 0 0110 0v4"/></svg>
+          </div>
+          <input class="inp" type="password" placeholder="••••••••" style="padding-left:44px;">
+        </div>
+
+        <button class="btn-primary">Sign In</button>
+
+        <p style="text-align:center;margin-top:16px;color:var(--muted);font-size:14px;">
+          Don't have an account? <span style="color:var(--primary);font-weight:700;">Register</span>
+        </p>
+      </div>
+
+      <!-- Social login -->
+      <div style="margin-top:20px;text-align:center;">
+        <p style="color:var(--muted);font-size:13px;margin-bottom:14px;">— or continue with —</p>
+        <div style="display:flex;gap:12px;justify-content:center;">
+          <div class="card" style="width:60px;height:48px;display:flex;align-items:center;justify-content:center;border-radius:14px;padding:0;">
+            <svg width="24" height="24" viewBox="0 0 24 24"><path d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z" fill="#4285F4"/><path d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z" fill="#34A853"/><path d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.07H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.93l2.85-2.22.81-.62z" fill="#FBBC05"/><path d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.07l3.66 2.84c.87-2.6 3.3-4.53 6.16-4.53z" fill="#EA4335"/></svg>
+          </div>
+          <div class="card" style="width:60px;height:48px;display:flex;align-items:center;justify-content:center;border-radius:14px;padding:0;">
+            <svg width="24" height="24" viewBox="0 0 24 24" fill="#1877F2"><path d="M24 12.073c0-6.627-5.373-12-12-12s-12 5.373-12 12c0 5.99 4.388 10.954 10.125 11.854v-8.385H7.078v-3.47h3.047V9.43c0-3.007 1.792-4.669 4.533-4.669 1.312 0 2.686.235 2.686.235v2.953H15.83c-1.491 0-1.956.925-1.956 1.874v2.25h3.328l-.532 3.47h-2.796v8.385C19.612 23.027 24 18.062 24 12.073z"/></svg>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+<p class="screen-label">Login</p>
+</div>
+
+<!-- ═══════════════════════════════════════════
+     SCREEN 2 — DASHBOARD
+══════════════════════════════════════════════ -->
+<div>
+<div class="phone">
+  <div class="inner">
+    <!-- Header -->
+    <div style="background:linear-gradient(135deg,#7c3aed,#06b6d4 55%,#f97316);padding:36px 22px 28px;position:relative;overflow:hidden;">
+      <div style="position:absolute;right:-40px;top:-40px;width:200px;height:200px;border-radius:50%;background:rgba(255,255,255,.06);"></div>
+      <div style="position:absolute;right:20px;top:20px;width:100px;height:100px;border-radius:50%;background:rgba(255,255,255,.04);"></div>
+      <div class="status-bar dark" style="padding:0;margin-bottom:18px;">
+        <span>9:41</span>
+        <div class="status-icons">
+          <div class="notif"></div>
+          <svg viewBox="0 0 24 24" width="16" height="16" fill="white"><rect x="2" y="7" width="16" height="10" rx="2"/><path d="M20 10.5v3a2 2 0 000-3z"/></svg>
+        </div>
+      </div>
+      <div style="display:flex;justify-content:space-between;align-items:center;">
+        <div>
+          <p style="color:rgba(255,255,255,.7);font-size:13px;font-weight:500;">Welcome back</p>
+          <h2 style="color:white;font-size:24px;font-weight:800;margin-top:2px;">Fatima</h2>
+        </div>
+        <div style="width:46px;height:46px;border-radius:50%;background:linear-gradient(135deg,#c9921a,#a07010);display:flex;align-items:center;justify-content:center;font-weight:800;font-size:18px;color:white;box-shadow:0 4px 12px rgba(0,0,0,.2);">F</div>
+      </div>
+      <!-- Quote pill -->
+      <div style="margin-top:16px;background:rgba(255,255,255,.12);border-radius:12px;padding:10px 14px;backdrop-filter:blur(6px);">
+        <p style="color:rgba(255,255,255,.9);font-size:12px;line-height:1.5;">Small daily routines create big emotional growth.</p>
+      </div>
+    </div>
+
+    <div style="padding:20px;padding-bottom:90px;">
+      <!-- Stats row -->
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-bottom:18px;">
+        <div class="card" style="background:linear-gradient(135deg,#e8f5ee,#d0ede0);">
+          <div style="display:flex;align-items:center;gap:10px;margin-bottom:8px;">
+            <div style="width:36px;height:36px;background:var(--primary);border-radius:10px;display:flex;align-items:center;justify-content:center;">
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2.5"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>
+            </div>
+            <div>
+              <p style="font-size:11px;color:var(--muted);">Children</p>
+              <b style="font-size:22px;color:var(--text);">2</b>
+            </div>
+          </div>
+          <div style="display:flex;gap:4px;">
+            <span class="badge" style="background:var(--primary-light);color:var(--primary);">Ahmed 9y</span>
+            <span class="badge" style="background:var(--primary-light);color:var(--primary);">Sara 6y</span>
+          </div>
+        </div>
+        <div class="card" style="background:linear-gradient(135deg,#fef8e8,#feefc7);">
+          <div style="display:flex;align-items:center;gap:10px;margin-bottom:8px;">
+            <div style="width:36px;height:36px;background:var(--gold);border-radius:10px;display:flex;align-items:center;justify-content:center;">
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2.5"><polyline points="9 11 12 14 22 4"/><path d="M21 12v7a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11"/></svg>
+            </div>
+            <div>
+              <p style="font-size:11px;color:var(--muted);">Tasks Today</p>
+              <b style="font-size:22px;color:var(--text);">5/8</b>
+            </div>
+          </div>
+          <div style="height:6px;background:#fde68a;border-radius:10px;overflow:hidden;">
+            <div style="width:62%;height:100%;background:var(--gold);border-radius:10px;"></div>
+          </div>
+        </div>
+      </div>
+
+      <!-- AI Advice card -->
+      <div class="card" style="margin-bottom:18px;background:linear-gradient(135deg,#0f5c35,#1a7a4a);color:white;">
+        <div style="display:flex;justify-content:space-between;align-items:flex-start;">
+          <div style="flex:1;">
+            <div style="display:flex;align-items:center;gap:8px;margin-bottom:8px;">
+              <div style="width:28px;height:28px;background:rgba(255,255,255,.15);border-radius:8px;display:flex;align-items:center;justify-content:center;">
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2.5"><path d="M9.663 17h4.673M12 3v1m6.364 1.636l-.707.707M21 12h-1M4 12H3m3.343-5.657l-.707-.707m2.828 9.9a5 5 0 117.072 0l-.548.547A3.374 3.374 0 0014 18.469V19a2 2 0 11-4 0v-.531c0-.895-.356-1.754-.988-2.386l-.548-.547z"/></svg>
+              </div>
+              <span style="font-size:12px;font-weight:700;opacity:.8;text-transform:uppercase;letter-spacing:.5px;">Today's AI Insight</span>
+            </div>
+            <p style="font-size:14px;line-height:1.6;opacity:.95;">Encourage gratitude before sleep — have Ahmed share one blessing from his day. Small rituals build lasting character.</p>
+          </div>
+          <svg width="48" height="48" viewBox="0 0 48 48" style="opacity:.15;flex-shrink:0;">
+            <path d="M24 4C13 4 4 13 4 24s9 20 20 20 20-9 20-20S35 4 24 4zm0 36c-8.8 0-16-7.2-16-16S15.2 8 24 8s16 7.2 16 16-7.2 16-16 16zm-2-22h4v12h-4zm0-6h4v4h-4z" fill="white"/>
+          </svg>
+        </div>
+      </div>
+
+      <!-- Children -->
+      <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:12px;">
+        <h3 style="font-size:17px;font-weight:700;color:var(--text);">My Children</h3>
+        <span style="font-size:13px;font-weight:600;color:var(--primary);">+ Add</span>
+      </div>
+
+      <!-- Child card 1 -->
+      <div class="card" style="margin-bottom:12px;display:flex;align-items:center;gap:14px;">
+        <div class="avatar" style="background:linear-gradient(135deg,#7c3aed,#06b6d4);">A</div>
+        <div style="flex:1;">
+          <div style="display:flex;justify-content:space-between;align-items:center;">
+            <div>
+              <p style="font-weight:700;color:var(--text);">Ahmed</p>
+              <p style="font-size:12px;color:var(--muted);">Age 9 • Grade 4</p>
+            </div>
+            <span class="badge" style="background:#d1f5e3;color:#0f5c35;">82%</span>
+          </div>
+          <div style="margin-top:8px;height:4px;background:#f0f4f0;border-radius:10px;overflow:hidden;">
+            <div style="width:82%;height:100%;background:linear-gradient(90deg,#1a7a4a,#c9921a);border-radius:10px;"></div>
+          </div>
+        </div>
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#c8dcc8" stroke-width="2"><polyline points="9 18 15 12 9 6"/></svg>
+      </div>
+
+      <!-- Child card 2 -->
+      <div class="card" style="display:flex;align-items:center;gap:14px;">
+        <div class="avatar" style="background:linear-gradient(135deg,#c9921a,#a07010);">S</div>
+        <div style="flex:1;">
+          <div style="display:flex;justify-content:space-between;align-items:center;">
+            <div>
+              <p style="font-weight:700;color:var(--text);">Sara</p>
+              <p style="font-size:12px;color:var(--muted);">Age 6 • Grade 1</p>
+            </div>
+            <span class="badge" style="background:#fef3c7;color:#a07010;">71%</span>
+          </div>
+          <div style="margin-top:8px;height:4px;background:#f0f4f0;border-radius:10px;overflow:hidden;">
+            <div style="width:71%;height:100%;background:linear-gradient(90deg,#c9921a,#e89c3a);border-radius:10px;"></div>
+          </div>
+        </div>
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#c8dcc8" stroke-width="2"><polyline points="9 18 15 12 9 6"/></svg>
+      </div>
+    </div>
+
+    <!-- Nav -->
+    <div class="bnav">
+      <div class="bnav-btn active">
+        <svg viewBox="0 0 24 24" fill="none" stroke="var(--primary)" stroke-width="2"><path d="M3 9l9-7 9 7v11a2 2 0 01-2 2H5a2 2 0 01-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg>
+        <div class="bnav-dot"></div>
+      </div>
+      <div class="bnav-btn">
+        <svg viewBox="0 0 24 24" fill="none" stroke="#c8dcc8" stroke-width="2"><polyline points="9 11 12 14 22 4"/><path d="M21 12v7a2 2 0 01-2 2H5a2 2 0 01-2-2V5a2 2 0 012-2h11"/></svg>
+      </div>
+      <div class="bnav-btn">
+        <svg viewBox="0 0 24 24" fill="none" stroke="#c8dcc8" stroke-width="2"><path d="M21 15a2 2 0 01-2 2H7l-4 4V5a2 2 0 012-2h14a2 2 0 012 2z"/></svg>
+      </div>
+      <div class="bnav-btn">
+        <svg viewBox="0 0 24 24" fill="none" stroke="#c8dcc8" stroke-width="2"><line x1="18" y1="20" x2="18" y2="10"/><line x1="12" y1="20" x2="12" y2="4"/><line x1="6" y1="20" x2="6" y2="14"/></svg>
+      </div>
+      <div class="bnav-btn">
+        <svg viewBox="0 0 24 24" fill="none" stroke="#c8dcc8" stroke-width="2"><circle cx="12" cy="8" r="4"/><path d="M6 20v-2a4 4 0 018 0v2"/></svg>
+      </div>
+    </div>
+  </div>
+</div>
+<p class="screen-label">Dashboard</p>
+</div>
+
+<!-- ═══════════════════════════════════════════
+     SCREEN 3 — ADD CHILD
+══════════════════════════════════════════════ -->
+<div>
+<div class="phone">
+  <div class="inner">
+    <div style="background:linear-gradient(135deg,#7c3aed,#06b6d4 55%,#f97316);padding:36px 22px 60px;position:relative;overflow:hidden;">
+      <div style="position:absolute;right:-50px;bottom:-50px;width:220px;height:220px;border-radius:50%;background:rgba(255,255,255,.05);"></div>
+      <div class="status-bar dark" style="padding:0;margin-bottom:16px;"><span>9:41</span></div>
+      <div style="display:flex;align-items:center;gap:12px;">
+        <div style="width:36px;height:36px;background:rgba(255,255,255,.15);border-radius:12px;display:flex;align-items:center;justify-content:center;">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2.5"><polyline points="15 18 9 12 15 6"/></svg>
+        </div>
+        <div>
+          <h2 style="color:white;font-size:22px;font-weight:800;">Add a Child</h2>
+          <p style="color:rgba(255,255,255,.65);font-size:13px;">Build their growth profile</p>
+        </div>
+      </div>
+    </div>
+
+    <div style="padding:20px;margin-top:-36px;padding-bottom:30px;">
+      <!-- Avatar picker -->
+      <div class="card" style="text-align:center;margin-bottom:18px;padding:24px;">
+        <div style="width:80px;height:80px;border-radius:50%;background:linear-gradient(135deg,#1a7a4a,#c9921a);display:flex;align-items:center;justify-content:center;margin:0 auto 12px;box-shadow:0 8px 24px rgba(26,122,74,.3);">
+          <svg width="36" height="36" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="1.8"><path d="M20 21v-2a4 4 0 00-4-4H8a4 4 0 00-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
+        </div>
+        <p style="font-size:13px;color:var(--primary);font-weight:600;">Tap to add photo</p>
+        <div style="display:flex;justify-content:center;gap:8px;margin-top:14px;">
+          <div style="width:36px;height:36px;border-radius:50%;background:linear-gradient(135deg,#7c3aed,#06b6d4);display:flex;align-items:center;justify-content:center;font-size:16px;cursor:pointer;"></div>
+          <div style="width:36px;height:36px;border-radius:50%;background:linear-gradient(135deg,#c9921a,#a07010);display:flex;align-items:center;justify-content:center;font-size:16px;cursor:pointer;"></div>
+          <div style="width:36px;height:36px;border-radius:50%;background:linear-gradient(135deg,#0d6e6e,#085050);display:flex;align-items:center;justify-content:center;font-size:16px;cursor:pointer;"></div>
+          <div style="width:36px;height:36px;border-radius:50%;background:linear-gradient(135deg,#7c3aed,#5b21b6);display:flex;align-items:center;justify-content:center;font-size:16px;cursor:pointer;"></div>
+        </div>
+      </div>
+
+      <!-- Fields -->
+      <div class="card" style="margin-bottom:18px;">
+        <div style="margin-bottom:14px;">
+          <label style="font-size:11px;font-weight:700;color:var(--muted);text-transform:uppercase;letter-spacing:.5px;">Child's Name</label>
+          <input class="inp" style="margin-top:6px;" placeholder="e.g. Ahmed">
+        </div>
+        <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px;">
+          <div>
+            <label style="font-size:11px;font-weight:700;color:var(--muted);text-transform:uppercase;letter-spacing:.5px;">Age</label>
+            <input class="inp" style="margin-top:6px;" placeholder="e.g. 9">
+          </div>
+          <div>
+            <label style="font-size:11px;font-weight:700;color:var(--muted);text-transform:uppercase;letter-spacing:.5px;">Grade</label>
+            <input class="inp" style="margin-top:6px;" placeholder="e.g. 4">
+          </div>
+        </div>
+      </div>
+
+      <!-- Goals -->
+      <div class="card" style="margin-bottom:18px;">
+        <h3 style="font-size:14px;font-weight:700;color:var(--text);margin-bottom:12px;">Nurture Goals</h3>
+        <div style="display:flex;flex-wrap:wrap;gap:8px;">
+          <span class="badge" style="background:var(--primary);color:white;padding:8px 14px;cursor:pointer;">Routine</span>
+          <span class="badge" style="background:var(--primary-light);color:var(--primary);padding:8px 14px;cursor:pointer;">Reading</span>
+          <span class="badge" style="background:var(--primary-light);color:var(--primary);padding:8px 14px;cursor:pointer;">Kindness</span>
+          <span class="badge" style="background:var(--primary-light);color:var(--primary);padding:8px 14px;cursor:pointer;">Honesty</span>
+          <span class="badge" style="background:var(--primary-light);color:var(--primary);padding:8px 14px;cursor:pointer;">Gratitude</span>
+          <span class="badge" style="background:var(--primary-light);color:var(--primary);padding:8px 14px;cursor:pointer;">Kindness</span>
+        </div>
+      </div>
+
+      
+      <!-- Stepper return option -->
+      <div class="card" style="margin-top:16px;border-radius:22px;background:linear-gradient(145deg,#ffffff,#f4fffb);border:1px solid rgba(32,199,166,.24);box-shadow:0 10px 22px rgba(40,18,90,.05);">
+        <div style="display:flex;align-items:center;gap:14px;">
+          <div style="width:46px;height:46px;border-radius:16px;background:#20C7A6;display:flex;align-items:center;justify-content:center;color:white;flex-shrink:0;">
+            <i class="fa-solid fa-list-check"></i>
+          </div>
+          <div style="flex:1;">
+            <p style="font-size:14px;font-weight:800;color:var(--text);">Continue guided setup</p>
+            <p style="font-size:12px;color:var(--muted);line-height:1.45;margin-top:3px;">Go back to the onboarding stepper and complete child details step by step.</p>
+          </div>
+          <div style="width:30px;height:30px;border-radius:50%;background:#DDF8F1;color:#16A98C;display:flex;align-items:center;justify-content:center;">
+            <i class="fa-solid fa-chevron-right" style="font-size:12px;"></i>
+          </div>
+        </div>
+      </div>
+<button class="btn-primary">
+         Create Profile
+      </button>
+    </div>
+  </div>
+</div>
+<p class="screen-label">Add Child</p>
+</div>
+
+<!-- ═══════════════════════════════════════════
+     SCREEN 4 — CHILD PROFILE
+══════════════════════════════════════════════ -->
+<div>
+<div class="phone">
+  <div class="inner">
+    <!-- Header -->
+    <div style="background:linear-gradient(135deg,#7c3aed,#06b6d4 55%,#f97316);padding:36px 22px 80px;position:relative;overflow:hidden;">
+      <div style="position:absolute;right:-60px;bottom:-60px;width:240px;height:240px;border-radius:50%;background:rgba(255,255,255,.05);"></div>
+      <div class="status-bar dark" style="padding:0;margin-bottom:16px;"><span>9:41</span></div>
+      <div style="display:flex;justify-content:space-between;align-items:center;">
+        <div style="width:36px;height:36px;background:rgba(255,255,255,.15);border-radius:12px;display:flex;align-items:center;justify-content:center;">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2.5"><polyline points="15 18 9 12 15 6"/></svg>
+        </div>
+        <div style="width:36px;height:36px;background:rgba(255,255,255,.15);border-radius:12px;display:flex;align-items:center;justify-content:center;">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2.5"><circle cx="12" cy="12" r="1"/><circle cx="19" cy="12" r="1"/><circle cx="5" cy="12" r="1"/></svg>
+        </div>
+      </div>
+      <!-- Profile -->
+      <div style="text-align:center;margin-top:12px;">
+        <div style="width:80px;height:80px;border-radius:50%;background:linear-gradient(135deg,#c9921a,#e8b44a);display:flex;align-items:center;justify-content:center;font-weight:800;font-size:32px;color:white;margin:0 auto;box-shadow:0 8px 24px rgba(0,0,0,.2);border:3px solid rgba(255,255,255,.3);">A</div>
+        <h2 style="color:white;font-size:24px;font-weight:800;margin-top:10px;">Ahmed</h2>
+        <p style="color:rgba(255,255,255,.7);font-size:13px;">Age 9 · Grade 4 · Riyadh</p>
+        <span class="badge" style="background:rgba(255,255,255,.2);color:white;margin-top:8px;padding:6px 16px;"> Level 3 — Growth Explorer</span>
+      </div>
+    </div>
+
+    <div style="padding:20px;margin-top:-50px;padding-bottom:30px;">
+      <!-- Progress rings row -->
+      <div class="card" style="margin-bottom:16px;">
+        <h3 style="font-size:15px;font-weight:700;color:var(--text);margin-bottom:16px;">Character Progress</h3>
+        <div style="display:flex;justify-content:space-around;">
+          <!-- Kindness ring -->
+          <div style="text-align:center;">
+            <svg width="70" height="70" viewBox="0 0 70 70">
+              <circle cx="35" cy="35" r="28" fill="none" stroke="#e8f0e8" stroke-width="6"/>
+              <circle cx="35" cy="35" r="28" fill="none" stroke="#1a7a4a" stroke-width="6" stroke-dasharray="175.9" stroke-dashoffset="31.7" stroke-linecap="round" transform="rotate(-90 35 35)"/>
+              <text x="35" y="39" text-anchor="middle" font-size="14" font-weight="800" fill="#1a2e1a">82%</text>
+            </svg>
+            <p style="font-size:11px;color:var(--muted);font-weight:600;margin-top:4px;">Kindness</p>
+          </div>
+          <!-- Routine ring -->
+          <div style="text-align:center;">
+            <svg width="70" height="70" viewBox="0 0 70 70">
+              <circle cx="35" cy="35" r="28" fill="none" stroke="#fef3c7" stroke-width="6"/>
+              <circle cx="35" cy="35" r="28" fill="none" stroke="#c9921a" stroke-width="6" stroke-dasharray="175.9" stroke-dashoffset="43.9" stroke-linecap="round" transform="rotate(-90 35 35)"/>
+              <text x="35" y="39" text-anchor="middle" font-size="14" font-weight="800" fill="#1a2e1a">75%</text>
+            </svg>
+            <p style="font-size:11px;color:var(--muted);font-weight:600;margin-top:4px;">Routine</p>
+          </div>
+          <!-- Reading ring -->
+          <div style="text-align:center;">
+            <svg width="70" height="70" viewBox="0 0 70 70">
+              <circle cx="35" cy="35" r="28" fill="none" stroke="#e8f0e8" stroke-width="6"/>
+              <circle cx="35" cy="35" r="28" fill="none" stroke="#0d6e6e" stroke-width="6" stroke-dasharray="175.9" stroke-dashoffset="70.4" stroke-linecap="round" transform="rotate(-90 35 35)"/>
+              <text x="35" y="39" text-anchor="middle" font-size="14" font-weight="800" fill="#1a2e1a">60%</text>
+            </svg>
+            <p style="font-size:11px;color:var(--muted);font-weight:600;margin-top:4px;">Reading</p>
+          </div>
+        </div>
+      </div>
+
+      <!-- Quick actions -->
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-bottom:16px;">
+        <div class="card" style="background:linear-gradient(135deg,#7c3aed,#06b6d4);color:white;text-align:center;cursor:pointer;">
+          <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="rgba(255,255,255,.8)" stroke-width="2" style="margin:0 auto 8px;display:block;"><path d="M21 15a2 2 0 01-2 2H7l-4 4V5a2 2 0 012-2h14a2 2 0 012 2z"/></svg>
+          <p style="font-size:13px;font-weight:700;">AI Mentor</p>
+          <p style="font-size:11px;opacity:.7;margin-top:2px;">Ask anything</p>
+        </div>
+        <div class="card" style="background:linear-gradient(135deg,#fef8e8,#feefc7);cursor:pointer;">
+          <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="#c9921a" stroke-width="2" style="margin:0 auto 8px;display:block;"><polyline points="9 11 12 14 22 4"/><path d="M21 12v7a2 2 0 01-2 2H5a2 2 0 01-2-2V5a2 2 0 012-2h11"/></svg>
+          <p style="font-size:13px;font-weight:700;color:var(--text);">Tasks</p>
+          <p style="font-size:11px;color:var(--muted);margin-top:2px;">5 of 8 done</p>
+        </div>
+      </div>
+
+      <!-- Recent activity -->
+      <div class="card">
+        <h3 style="font-size:14px;font-weight:700;color:var(--text);margin-bottom:14px;">Recent Activity</h3>
+        <div class="task-row">
+          <div class="task-check done">
+            <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="3"><polyline points="20 6 9 17 4 12"/></svg>
+          </div>
+          <div style="flex:1;">
+            <p style="font-size:14px;font-weight:600;color:var(--text);">Morning routine completed</p>
+            <p style="font-size:12px;color:var(--muted);">Today, 5:30 AM</p>
+          </div>
+          <span class="badge" style="background:#d1f5e3;color:#0f5c35;">+5 pts</span>
+        </div>
+        <div class="task-row">
+          <div class="task-check done">
+            <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="3"><polyline points="20 6 9 17 4 12"/></svg>
+          </div>
+          <div style="flex:1;">
+            <p style="font-size:14px;font-weight:600;color:var(--text);">Helped younger sibling</p>
+            <p style="font-size:12px;color:var(--muted);">Yesterday</p>
+          </div>
+          <span class="badge" style="background:#d1f5e3;color:#0f5c35;">+8 pts</span>
+        </div>
+        <div class="task-row">
+          <div class="task-check"></div>
+          <div style="flex:1;">
+            <p style="font-size:14px;font-weight:600;color:var(--text);">Reading reading — 15 mins</p>
+            <p style="font-size:12px;color:var(--muted);">Pending today</p>
+          </div>
+          <span class="badge" style="background:#f0f4f0;color:var(--muted);">+10 pts</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- Nav -->
+    <div class="bnav">
+      <div class="bnav-btn active">
+        <svg viewBox="0 0 24 24" fill="none" stroke="var(--primary)" stroke-width="2"><path d="M3 9l9-7 9 7v11a2 2 0 01-2 2H5a2 2 0 01-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg>
+        <div class="bnav-dot"></div>
+      </div>
+      <div class="bnav-btn"><svg viewBox="0 0 24 24" fill="none" stroke="#c8dcc8" stroke-width="2"><polyline points="9 11 12 14 22 4"/><path d="M21 12v7a2 2 0 01-2 2H5a2 2 0 01-2-2V5a2 2 0 012-2h11"/></svg></div>
+      <div class="bnav-btn"><svg viewBox="0 0 24 24" fill="none" stroke="#c8dcc8" stroke-width="2"><path d="M21 15a2 2 0 01-2 2H7l-4 4V5a2 2 0 012-2h14a2 2 0 012 2z"/></svg></div>
+      <div class="bnav-btn"><svg viewBox="0 0 24 24" fill="none" stroke="#c8dcc8" stroke-width="2"><line x1="18" y1="20" x2="18" y2="10"/><line x1="12" y1="20" x2="12" y2="4"/><line x1="6" y1="20" x2="6" y2="14"/></svg></div>
+      <div class="bnav-btn"><svg viewBox="0 0 24 24" fill="none" stroke="#c8dcc8" stroke-width="2"><circle cx="12" cy="8" r="4"/><path d="M6 20v-2a4 4 0 018 0v2"/></svg></div>
+    </div>
+  </div>
+</div>
+<p class="screen-label">Child Profile</p>
+</div>
+
+<!-- ═══════════════════════════════════════════
+     SCREEN 5 — AI CHAT
+══════════════════════════════════════════════ -->
+<div>
+<div class="phone">
+  <div class="inner" style="display:flex;flex-direction:column;height:100%;">
+    <!-- Header -->
+    <div style="background:linear-gradient(135deg,#7c3aed,#06b6d4 55%,#f97316);padding:36px 22px 18px;flex-shrink:0;">
+      <div class="status-bar dark" style="padding:0;margin-bottom:14px;"><span>9:41</span></div>
+      <div style="display:flex;align-items:center;gap:12px;">
+        <div style="width:36px;height:36px;background:rgba(255,255,255,.15);border-radius:12px;display:flex;align-items:center;justify-content:center;">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2.5"><polyline points="15 18 9 12 15 6"/></svg>
+        </div>
+        <div style="width:46px;height:46px;border-radius:50%;background:linear-gradient(135deg,#c9921a,#a07010);display:flex;align-items:center;justify-content:center;">
+          <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2"><path d="M9.663 17h4.673M12 3v1m6.364 1.636l-.707.707M21 12h-1M4 12H3m3.343-5.657l-.707-.707m2.828 9.9a5 5 0 117.072 0l-.548.547A3.374 3.374 0 0014 18.469V19a2 2 0 11-4 0v-.531c0-.895-.356-1.754-.988-2.386l-.548-.547z"/></svg>
+        </div>
+        <div>
+          <p style="color:white;font-weight:700;font-size:16px;">AI Parenting Mentor</p>
+          <div style="display:flex;align-items:center;gap:5px;">
+            <div style="width:7px;height:7px;border-radius:50%;background:#4ade80;animation:pulse 2s infinite;"></div>
+            <p style="color:rgba(255,255,255,.7);font-size:12px;">Online</p>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Quick topics -->
+    <div style="padding:12px 16px;background:white;border-bottom:1px solid #f0f4f0;flex-shrink:0;display:flex;gap:8px;overflow-x:auto;scrollbar-width:none;">
+      <span class="badge" style="background:var(--primary);color:white;white-space:nowrap;padding:7px 14px;cursor:pointer;">Honesty</span>
+      <span class="badge" style="background:#f0f4f0;color:var(--text);white-space:nowrap;padding:7px 14px;cursor:pointer;">Daily habits</span>
+      <span class="badge" style="background:#f0f4f0;color:var(--text);white-space:nowrap;padding:7px 14px;cursor:pointer;">Screen time</span>
+      <span class="badge" style="background:#f0f4f0;color:var(--text);white-space:nowrap;padding:7px 14px;cursor:pointer;">Anger</span>
+    </div>
+
+    <!-- Chat body -->
+    <div style="flex:1;padding:16px;display:flex;flex-direction:column;gap:14px;overflow-y:auto;background:#f8fbf8;">
+      <!-- Date -->
+      <div style="text-align:center;"><span style="font-size:11px;color:var(--muted);background:#e8f0e8;padding:4px 12px;border-radius:10px;">Today</span></div>
+
+      <!-- User msg -->
+      <div class="bubble-user">
+        <p>How can I improve Ahmed's honesty? He sometimes hides small mistakes.</p>
+        <p style="font-size:10px;color:#9cad9c;margin-top:6px;text-align:right;">9:38 AM</p>
+      </div>
+
+      <!-- AI msg -->
+      <div style="display:flex;flex-direction:column;align-items:flex-end;gap:4px;">
+        <div class="bubble-ai">
+          <p>Welcome back! It is great that you are working on this </p>
+          <p style="margin-top:8px;">With Ahmed, try these 3 steps:</p>
+          <div style="margin-top:10px;display:flex;flex-direction:column;gap:6px;">
+            <div style="display:flex;gap:8px;align-items:flex-start;">
+              <span style="background:rgba(255,255,255,.2);border-radius:50%;width:20px;height:20px;display:flex;align-items:center;justify-content:center;font-size:10px;font-weight:700;flex-shrink:0;">1</span>
+              <p style="font-size:13px;">Share your own small mistakes to model honesty</p>
+            </div>
+            <div style="display:flex;gap:8px;align-items:flex-start;">
+              <span style="background:rgba(255,255,255,.2);border-radius:50%;width:20px;height:20px;display:flex;align-items:center;justify-content:center;font-size:10px;font-weight:700;flex-shrink:0;">2</span>
+              <p style="font-size:13px;">Praise truthfulness more than perfection</p>
+            </div>
+            <div style="display:flex;gap:8px;align-items:flex-start;">
+              <span style="background:rgba(255,255,255,.2);border-radius:50%;width:20px;height:20px;display:flex;align-items:center;justify-content:center;font-size:10px;font-weight:700;flex-shrink:0;">3</span>
+              <p style="font-size:13px;">After dinner, do a 5-min "honest reflection" together</p>
+            </div>
+          </div>
+          <p style="font-size:10px;opacity:.6;margin-top:8px;">9:38 AM</p>
+        </div>
+        <div style="display:flex;align-items:center;gap:4px;">
+          <div style="width:24px;height:24px;border-radius:50%;background:linear-gradient(135deg,#c9921a,#a07010);display:flex;align-items:center;justify-content:center;font-size:10px;color:white;font-weight:700;">AI</div>
+          <p style="font-size:11px;color:var(--muted);">Nurture AI</p>
+        </div>
+      </div>
+
+      <!-- User follow-up -->
+      <div class="bubble-user">
+        <p>Thanks! What positive story can I share with him?</p>
+        <p style="font-size:10px;color:#9cad9c;margin-top:6px;text-align:right;">9:40 AM</p>
+      </div>
+
+      <!-- AI typing -->
+      <div style="display:flex;align-items:flex-end;gap:8px;justify-content:flex-end;">
+        <div style="background:rgba(26,122,74,.1);border-radius:18px;padding:14px 18px;">
+          <div style="display:flex;gap:4px;align-items:center;">
+            <div style="width:7px;height:7px;border-radius:50%;background:var(--primary);animation:bounce 1s infinite;"></div>
+            <div style="width:7px;height:7px;border-radius:50%;background:var(--primary);animation:bounce 1s .2s infinite;"></div>
+            <div style="width:7px;height:7px;border-radius:50%;background:var(--primary);animation:bounce 1s .4s infinite;"></div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Input bar -->
+    <div style="padding:12px 16px 28px;background:white;border-top:1px solid #f0f4f0;display:flex;gap:10px;align-items:center;flex-shrink:0;">
+      <input class="inp" style="flex:1;padding:12px 16px;" placeholder="Ask your mentor...">
+      <button style="width:46px;height:46px;background:linear-gradient(135deg,#7c3aed,#06b6d4);border:none;border-radius:50%;display:flex;align-items:center;justify-content:center;cursor:pointer;box-shadow:0 4px 12px rgba(26,122,74,.35);">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2.5"><line x1="22" y1="2" x2="11" y2="13"/><polygon points="22 2 15 22 11 13 2 9 22 2"/></svg>
+      </button>
+    </div>
+  </div>
+</div>
+<p class="screen-label">AI Chat</p>
+</div>
+
+<!-- ═══════════════════════════════════════════
+     SCREEN 6 — TASKS
+══════════════════════════════════════════════ -->
+<div>
+<div class="phone">
+  <div class="inner">
+    <!-- Header -->
+    <div style="background:linear-gradient(135deg,#7c3aed,#06b6d4 55%,#f97316);padding:36px 22px 28px;position:relative;overflow:hidden;">
+      <div style="position:absolute;right:-40px;top:-40px;width:180px;height:180px;border-radius:50%;background:rgba(255,255,255,.05);"></div>
+      <div class="status-bar dark" style="padding:0;margin-bottom:16px;"><span>9:41</span></div>
+      <div style="display:flex;justify-content:space-between;align-items:flex-start;">
+        <div>
+          <h2 style="color:white;font-size:22px;font-weight:800;">Ahmed's Tasks</h2>
+          <p style="color:rgba(255,255,255,.7);font-size:13px;margin-top:2px;">Wednesday, 24 June</p>
+        </div>
+        <div style="text-align:right;">
+          <p style="color:rgba(255,255,255,.6);font-size:11px;">Completed</p>
+          <p style="color:white;font-size:26px;font-weight:800;">5/8</p>
+        </div>
+      </div>
+      <!-- Progress bar -->
+      <div style="margin-top:16px;height:6px;background:rgba(255,255,255,.2);border-radius:10px;overflow:hidden;">
+        <div style="width:62%;height:100%;background:linear-gradient(90deg,#4ade80,#c9921a);border-radius:10px;"></div>
+      </div>
+    </div>
+
+    <div style="padding:20px;padding-bottom:90px;">
+      <!-- Category tabs -->
+      <div style="display:flex;gap:8px;margin-bottom:18px;overflow-x:auto;scrollbar-width:none;">
+        <span class="badge" style="background:var(--primary);color:white;padding:8px 16px;white-space:nowrap;cursor:pointer;">All Tasks</span>
+        <span class="badge" style="background:#f0f4f0;color:var(--muted);padding:8px 16px;white-space:nowrap;cursor:pointer;">Daily Habits</span>
+        <span class="badge" style="background:#f0f4f0;color:var(--muted);padding:8px 16px;white-space:nowrap;cursor:pointer;">Kindness</span>
+        <span class="badge" style="background:#f0f4f0;color:var(--muted);padding:8px 16px;white-space:nowrap;cursor:pointer;">Study</span>
+      </div>
+
+      <!-- Daily Habits section -->
+      <p style="font-size:12px;font-weight:700;color:var(--muted);text-transform:uppercase;letter-spacing:.5px;margin-bottom:10px;">Daily Habits</p>
+      <div class="card" style="margin-bottom:16px;">
+        <div class="task-row">
+          <div class="task-check done"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="3"><polyline points="20 6 9 17 4 12"/></svg></div>
+          <div style="flex:1;"><p style="font-weight:600;color:#9cad9c;text-decoration:line-through;font-size:14px;">Morning routine on time</p><p style="font-size:11px;color:#b8c8b8;">5:30 AM · +5 pts</p></div>
+          <span class="badge" style="background:#d1f5e3;color:#0f5c35;">Done </span>
+        </div>
+        <div class="task-row">
+          <div class="task-check done"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="3"><polyline points="20 6 9 17 4 12"/></svg></div>
+          <div style="flex:1;"><p style="font-weight:600;color:#9cad9c;text-decoration:line-through;font-size:14px;">Afternoon routine</p><p style="font-size:11px;color:#b8c8b8;">Completed · +10 pts</p></div>
+          <span class="badge" style="background:#d1f5e3;color:#0f5c35;">Done </span>
+        </div>
+        <div class="task-row">
+          <div class="task-check"></div>
+          <div style="flex:1;"><p style="font-weight:600;color:var(--text);font-size:14px;">Evening routine</p><p style="font-size:11px;color:var(--muted);">Pending · +10 pts</p></div>
+          <span class="badge" style="background:#f0f4f0;color:var(--muted);">Pending</span>
+        </div>
+        <div class="task-row">
+          <div class="task-check"></div>
+          <div style="flex:1;"><p style="font-weight:600;color:var(--text);font-size:14px;">Reading reading · 15 mins</p><p style="font-size:11px;color:var(--muted);">Reading challenge · +15 pts</p></div>
+          <span class="badge" style="background:#fef3c7;color:#a07010;">⏳ Soon</span>
+        </div>
+      </div>
+
+      <!-- Kindness section -->
+      <p style="font-size:12px;font-weight:700;color:var(--muted);text-transform:uppercase;letter-spacing:.5px;margin-bottom:10px;">Kindness</p>
+      <div class="card" style="margin-bottom:16px;">
+        <div class="task-row">
+          <div class="task-check done"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="3"><polyline points="20 6 9 17 4 12"/></svg></div>
+          <div style="flex:1;"><p style="font-weight:600;color:#9cad9c;text-decoration:line-through;font-size:14px;">Help a family member</p><p style="font-size:11px;color:#b8c8b8;">+8 pts</p></div>
+          <span class="badge" style="background:#d1f5e3;color:#0f5c35;">Done </span>
+        </div>
+        <div class="task-row">
+          <div class="task-check"></div>
+          <div style="flex:1;"><p style="font-weight:600;color:var(--text);font-size:14px;">Say one kind thing</p><p style="font-size:11px;color:var(--muted);">To a friend or sibling · +5 pts</p></div>
+          <span class="badge" style="background:#f0f4f0;color:var(--muted);">Pending</span>
+        </div>
+        <div class="task-row">
+          <div class="task-check"></div>
+          <div style="flex:1;"><p style="font-weight:600;color:var(--text);font-size:14px;">Evening gratitude journal</p><p style="font-size:11px;color:var(--muted);">3 blessings today · +10 pts</p></div>
+          <span class="badge" style="background:#f0f4f0;color:var(--muted);">Pending</span>
+        </div>
+      </div>
+
+      <!-- Add task -->
+      <button style="width:100%;padding:14px;background:white;border:2px dashed #c8dcc8;border-radius:16px;color:var(--primary);font-size:14px;font-weight:700;cursor:pointer;display:flex;align-items:center;justify-content:center;gap:8px;">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="var(--primary)" stroke-width="2.5"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
+        Add Custom Task
+      </button>
+    </div>
+
+    <div class="bnav">
+      <div class="bnav-btn"><svg viewBox="0 0 24 24" fill="none" stroke="#c8dcc8" stroke-width="2"><path d="M3 9l9-7 9 7v11a2 2 0 01-2 2H5a2 2 0 01-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg></div>
+      <div class="bnav-btn active"><svg viewBox="0 0 24 24" fill="none" stroke="var(--primary)" stroke-width="2"><polyline points="9 11 12 14 22 4"/><path d="M21 12v7a2 2 0 01-2 2H5a2 2 0 01-2-2V5a2 2 0 012-2h11"/></svg><div class="bnav-dot"></div></div>
+      <div class="bnav-btn"><svg viewBox="0 0 24 24" fill="none" stroke="#c8dcc8" stroke-width="2"><path d="M21 15a2 2 0 01-2 2H7l-4 4V5a2 2 0 012-2h14a2 2 0 012 2z"/></svg></div>
+      <div class="bnav-btn"><svg viewBox="0 0 24 24" fill="none" stroke="#c8dcc8" stroke-width="2"><line x1="18" y1="20" x2="18" y2="10"/><line x1="12" y1="20" x2="12" y2="4"/><line x1="6" y1="20" x2="6" y2="14"/></svg></div>
+      <div class="bnav-btn"><svg viewBox="0 0 24 24" fill="none" stroke="#c8dcc8" stroke-width="2"><circle cx="12" cy="8" r="4"/><path d="M6 20v-2a4 4 0 018 0v2"/></svg></div>
+    </div>
+  </div>
+</div>
+<p class="screen-label">Tasks</p>
+</div>
+
+<!-- ═══════════════════════════════════════════
+     SCREEN 7 — PROGRESS
+══════════════════════════════════════════════ -->
+<div>
+<div class="phone">
+  <div class="inner">
+    <div style="background:linear-gradient(135deg,#7c3aed,#06b6d4 55%,#f97316);padding:36px 22px 28px;position:relative;overflow:hidden;">
+      <div style="position:absolute;right:-50px;bottom:-50px;width:220px;height:220px;border-radius:50%;background:rgba(255,255,255,.05);"></div>
+      <div class="status-bar dark" style="padding:0;margin-bottom:16px;"><span>9:41</span></div>
+      <h2 style="color:white;font-size:22px;font-weight:800;">Progress Report</h2>
+      <p style="color:rgba(255,255,255,.7);font-size:13px;margin-top:2px;">Ahmed · Week of June 24</p>
+      <div style="display:flex;gap:8px;margin-top:14px;">
+        <span class="badge" style="background:rgba(255,255,255,.2);color:white;padding:7px 14px;cursor:pointer;">This Week</span>
+        <span class="badge" style="background:rgba(255,255,255,.1);color:rgba(255,255,255,.7);padding:7px 14px;cursor:pointer;">Month</span>
+        <span class="badge" style="background:rgba(255,255,255,.1);color:rgba(255,255,255,.7);padding:7px 14px;cursor:pointer;">All Time</span>
+      </div>
+    </div>
+
+    <div style="padding:20px;padding-bottom:90px;">
+      <!-- Overall score card -->
+      <div class="card" style="margin-bottom:16px;background:linear-gradient(135deg,#c9921a,#a07010);color:white;display:flex;align-items:center;gap:16px;">
+        <div style="text-align:center;">
+          <svg width="90" height="90" viewBox="0 0 90 90">
+            <circle cx="45" cy="45" r="36" fill="none" stroke="rgba(255,255,255,.2)" stroke-width="8"/>
+            <circle cx="45" cy="45" r="36" fill="none" stroke="white" stroke-width="8" stroke-dasharray="226" stroke-dashoffset="45" stroke-linecap="round" transform="rotate(-90 45 45)"/>
+            <text x="45" y="48" text-anchor="middle" font-size="18" font-weight="800" fill="white">80%</text>
+          </svg>
+        </div>
+        <div>
+          <p style="font-size:12px;opacity:.75;text-transform:uppercase;letter-spacing:.5px;">Overall Score</p>
+          <p style="font-size:28px;font-weight:800;">Excellent</p>
+          <p style="font-size:13px;opacity:.8;margin-top:4px;">↑ 12% from last week</p>
+          <span style="background:rgba(255,255,255,.2);border-radius:10px;padding:4px 10px;font-size:11px;font-weight:700;"> Top 10%</span>
+        </div>
+      </div>
+
+      <!-- Category progress -->
+      <div class="card" style="margin-bottom:16px;">
+        <h3 style="font-size:15px;font-weight:700;color:var(--text);margin-bottom:16px;">Category Breakdown</h3>
+        <div class="pbar-wrap">
+          <div class="pbar-top"><span style="font-size:13px;font-weight:600;color:var(--text);">Kindness & Character</span><span style="font-size:13px;font-weight:700;color:var(--primary);">82% ↑12%</span></div>
+          <div class="pbar-track"><div class="pbar-fill" style="width:82%;background:linear-gradient(90deg,#1a7a4a,#4ade80);"></div></div>
+        </div>
+        <div class="pbar-wrap">
+          <div class="pbar-top"><span style="font-size:13px;font-weight:600;color:var(--text);">Routine Consistency</span><span style="font-size:13px;font-weight:700;color:var(--gold);">75% ↑8%</span></div>
+          <div class="pbar-track"><div class="pbar-fill" style="width:75%;background:linear-gradient(90deg,#c9921a,#f5c84e);"></div></div>
+        </div>
+        <div class="pbar-wrap">
+          <div class="pbar-top"><span style="font-size:13px;font-weight:600;color:var(--text);">Reading Reading</span><span style="font-size:13px;font-weight:700;color:#0d6e6e;">60% ↑5%</span></div>
+          <div class="pbar-track"><div class="pbar-fill" style="width:60%;background:linear-gradient(90deg,#0d6e6e,#2dd4bf);"></div></div>
+        </div>
+        <div class="pbar-wrap" style="margin-bottom:0;">
+          <div class="pbar-top"><span style="font-size:13px;font-weight:600;color:var(--text);">Discipline</span><span style="font-size:13px;font-weight:700;color:#7c3aed;">88% ↑15%</span></div>
+          <div class="pbar-track"><div class="pbar-fill" style="width:88%;background:linear-gradient(90deg,#7c3aed,#a855f7);"></div></div>
+        </div>
+      </div>
+
+      <!-- Weekly chart (SVG bar chart) -->
+      <div class="card" style="margin-bottom:16px;">
+        <h3 style="font-size:15px;font-weight:700;color:var(--text);margin-bottom:14px;">Daily Task Completion</h3>
+        <svg width="100%" height="120" viewBox="0 0 320 120">
+          <defs>
+            <linearGradient id="bar1" x1="0" y1="0" x2="0" y2="1"><stop offset="0%" stop-color="#1a7a4a"/><stop offset="100%" stop-color="#0f5c35"/></linearGradient>
+            <linearGradient id="bar2" x1="0" y1="0" x2="0" y2="1"><stop offset="0%" stop-color="#c9921a"/><stop offset="100%" stop-color="#a07010"/></linearGradient>
+          </defs>
+          <!-- Bars -->
+          <rect x="10"  y="40" width="34" height="60" rx="8" fill="url(#bar1)"/>
+          <rect x="58"  y="20" width="34" height="80" rx="8" fill="url(#bar1)"/>
+          <rect x="106" y="50" width="34" height="50" rx="8" fill="url(#bar1)"/>
+          <rect x="154" y="10" width="34" height="90" rx="8" fill="url(#bar2)"/>
+          <rect x="202" y="30" width="34" height="70" rx="8" fill="url(#bar1)"/>
+          <rect x="250" y="35" width="34" height="65" rx="8" fill="url(#bar1)"/>
+          <rect x="298" y="15" width="34" height="85" rx="8" fill="url(#bar1)" opacity=".3"/>
+          <!-- Labels -->
+          <text x="27"  y="115" text-anchor="middle" font-size="10" fill="#6b7b6b" font-weight="600">Mon</text>
+          <text x="75"  y="115" text-anchor="middle" font-size="10" fill="#6b7b6b" font-weight="600">Tue</text>
+          <text x="123" y="115" text-anchor="middle" font-size="10" fill="#6b7b6b" font-weight="600">Wed</text>
+          <text x="171" y="115" text-anchor="middle" font-size="10" fill="#c9921a" font-weight="700">Thu</text>
+          <text x="219" y="115" text-anchor="middle" font-size="10" fill="#6b7b6b" font-weight="600">Fri</text>
+          <text x="267" y="115" text-anchor="middle" font-size="10" fill="#6b7b6b" font-weight="600">Sat</text>
+          <text x="315" y="115" text-anchor="middle" font-size="10" fill="#b8c8b8" font-weight="600">Sun</text>
+        </svg>
+      </div>
+
+      <!-- AI insight -->
+      <div class="card" style="background:linear-gradient(135deg,#e8f5ee,#d0ede0);border:1px solid #c0dcc0;">
+        <div style="display:flex;gap:10px;">
+          <div style="width:36px;height:36px;background:var(--primary);border-radius:10px;display:flex;align-items:center;justify-content:center;flex-shrink:0;">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2"><path d="M9.663 17h4.673M12 3v1m6.364 1.636l-.707.707M21 12h-1M4 12H3"/></svg>
+          </div>
+          <div>
+            <p style="font-size:12px;font-weight:700;color:var(--primary);">AI INSIGHT</p>
+            <p style="font-size:13px;color:var(--text);margin-top:4px;line-height:1.5;">Ahmed's best day is Thursday — schedule his toughest goals then. Reading consistency needs attention; try a fixed 8 PM time slot.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="bnav">
+      <div class="bnav-btn"><svg viewBox="0 0 24 24" fill="none" stroke="#c8dcc8" stroke-width="2"><path d="M3 9l9-7 9 7v11a2 2 0 01-2 2H5a2 2 0 01-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg></div>
+      <div class="bnav-btn"><svg viewBox="0 0 24 24" fill="none" stroke="#c8dcc8" stroke-width="2"><polyline points="9 11 12 14 22 4"/><path d="M21 12v7a2 2 0 01-2 2H5a2 2 0 01-2-2V5a2 2 0 012-2h11"/></svg></div>
+      <div class="bnav-btn"><svg viewBox="0 0 24 24" fill="none" stroke="#c8dcc8" stroke-width="2"><path d="M21 15a2 2 0 01-2 2H7l-4 4V5a2 2 0 012-2h14a2 2 0 012 2z"/></svg></div>
+      <div class="bnav-btn active"><svg viewBox="0 0 24 24" fill="none" stroke="var(--primary)" stroke-width="2"><line x1="18" y1="20" x2="18" y2="10"/><line x1="12" y1="20" x2="12" y2="4"/><line x1="6" y1="20" x2="6" y2="14"/></svg><div class="bnav-dot"></div></div>
+      <div class="bnav-btn"><svg viewBox="0 0 24 24" fill="none" stroke="#c8dcc8" stroke-width="2"><circle cx="12" cy="8" r="4"/><path d="M6 20v-2a4 4 0 018 0v2"/></svg></div>
+    </div>
+  </div>
+</div>
+<p class="screen-label">Progress</p>
+</div>
+
+<!-- ═══════════════════════════════════════════
+     SCREEN 8 — SETTINGS
+══════════════════════════════════════════════ -->
+<div>
+<div class="phone">
+  <div class="inner">
+    <!-- Header -->
+    <div style="background:linear-gradient(135deg,#7c3aed,#06b6d4 55%,#f97316);padding:36px 22px 60px;position:relative;overflow:hidden;">
+      <div style="position:absolute;right:-50px;bottom:-50px;width:200px;height:200px;border-radius:50%;background:rgba(255,255,255,.05);"></div>
+      <div class="status-bar dark" style="padding:0;margin-bottom:16px;"><span>9:41</span></div>
+      <!-- Profile section -->
+      <div style="display:flex;align-items:center;gap:16px;">
+        <div style="width:64px;height:64px;border-radius:50%;background:linear-gradient(135deg,#c9921a,#a07010);display:flex;align-items:center;justify-content:center;font-weight:800;font-size:24px;color:white;box-shadow:0 6px 18px rgba(0,0,0,.2);border:2px solid rgba(255,255,255,.3);">F</div>
+        <div>
+          <h2 style="color:white;font-size:20px;font-weight:800;">Fatima Al-Rashid</h2>
+          <p style="color:rgba(255,255,255,.7);font-size:13px;">odl.official.info@gmail.com</p>
+          <span class="badge" style="background:rgba(201,146,26,.3);color:#fde68a;margin-top:4px;border:1px solid rgba(201,146,26,.4);">⭐ Premium Member</span>
+        </div>
+      </div>
+    </div>
+
+    <div style="padding:20px;margin-top:-36px;padding-bottom:100px;">
+      <!-- Settings sections -->
+      <!-- Notifications -->
+      <p style="font-size:11px;font-weight:700;color:var(--muted);text-transform:uppercase;letter-spacing:.5px;margin-bottom:10px;">Notifications</p>
+      <div class="card" style="margin-bottom:16px;">
+        <div style="display:flex;align-items:center;gap:14px;padding:4px 0;">
+          <div style="width:38px;height:38px;background:#e8f5ee;border-radius:11px;display:flex;align-items:center;justify-content:center;flex-shrink:0;">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="var(--primary)" stroke-width="2"><path d="M18 8A6 6 0 006 8c0 7-3 9-3 9h18s-3-2-3-9M13.73 21a2 2 0 01-3.46 0"/></svg>
+          </div>
+          <div style="flex:1;"><p style="font-weight:600;font-size:14px;color:var(--text);">Daily Reminders</p><p style="font-size:12px;color:var(--muted);">Task & Routine alerts</p></div>
+          <div style="width:44px;height:24px;background:var(--primary);border-radius:12px;position:relative;cursor:pointer;">
+            <div style="width:20px;height:20px;background:white;border-radius:50%;position:absolute;right:2px;top:2px;box-shadow:0 2px 4px rgba(0,0,0,.2);"></div>
+          </div>
+        </div>
+        <div style="height:1px;background:#f0f4f0;margin:12px 0;"></div>
+        <div style="display:flex;align-items:center;gap:14px;padding:4px 0;">
+          <div style="width:38px;height:38px;background:#fef3c7;border-radius:11px;display:flex;align-items:center;justify-content:center;flex-shrink:0;">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="var(--gold)" stroke-width="2"><circle cx="12" cy="12" r="5"/><path d="M12 1v2M12 21v2M4.22 4.22l1.42 1.42M18.36 18.36l1.42 1.42M1 12h2M21 12h2M4.22 19.78l1.42-1.42M18.36 5.64l1.42-1.42"/></svg>
+          </div>
+          <div style="flex:1;"><p style="font-weight:600;font-size:14px;color:var(--text);">Weekly Reports</p><p style="font-size:12px;color:var(--muted);">Progress summaries</p></div>
+          <div style="width:44px;height:24px;background:var(--primary);border-radius:12px;position:relative;cursor:pointer;">
+            <div style="width:20px;height:20px;background:white;border-radius:50%;position:absolute;right:2px;top:2px;box-shadow:0 2px 4px rgba(0,0,0,.2);"></div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Preferences -->
+      <p style="font-size:11px;font-weight:700;color:var(--muted);text-transform:uppercase;letter-spacing:.5px;margin-bottom:10px;">Preferences</p>
+      <div class="card" style="margin-bottom:16px;">
+        <div style="display:flex;align-items:center;gap:14px;padding:4px 0;cursor:pointer;">
+          <div style="width:38px;height:38px;background:#f0e8ff;border-radius:11px;display:flex;align-items:center;justify-content:center;flex-shrink:0;">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#7c3aed" stroke-width="2"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 00.33 1.82l.06.06a2 2 0 010 2.83 2 2 0 01-2.83 0l-.06-.06a1.65 1.65 0 00-1.82-.33 1.65 1.65 0 00-1 1.51V21a2 2 0 01-2 2 2 2 0 01-2-2v-.09A1.65 1.65 0 009 19.4a1.65 1.65 0 00-1.82.33l-.06.06a2 2 0 01-2.83 0 2 2 0 010-2.83l.06-.06A1.65 1.65 0 004.68 15a1.65 1.65 0 00-1.51-1H3a2 2 0 01-2-2 2 2 0 012-2h.09A1.65 1.65 0 004.6 9a1.65 1.65 0 00-.33-1.82l-.06-.06a2 2 0 010-2.83 2 2 0 012.83 0l.06.06A1.65 1.65 0 009 4.68a1.65 1.65 0 001-1.51V3a2 2 0 012-2 2 2 0 012 2v.09a1.65 1.65 0 001 1.51 1.65 1.65 0 001.82-.33l.06-.06a2 2 0 012.83 0 2 2 0 010 2.83l-.06.06A1.65 1.65 0 0019.4 9a1.65 1.65 0 001.51 1H21a2 2 0 012 2 2 2 0 01-2 2h-.09a1.65 1.65 0 00-1.51 1z"/></svg>
+          </div>
+          <div style="flex:1;"><p style="font-weight:600;font-size:14px;color:var(--text);">App Theme</p><p style="font-size:12px;color:var(--muted);">Fresh Green</p></div>
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#c8dcc8" stroke-width="2"><polyline points="9 18 15 12 9 6"/></svg>
+        </div>
+        <div style="height:1px;background:#f0f4f0;margin:12px 0;"></div>
+        <div style="display:flex;align-items:center;gap:14px;padding:4px 0;cursor:pointer;">
+          <div style="width:38px;height:38px;background:#e8f5ee;border-radius:11px;display:flex;align-items:center;justify-content:center;flex-shrink:0;">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="var(--primary)" stroke-width="2"><path d="M3 5h12M3 8h9M3 11h6M12 13l3 3 6-6"/></svg>
+          </div>
+          <div style="flex:1;"><p style="font-weight:600;font-size:14px;color:var(--text);">Language</p><p style="font-size:12px;color:var(--muted);">English · عربي</p></div>
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#c8dcc8" stroke-width="2"><polyline points="9 18 15 12 9 6"/></svg>
+        </div>
+      </div>
+
+      <!-- Account -->
+      <p style="font-size:11px;font-weight:700;color:var(--muted);text-transform:uppercase;letter-spacing:.5px;margin-bottom:10px;">Account</p>
+      <div class="card" style="margin-bottom:16px;">
+        <div style="display:flex;align-items:center;gap:14px;padding:4px 0;cursor:pointer;">
+          <div style="width:38px;height:38px;background:#fee2e2;border-radius:11px;display:flex;align-items:center;justify-content:center;flex-shrink:0;">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#ef4444" stroke-width="2"><path d="M9 21H5a2 2 0 01-2-2V5a2 2 0 012-2h4M16 17l5-5-5-5M21 12H9"/></svg>
+          </div>
+          <div style="flex:1;"><p style="font-weight:600;font-size:14px;color:#ef4444;">Sign Out</p></div>
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#fca5a5" stroke-width="2"><polyline points="9 18 15 12 9 6"/></svg>
+        </div>
+      </div>
+
+      <!-- Version -->
+      <p style="text-align:center;font-size:12px;color:#b8c8b8;margin-top:8px;">Nurture AI v2.4.1 · Made for families</p>
+    </div>
+
+    <div class="bnav">
+      <div class="bnav-btn"><svg viewBox="0 0 24 24" fill="none" stroke="#c8dcc8" stroke-width="2"><path d="M3 9l9-7 9 7v11a2 2 0 01-2 2H5a2 2 0 01-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg></div>
+      <div class="bnav-btn"><svg viewBox="0 0 24 24" fill="none" stroke="#c8dcc8" stroke-width="2"><polyline points="9 11 12 14 22 4"/><path d="M21 12v7a2 2 0 01-2 2H5a2 2 0 01-2-2V5a2 2 0 012-2h11"/></svg></div>
+      <div class="bnav-btn"><svg viewBox="0 0 24 24" fill="none" stroke="#c8dcc8" stroke-width="2"><path d="M21 15a2 2 0 01-2 2H7l-4 4V5a2 2 0 012-2h14a2 2 0 012 2z"/></svg></div>
+      <div class="bnav-btn"><svg viewBox="0 0 24 24" fill="none" stroke="#c8dcc8" stroke-width="2"><line x1="18" y1="20" x2="18" y2="10"/><line x1="12" y1="20" x2="12" y2="4"/><line x1="6" y1="20" x2="6" y2="14"/></svg></div>
+      <div class="bnav-btn active"><svg viewBox="0 0 24 24" fill="none" stroke="var(--primary)" stroke-width="2"><circle cx="12" cy="8" r="4"/><path d="M6 20v-2a4 4 0 018 0v2"/></svg><div class="bnav-dot"></div></div>
+    </div>
+  </div>
+</div>
+<p class="screen-label">Settings</p>
+</div>
+
+<style>
+@keyframes bounce {
+  0%,100%{transform:translateY(0)}
+  50%{transform:translateY(-4px)}
+}
+@keyframes pulse {
+  0%,100%{opacity:1}
+  50%{opacity:.4}
+}
+
+
+/* ─── Neutral Neon + Glassmorphism Refinement ───────────────── */
+:root{
+  --violet:#7c3aed; --cyan:#06b6d4; --orange:#f97316; --pink:#ec4899;
+  --glass:rgba(255,255,255,.18); --glass-border:rgba(255,255,255,.28);
+}
+@keyframes drift { 0%,100%{transform:translate3d(0,0,0) rotate(0)} 50%{transform:translate3d(12px,-22px,0) rotate(8deg)} }
+@keyframes floatSoft { 0%,100%{transform:translateY(0)} 50%{transform:translateY(-14px)} }
+@keyframes glowPulse { 0%,100%{box-shadow:0 0 22px rgba(124,58,237,.32),0 0 44px rgba(6,182,212,.18)} 50%{box-shadow:0 0 34px rgba(6,182,212,.45),0 0 70px rgba(236,72,153,.22)} }
+@keyframes gradientShift { 0%{background-position:0% 50%} 50%{background-position:100% 50%} 100%{background-position:0% 50%} }
+@keyframes shineSweep { 0%{transform:translateX(-130%) rotate(18deg)} 100%{transform:translateX(170%) rotate(18deg)} }
+@keyframes bubbleRise { 0%{transform:translateY(30px) scale(.9);opacity:.18} 80%{opacity:.38} 100%{transform:translateY(-80px) scale(1.08);opacity:.06} }
+.phone{background:linear-gradient(180deg,#fbfaff 0%,#f2f8ff 100%);box-shadow:0 34px 84px rgba(0,0,0,.42),0 0 0 1px rgba(255,255,255,.08),0 0 44px rgba(124,58,237,.16)}
+.phone::after{content:'';position:absolute;inset:auto -60px -80px auto;width:190px;height:190px;border-radius:50%;background:radial-gradient(circle,#22d3ee55,transparent 68%);pointer-events:none;animation:drift 9s ease-in-out infinite;z-index:0}.inner{position:relative;z-index:1}.card,.choice,.story-card,.soft-input{backdrop-filter:blur(18px);-webkit-backdrop-filter:blur(18px);border:1px solid rgba(255,255,255,.55);box-shadow:0 18px 45px rgba(30,21,84,.09)}.btn-primary{background:linear-gradient(135deg,#7c3aed,#06b6d4 55%,#f97316);background-size:220% 220%;animation:none;position:relative;overflow:hidden;border:0}.btn-primary::after{content:'';position:absolute;top:-45%;left:0;width:32%;height:190%;background:linear-gradient(90deg,transparent,rgba(255,255,255,.48),transparent);animation:shineSweep 3.8s ease-in-out infinite}.choice-ico{background:linear-gradient(135deg,rgba(124,58,237,.12),rgba(6,182,212,.13));color:#7c3aed;font-size:18px}.choice.active .choice-ico{background:linear-gradient(135deg,#7c3aed,#06b6d4);color:#fff;box-shadow:0 0 24px rgba(6,182,212,.35)}.onboard-bg{display:flex;flex-direction:column;background-position:center;background-size:cover}.onboard-bg::before{content:'';position:absolute;inset:0;background:radial-gradient(circle at 24% 12%,rgba(255,255,255,.22),transparent 24%),radial-gradient(circle at 84% 28%,rgba(249,115,22,.24),transparent 23%);z-index:1;pointer-events:none}.onboard-bg::after{background:linear-gradient(180deg,rgba(8,0,34,.04) 0%,rgba(8,0,34,.18) 42%,rgba(8,0,34,.72) 72%,rgba(8,0,34,.92) 100%)}.onboard-content{justify-content:flex-end;padding:0 18px 26px;margin-top:auto}.onboard-bottom-card{position:relative;z-index:3;width:100%;padding:20px 18px 18px;border-radius:30px;background:linear-gradient(145deg,rgba(255,255,255,.22),rgba(255,255,255,.10));border:1px solid rgba(255,255,255,.34);backdrop-filter:blur(24px);-webkit-backdrop-filter:blur(24px);box-shadow:0 22px 55px rgba(0,0,0,.28), inset 0 1px 0 rgba(255,255,255,.24);animation:floatSoft 6s ease-in-out infinite}.dots{justify-content:flex-start;margin:18px 0}.dot{height:8px;width:8px;background:rgba(255,255,255,.48)}.dot.active{width:32px;background:linear-gradient(90deg,#fff,#a5f3fc)}.secure-pill{background:rgba(255,255,255,.10);border:1px solid rgba(255,255,255,.18);backdrop-filter:blur(8px);box-shadow:0 8px 20px rgba(0,0,0,.10);gap:8px}.step-wrap{background:radial-gradient(circle at 15% 10%,rgba(6,182,212,.18),transparent 28%),radial-gradient(circle at 88% 18%,rgba(249,115,22,.14),transparent 26%),linear-gradient(180deg,#fbfaff,#eff8ff)}.step-head{position:relative}.step-title{letter-spacing:-.9px;background:linear-gradient(90deg,#18112f,#5b21b6,#0891b2);-webkit-background-clip:text;background-clip:text;color:transparent}.step-count{color:#7c3aed}.progress-mini{height:7px;background:rgba(124,58,237,.12)}.progress-mini span{background:#20C7A6;box-shadow:0 0 18px rgba(6,182,212,.35)}.big-chip.active{background:linear-gradient(135deg,#7c3aed,#06b6d4);border-color:transparent;box-shadow:0 13px 28px rgba(124,58,237,.18)}.splash-logo.neon-orb{background:rgba(255,255,255,.18);border:1px solid rgba(255,255,255,.35);backdrop-filter:blur(22px);animation:glowPulse 3.5s ease-in-out infinite,floatSoft 7s ease-in-out infinite}.big-fa-mark{width:72px;height:72px;border-radius:26px;background:rgba(255,255,255,.18);display:flex;align-items:center;justify-content:center;font-size:34px;margin-bottom:12px;box-shadow:0 0 34px rgba(255,255,255,.24)}.scan-card{background:linear-gradient(145deg,rgba(255,255,255,.18),rgba(255,255,255,.08));border:1px solid rgba(255,255,255,.3);box-shadow:0 24px 70px rgba(0,0,0,.22)}.scan-line{background:linear-gradient(90deg,transparent,#fff,#22d3ee,#f97316,transparent);box-shadow:0 0 28px rgba(34,211,238,.75)}.bnav{background:rgba(255,255,255,.78);backdrop-filter:blur(22px);border-top:1px solid rgba(124,58,237,.12)}.bnav-dot{background:#7c3aed;box-shadow:0 0 12px rgba(124,58,237,.6)}
+.float-bubbles::before,.float-bubbles::after{content:'';position:absolute;border-radius:999px;pointer-events:none;z-index:0}.float-bubbles::before{width:120px;height:120px;left:-34px;bottom:110px;background:radial-gradient(circle,#ec489955,transparent 70%);animation:bubbleRise 9s ease-in-out infinite}.float-bubbles::after{width:96px;height:96px;right:-24px;top:140px;background:radial-gradient(circle,#06b6d466,transparent 70%);animation:bubbleRise 11s ease-in-out infinite reverse}
+
+
+/* ==== Enhanced onboarding components ==== */
+.role-grid{display:grid;grid-template-columns:1fr 1fr;gap:14px}
+.role-card{background:rgba(255,255,255,.86);border:1px solid rgba(124,58,237,.12);border-radius:28px;padding:18px 14px;min-height:170px;display:flex;flex-direction:column;align-items:flex-start;justify-content:space-between;box-shadow:0 16px 34px rgba(40,18,90,.08);position:relative;overflow:hidden}
+.role-card.full{grid-column:1/-1;min-height:120px;flex-direction:row;align-items:center;gap:14px}
+.role-card.active{border-color:rgba(124,58,237,.45);box-shadow:0 20px 40px rgba(124,58,237,.18), inset 0 0 0 1px rgba(255,255,255,.55);background:linear-gradient(145deg,rgba(255,255,255,.95),rgba(237,233,254,.95))}
+.role-card::after,.gender-card::after,.check-card::after,.testimonial-card::after{content:'';position:absolute;inset:auto -15% -45% auto;width:130px;height:130px;border-radius:50%;background:radial-gradient(circle,rgba(255,255,255,.28),transparent 65%);pointer-events:none}
+.role-icon{width:68px;height:68px;border-radius:24px;display:flex;align-items:center;justify-content:center;font-size:28px;color:white;background:linear-gradient(145deg,#8b5cf6,#06b6d4);box-shadow:0 16px 28px rgba(79,70,229,.3)}
+.role-card.full .role-icon{width:58px;height:58px;font-size:24px}
+.role-card h4,.gender-card h4,.check-card h4{font-size:17px;color:#140f2e;font-weight:900}
+.role-card p,.gender-card p,.check-card p{font-size:12px;line-height:1.5;color:#766d89;margin-top:4px}
+.testimonial-slider{overflow:hidden;border-radius:26px;padding:4px 0}
+.testimonial-track{display:flex;gap:14px;width:max-content;animation:slide-left 26s linear infinite}
+.testimonial-track.reverse{animation:slide-right 24s linear infinite}
+@keyframes slide-left{from{transform:translateX(0)}to{transform:translateX(-50%)}}
+@keyframes slide-right{from{transform:translateX(-50%)}to{transform:translateX(0)}}
+.testimonial-card{min-width:260px;background:rgba(255,255,255,.88);backdrop-filter:blur(14px);border:1px solid rgba(124,58,237,.12);border-radius:26px;padding:18px;box-shadow:0 16px 34px rgba(40,18,90,.08);position:relative;overflow:hidden}
+.testimonial-head{display:flex;align-items:center;gap:12px;margin-bottom:12px}
+.avatar-sm{width:44px;height:44px;border-radius:50%;background:linear-gradient(145deg,#8b5cf6,#ec4899);display:flex;align-items:center;justify-content:center;color:#fff;font-weight:800}
+.stars{display:flex;gap:3px;color:#f59e0b;font-size:12px;margin-top:4px}
+.name-grid{display:grid;grid-template-columns:1fr;gap:12px}
+.name-box{background:#fff;border-radius:24px;padding:16px 16px 12px;box-shadow:0 16px 34px rgba(40,18,90,.08)}
+.field-label{display:block;font-size:11px;font-weight:800;letter-spacing:.6px;color:#7b7191;text-transform:uppercase;margin-bottom:8px}
+.gender-grid{display:grid;grid-template-columns:1fr 1fr;gap:14px}
+.gender-card{background:rgba(255,255,255,.9);border:1px solid rgba(124,58,237,.12);border-radius:28px;padding:18px;min-height:182px;display:flex;flex-direction:column;justify-content:space-between;position:relative;overflow:hidden;box-shadow:0 16px 34px rgba(40,18,90,.08)}
+.gender-card.active{border-color:rgba(124,58,237,.45);background:linear-gradient(145deg,rgba(255,255,255,.95),rgba(237,233,254,.95));box-shadow:0 20px 40px rgba(124,58,237,.18)}
+.gender-card .role-icon{width:60px;height:60px;border-radius:20px;font-size:24px}
+.gender-card.full{grid-column:1/-1;min-height:112px;flex-direction:row;align-items:center;gap:12px}
+.calendar-shell{background:rgba(255,255,255,.9);border:1px solid rgba(124,58,237,.16);border-radius:34px;padding:18px;box-shadow:0 16px 36px rgba(40,18,90,.09)}
+.calendar-top{display:flex;align-items:center;justify-content:space-between;margin-bottom:16px}
+.circle-btn{width:38px;height:38px;border-radius:50%;display:flex;align-items:center;justify-content:center;background:linear-gradient(145deg,#ede9fe,#cffafe);color:#6d28d9;font-size:14px}
+.calendar-week{display:grid;grid-template-columns:repeat(7,1fr);gap:8px;margin-bottom:10px}
+.calendar-week span{font-size:11px;font-weight:800;color:#8c83a0;text-align:center}
+.calendar-grid{display:grid;grid-template-columns:repeat(7,1fr);gap:8px}
+.cal-day{height:42px;border-radius:16px;background:#f8f7ff;display:flex;align-items:center;justify-content:center;font-size:13px;font-weight:800;color:#31264d;border:1px solid transparent}
+.cal-day.muted{opacity:.35}
+.cal-day.active{background:linear-gradient(145deg,#8b5cf6,#06b6d4);color:#fff;box-shadow:0 14px 24px rgba(99,102,241,.28)}
+.cal-day.today{border-color:rgba(124,58,237,.35)}
+.hero-select{background:linear-gradient(145deg,rgba(255,255,255,.92),rgba(236,244,255,.88));border-radius:34px;padding:18px;box-shadow:0 16px 36px rgba(40,18,90,.09)}
+.hero-options{display:grid;grid-template-columns:1fr;gap:12px;margin-top:16px}
+.hero-option{display:flex;align-items:center;gap:14px;background:#fff;border:1px solid rgba(124,58,237,.12);border-radius:22px;padding:16px;box-shadow:0 12px 24px rgba(40,18,90,.06)}
+.hero-option.active{border-color:rgba(124,58,237,.45);background:linear-gradient(145deg,#fff,rgba(237,233,254,.9))}
+.dual-slider{display:flex;flex-direction:column;gap:14px}
+.story-card{min-width:235px;background:rgba(255,255,255,.88);backdrop-filter:blur(14px);border:1px solid rgba(124,58,237,.12);border-radius:24px;padding:16px;box-shadow:0 16px 32px rgba(40,18,90,.08)}
+.story-card h5{font-size:14px;font-weight:900;color:#160f30;margin-bottom:8px}
+.story-card p{font-size:12px;line-height:1.55;color:#736c86}
+.scroll-cards{display:flex;flex-direction:column;gap:12px;max-height:405px;overflow:auto;padding-right:4px}
+.scroll-cards::-webkit-scrollbar{width:6px}.scroll-cards::-webkit-scrollbar-thumb{background:rgba(124,58,237,.25);border-radius:20px}
+.insight-card{background:rgba(255,255,255,.88);backdrop-filter:blur(14px);border:1px solid rgba(124,58,237,.12);border-radius:24px;padding:16px;box-shadow:0 12px 30px rgba(40,18,90,.08);display:flex;gap:12px;align-items:flex-start}
+.insight-card i{width:44px;height:44px;border-radius:16px;background:linear-gradient(145deg,#8b5cf6,#06b6d4);display:flex;align-items:center;justify-content:center;color:#fff;flex-shrink:0}
+.check-grid{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+.check-card{background:rgba(255,255,255,.88);border:1px solid rgba(124,58,237,.12);border-radius:24px;padding:16px;min-height:120px;position:relative;overflow:hidden;box-shadow:0 14px 30px rgba(40,18,90,.08)}
+.check-card.active{background:linear-gradient(145deg,rgba(255,255,255,.96),rgba(237,233,254,.95));border-color:rgba(124,58,237,.45);box-shadow:0 18px 34px rgba(124,58,237,.16)}
+.check-card .tick{position:absolute;top:14px;right:14px;width:24px;height:24px;border-radius:50%;background:rgba(124,58,237,.08);color:#7c3aed;display:flex;align-items:center;justify-content:center;font-size:12px}
+.check-card.active .tick{background:linear-gradient(145deg,#8b5cf6,#06b6d4);color:#fff}
+.check-card .mini-icon{width:46px;height:46px;border-radius:16px;display:flex;align-items:center;justify-content:center;color:#fff;font-size:18px;background:linear-gradient(145deg,#8b5cf6,#06b6d4);margin-bottom:12px;box-shadow:0 14px 24px rgba(99,102,241,.24)}
+.final-wrap{display:flex;flex-direction:column;gap:16px}
+.final-percent{background:rgba(255,255,255,.88);border:1px solid rgba(124,58,237,.12);border-radius:28px;padding:18px;box-shadow:0 16px 32px rgba(40,18,90,.08)}
+.final-row{margin-top:14px}
+.final-row-top{display:flex;justify-content:space-between;align-items:center;margin-bottom:6px}
+.final-bar{height:10px;background:#ece8fb;border-radius:16px;overflow:hidden}
+.final-bar span{display:block;height:100%;border-radius:16px;background:#20C7A6;animation:bar-fill 2.8s ease forwards;transform-origin:left;transform:scaleX(0)}
+.final-bar span.delay-2{animation-delay:.3s}.final-bar span.delay-3{animation-delay:.6s}.final-bar span.delay-4{animation-delay:.9s}
+@keyframes bar-fill{to{transform:scaleX(1)}}
+.metric-cards{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+.metric-card{background:rgba(255,255,255,.88);border:1px solid rgba(124,58,237,.12);border-radius:24px;padding:16px;box-shadow:0 12px 28px rgba(40,18,90,.08)}
+.metric-card .num{font-size:32px;font-weight:900;background:linear-gradient(90deg,#8b5cf6,#06b6d4);-webkit-background-clip:text;background-clip:text;color:transparent;animation:pulse-num 1.8s ease infinite alternate}
+@keyframes pulse-num{from{transform:translateY(0)}to{transform:translateY(-3px)}}
+.analysis-list{display:flex;flex-direction:column;gap:12px;margin-top:18px}
+.analysis-item{display:flex;align-items:center;gap:12px;background:rgba(255,255,255,.12);border:1px solid rgba(255,255,255,.16);backdrop-filter:blur(12px);border-radius:22px;padding:14px 16px;opacity:0;transform:translateY(12px);animation:analysis-in .7s ease forwards}
+.analysis-item:nth-child(1){animation-delay:.15s}.analysis-item:nth-child(2){animation-delay:.45s}.analysis-item:nth-child(3){animation-delay:.75s}.analysis-item:nth-child(4){animation-delay:1.05s}.analysis-item:nth-child(5){animation-delay:1.35s}.analysis-item:nth-child(6){animation-delay:1.65s}
+@keyframes analysis-in{to{opacity:1;transform:translateY(0)}}
+.analysis-check{width:34px;height:34px;border-radius:50%;display:flex;align-items:center;justify-content:center;background:linear-gradient(145deg,#22c55e,#06b6d4);color:#fff;box-shadow:0 10px 24px rgba(34,197,94,.35);animation:check-pop .8s ease infinite alternate}
+@keyframes check-pop{from{transform:scale(.96)}to{transform:scale(1.06)}}
+.subtle-note{background:rgba(255,255,255,.88);border:1px solid rgba(124,58,237,.12);border-radius:22px;padding:14px 16px;box-shadow:0 12px 24px rgba(40,18,90,.06);font-size:13px;line-height:1.55;color:#6f6882}
+
+</style>
+
+
+<script>
+(function(){
+  const body = document.body;
+  const btn = document.getElementById('themeToggle');
+  const label = document.getElementById('themeLabel');
+  const icon = document.getElementById('themeIcon');
+
+  function setTheme(mode){
+    body.classList.toggle('dark-mode', mode === 'dark');
+    body.classList.toggle('light-mode', mode !== 'dark');
+
+    label.textContent = mode === 'dark' ? 'Dark' : 'Light';
+
+    icon.innerHTML = mode === 'dark'
+      ? '<i class="fa-solid fa-moon"></i>'
+      : '<i class="fa-solid fa-sun"></i>';
+
+    localStorage.setItem('nurture-theme', mode);
+  }
+
+  // Default theme dark
+  const saved = localStorage.getItem('nurture-theme') || 'dark';
+  setTheme(saved);
+
+  btn.addEventListener('click', function(){
+    setTheme(body.classList.contains('dark-mode') ? 'light' : 'dark');
+  });
+})();
+</script>
+
+</body>
+</html>
