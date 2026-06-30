@@ -1399,6 +1399,184 @@ body.light-mode .analyze-circle::after{
   background:linear-gradient(145deg,#111827,#0f172a);
 }
 
+
+/* ==== Child Profile + AI Mentor + Custom Fields ==== */
+.mentor-profile-card{
+  background:#fff;border:1px solid var(--line);border-radius:24px;padding:16px;box-shadow:var(--shadow-soft);
+}
+.mentor-head{display:flex;align-items:center;gap:14px}
+.mentor-avatar{width:58px;height:58px;border-radius:20px;background:linear-gradient(145deg,#20C7A6,#16A98C);display:flex;align-items:center;justify-content:center;color:#fff;font-size:23px;flex-shrink:0}
+.mentor-name{font-size:16px;font-weight:900;color:var(--ink)}
+.mentor-sub{font-size:12px;color:var(--muted);line-height:1.45;margin-top:3px}
+.learning-list{display:flex;flex-direction:column;gap:9px;margin-top:14px}
+.learning-item{display:flex;align-items:flex-start;gap:10px;padding:11px;border-radius:16px;background:#F8FAFC;border:1px solid #EEF2F7}
+.learning-item i{color:#20C7A6;margin-top:2px}
+.learning-item p{font-size:12px;color:var(--muted);line-height:1.45}
+.add-learning-btn{margin-top:13px;width:100%;padding:13px;border-radius:16px;border:1px dashed rgba(32,199,166,.55);background:#F1FFFB;color:#16A98C;font-size:13px;font-weight:900;display:flex;align-items:center;justify-content:center;gap:8px}
+.custom-field-box{margin-top:13px;padding:13px;border-radius:18px;background:#F8FAFC;border:1px solid #E9EEF5}
+.custom-field-box label{display:block;font-size:12px;font-weight:800;color:var(--ink);margin-bottom:8px}
+.custom-field-box input,.custom-field-box textarea{width:100%;border:none;outline:none;background:#fff;border:1px solid #E9EEF5;border-radius:14px;padding:12px 13px;font-size:13px;color:var(--ink);font-family:inherit}
+.custom-field-box textarea{min-height:72px;resize:none;line-height:1.45}
+.mentor-pill-row{display:flex;flex-wrap:wrap;gap:8px;margin-top:12px}
+.mentor-pill{padding:7px 10px;border-radius:999px;background:#DDF8F1;color:#16A98C;font-size:11px;font-weight:800}
+body.dark-mode .mentor-profile-card,body.dark-mode .learning-item,body.dark-mode .custom-field-box{background:#151B2B !important;border-color:#243047 !important}
+body.dark-mode .mentor-name,body.dark-mode .custom-field-box label{color:#F8FAFC !important}
+body.dark-mode .mentor-sub,body.dark-mode .learning-item p{color:#B7C0D3 !important}
+body.dark-mode .custom-field-box input,body.dark-mode .custom-field-box textarea{background:#111827 !important;border-color:#243047 !important;color:#F8FAFC !important}
+body.dark-mode .add-learning-btn,body.dark-mode .mentor-pill{background:rgba(32,199,166,.12) !important;color:#7CE7D1 !important}
+
+
+/* ==== Natural Child Profile & AI Mentor polish ==== */
+.child-natural-header{
+  background:linear-gradient(145deg,#F1FFFB,#F7F4FF);
+  border:1px solid rgba(32,199,166,.18);
+  border-radius:26px;
+  padding:16px;
+  display:flex;
+  align-items:center;
+  gap:14px;
+  box-shadow:0 8px 18px rgba(40,18,90,.045);
+}
+.child-photo{
+  width:74px;
+  height:74px;
+  border-radius:24px;
+  background:linear-gradient(145deg,#DDF8F1,#EDE9FE);
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  color:#16A98C;
+  font-size:32px;
+  flex-shrink:0;
+  border:3px solid #fff;
+}
+.child-name-title{
+  font-size:22px;
+  font-weight:900;
+  color:var(--ink);
+  line-height:1.15;
+}
+.child-meta{
+  display:flex;
+  flex-wrap:wrap;
+  gap:7px;
+  margin-top:8px;
+}
+.child-meta span{
+  padding:6px 9px;
+  border-radius:999px;
+  background:#fff;
+  color:#6B7280;
+  font-size:11px;
+  font-weight:800;
+  border:1px solid #EEF2F7;
+}
+.mentor-card-natural{
+  background:#fff;
+  border:1px solid #E9EEF5;
+  border-radius:24px;
+  padding:15px;
+  margin-top:14px;
+  box-shadow:0 8px 18px rgba(40,18,90,.045);
+}
+.mentor-mini-top{
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  gap:12px;
+}
+.mentor-mini-left{
+  display:flex;
+  align-items:center;
+  gap:12px;
+}
+.mentor-mini-avatar{
+  width:48px;
+  height:48px;
+  border-radius:17px;
+  background:#20C7A6;
+  color:#fff;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  font-size:20px;
+  flex-shrink:0;
+}
+.mentor-status{
+  padding:6px 9px;
+  border-radius:999px;
+  background:#DDF8F1;
+  color:#16A98C;
+  font-size:10px;
+  font-weight:900;
+}
+.child-learning-card{
+  margin-top:14px;
+  background:#fff;
+  border:1px solid #E9EEF5;
+  border-radius:24px;
+  padding:15px;
+  box-shadow:0 8px 18px rgba(40,18,90,.045);
+}
+.child-learning-title{
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  margin-bottom:12px;
+}
+.natural-learning-item{
+  display:flex;
+  gap:10px;
+  align-items:flex-start;
+  padding:10px 0;
+  border-bottom:1px solid #F1F5F9;
+}
+.natural-learning-item:last-child{border-bottom:none}
+.natural-learning-dot{
+  width:26px;
+  height:26px;
+  border-radius:10px;
+  background:#DDF8F1;
+  color:#16A98C;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  flex-shrink:0;
+  font-size:12px;
+}
+.natural-learning-item p{
+  font-size:12px;
+  line-height:1.45;
+  color:var(--muted);
+}
+.add-learning-natural{
+  margin-top:12px;
+  width:100%;
+  border:none;
+  background:#20C7A6;
+  color:#fff;
+  border-radius:16px;
+  padding:13px;
+  font-size:13px;
+  font-weight:900;
+}
+body.dark-mode .child-natural-header,
+body.dark-mode .mentor-card-natural,
+body.dark-mode .child-learning-card{
+  background:#151B2B !important;
+  border-color:#243047 !important;
+}
+body.dark-mode .child-photo,
+body.dark-mode .child-meta span,
+body.dark-mode .natural-learning-dot{
+  background:rgba(32,199,166,.12) !important;
+  border-color:#243047 !important;
+}
+body.dark-mode .child-name-title{color:#F8FAFC !important}
+body.dark-mode .child-meta span,
+body.dark-mode .natural-learning-item p{color:#B7C0D3 !important}
+body.dark-mode .natural-learning-item{border-color:#243047 !important}
+
 </style>
 </head>
 <body class="light-mode preview-compact">
@@ -1550,7 +1728,7 @@ body.light-mode .analyze-circle::after{
           <div class="review-full-card simple">
             <div>
               <div class="review-top"><div class="review-user"><div class="review-avatar" style="background:linear-gradient(145deg,#06b6d4,#3b82f6)">HK</div><div><strong style="font-size:17px;color:#1b1432;">Hina K.</strong><div class="stars" style="margin-top:6px;"><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i></div></div></div><span class="review-tag">Working Parent</span></div>
-              <div class="review-body"><p class="review-quote">“I liked how it also considered my stress and gave me realistic steps for screen time and homework.”</p><div class="review-meta"><span class="review-chip">Screen time</span><span class="review-chip">Homework</span></div></div>
+              <div class="review-body"><p class="review-quote">“I liked how it also considered my stress and gave me realistic steps for screen time and homework.”</p><div class="review-meta"><span class="review-chip">Homework</span></div></div>
             </div>
             <div class="review-bottom"><div><strong style="display:block;color:#1b1432;font-size:14px;">Result</strong><p style="font-size:13px;color:#766d89;line-height:1.55;margin-top:6px;">Smoother evenings and fewer daily conflicts.</p></div><i class="fa-solid fa-quote-right" style="font-size:24px;color:#06b6d4;"></i></div>
           </div>
@@ -1565,6 +1743,16 @@ body.light-mode .analyze-circle::after{
         <div class="mini-dots"><span class="active"></span><span></span><span></span></div>
         <div class="swipe-hint simple"><i class="fa-solid fa-hand-pointer"></i> Swipe cards</div>
       </div>
+        <div class="custom-field-box custom-field-step-01">
+          <label>Custom role note</label>
+          <input type="text" placeholder="Add any other caregiver role or context">
+        </div>
+        <div class="custom-field-box custom-field-step-02">
+          <label>Custom review note</label>
+          <input type="text" placeholder="Add what kind of parent support you want to see">
+        </div>
+
+
       <div class="next-area"><button class="btn-primary">Continue</button></div>
     </div>
   </div>
@@ -1590,6 +1778,11 @@ body.light-mode .analyze-circle::after{
         </div>
         <div class="subtle-note" style="margin-top:16px;">This name will appear in your child profile, progress plan, and personalized parenting recommendations.</div>
       </div>
+        <div class="custom-field-box custom-field-step-03">
+          <label>Child nickname or preferred name</label>
+          <input type="text" placeholder="Enter nickname">
+        </div>
+
       <div class="next-area"><button class="btn-primary">Continue</button></div>
     </div>
   </div>
@@ -1654,6 +1847,16 @@ body.light-mode .analyze-circle::after{
           <div class="subtle-note" style="margin-top:14px;">Age is used for stage-based suggestions, milestones, routines, and challenge-specific recommendations.</div>
         </div>
       </div>
+        <div class="custom-field-box custom-field-step-04">
+          <label>Custom gender note</label>
+          <input type="text" placeholder="Add any preference or note">
+        </div>
+        <div class="custom-field-box custom-field-step-05">
+          <label>Custom age note</label>
+          <input type="text" placeholder="Add any age-related detail">
+        </div>
+
+
       <div class="next-area"><button class="btn-primary">Continue</button></div>
     </div>
   </div>
@@ -1696,6 +1899,11 @@ body.light-mode .analyze-circle::after{
           </div>
         </div>
       </div>
+        <div class="custom-field-box custom-field-step-06">
+          <label>Custom parenting experience note</label>
+          <input type="text" placeholder="Add any context about your experience">
+        </div>
+
       <div class="next-area"><button class="btn-primary">Continue</button></div>
     </div>
   </div>
@@ -1755,6 +1963,11 @@ body.light-mode .analyze-circle::after{
           These examples help the app understand which type of guidance will be most useful for your family.
         </div>
       </div>
+        <div class="custom-field-box custom-field-step-07">
+          <label>Custom case study</label>
+          <input type="text" placeholder="Add a situation you want help with">
+        </div>
+
       <div class="next-area"><button class="btn-primary">Continue</button></div>
     </div>
   </div>
@@ -1784,6 +1997,11 @@ body.light-mode .analyze-circle::after{
           <div class="tiny-card c8"><i class="fa-solid fa-shield-heart i8"></i><div><h5>Parent support</h5><p>Your stress pattern will shape how advice is delivered.</p></div></div>
         </div>
       </div>
+        <div class="custom-field-box custom-field-step-08">
+          <label>Custom positive sign</label>
+          <input type="text" placeholder="Add something good you noticed recently">
+        </div>
+
       <div class="next-area"><button class="btn-primary">Continue</button></div>
     </div>
   </div>
@@ -1804,13 +2022,18 @@ body.light-mode .analyze-circle::after{
       <div class="step-body">
         <div class="simple-check-list">
           <div class="simple-check-card active c1"><div class="check-box"><i class="fa-solid fa-check"></i></div><div class="mini-icon i1"><i class="fa-solid fa-brain"></i></div><div><h4>Emotional control</h4><p>Meltdowns, anger, and calming skills.</p></div></div>
-          <div class="simple-check-card active c2"><div class="check-box"><i class="fa-solid fa-check"></i></div><div class="mini-icon i2"><i class="fa-solid fa-mobile-screen-button"></i></div><div><h4>Screen time</h4><p>Limits, transitions, and device routines.</p></div></div>
+          <div class="simple-check-card active c2"><div class="check-box"><i class="fa-solid fa-check"></i></div><div class="mini-icon i2"><i class="fa-solid fa-mobile-screen-button"></i></div><div><h4></h4><p>Limits, transitions, and device routines.</p></div></div>
           <div class="simple-check-card c3"><div class="check-box"><i class="fa-solid fa-check"></i></div><div class="mini-icon i3"><i class="fa-solid fa-book-open"></i></div><div><h4>Learning habits</h4><p>Homework, focus, and consistency.</p></div></div>
           <div class="simple-check-card c4"><div class="check-box"><i class="fa-solid fa-check"></i></div><div class="mini-icon i4"><i class="fa-solid fa-bed"></i></div><div><h4>Sleep routine</h4><p>Bedtime flow and sleep quality.</p></div></div>
           <div class="simple-check-card active c5"><div class="check-box"><i class="fa-solid fa-check"></i></div><div class="mini-icon i5"><i class="fa-solid fa-heart"></i></div><div><h4>Confidence</h4><p>Self-esteem and encouragement.</p></div></div>
           <div class="simple-check-card c6"><div class="check-box"><i class="fa-solid fa-check"></i></div><div class="mini-icon i6"><i class="fa-solid fa-house"></i></div><div><h4>Home routine</h4><p>Mornings, chores, and transitions.</p></div></div>
         </div>
       </div>
+        <div class="custom-field-box custom-field-step-09">
+          <label>Custom focus area</label>
+          <input type="text" placeholder="Write your own focus area">
+        </div>
+
       <div class="next-area"><button class="btn-primary">Continue</button></div>
     </div>
   </div>
@@ -1838,6 +2061,11 @@ body.light-mode .analyze-circle::after{
           <div class="simple-check-card active c6"><div class="check-box"><i class="fa-solid fa-check"></i></div><div class="mini-icon i6"><i class="fa-solid fa-face-frown-open"></i></div><div><h4>Low confidence</h4><p>Self-doubt and hesitation.</p></div></div>
         </div>
       </div>
+        <div class="custom-field-box custom-field-step-10">
+          <label>Custom challenge</label>
+          <input type="text" placeholder="Write any other challenge">
+        </div>
+
       <div class="next-area"><button class="btn-primary">Continue</button></div>
     </div>
   </div>
@@ -1867,6 +2095,11 @@ body.light-mode .analyze-circle::after{
           <div class="simple-check-card c8"><div class="check-box"><i class="fa-solid fa-check"></i></div><div class="mini-icon i8"><i class="fa-solid fa-hand-holding-heart"></i></div><div><h4>Need support</h4></div></div>
         </div>
       </div>
+        <div class="custom-field-box custom-field-step-11">
+          <label>Custom stress note</label>
+          <input type="text" placeholder="Describe your current stress in your own words">
+        </div>
+
       <div class="next-area"><button class="btn-primary">Continue</button></div>
     </div>
   </div>
@@ -1885,6 +2118,11 @@ body.light-mode .analyze-circle::after{
       <div class="progress-mini"><span style="width:96%"></span></div>
       <div class="step-head"><p class="step-count">Step 12 of 13</p><h2 class="step-title">Stress management</h2><p class="step-sub">How are you managing stress right now?</p></div>
       <div class="step-body"><div class="chip-grid"><span class="big-chip active">Talking to spouse</span><span class="big-chip active">Quiet reflection</span><span class="big-chip ">Deep breathing</span><span class="big-chip ">Ignoring it</span><span class="big-chip ">Reading advice</span><span class="big-chip ">Family support</span><span class="big-chip active">I am not managing well</span></div></div>
+        <div class="custom-field-box custom-field-step-12">
+          <label>Custom support method</label>
+          <input type="text" placeholder="Write what helps you calm down">
+        </div>
+
       <div class="next-area"><button class="btn-primary">Continue</button></div>
     </div>
   </div>
@@ -1917,6 +2155,11 @@ body.light-mode .analyze-circle::after{
           <div class="subtle-note"><strong>Ready to generate:</strong> a calmer daily routine, challenge-specific tips, and a parent-sensitive plan matched to Ahmed’s age and your stress profile.</div>
         </div>
       </div>
+        <div class="custom-field-box custom-field-step-13">
+          <label>Custom personalization note</label>
+          <input type="text" placeholder="Add anything important for the final plan">
+        </div>
+
       <div class="next-area"><button class="btn-primary">Continue</button></div>
     </div>
   </div>
@@ -2269,10 +2512,7 @@ body.light-mode .analyze-circle::after{
         <div style="display:flex;flex-wrap:wrap;gap:8px;">
           <span class="badge" style="background:var(--primary);color:white;padding:8px 14px;cursor:pointer;">Routine</span>
           <span class="badge" style="background:var(--primary-light);color:var(--primary);padding:8px 14px;cursor:pointer;">Reading</span>
-          <span class="badge" style="background:var(--primary-light);color:var(--primary);padding:8px 14px;cursor:pointer;">Kindness</span>
-          <span class="badge" style="background:var(--primary-light);color:var(--primary);padding:8px 14px;cursor:pointer;">Honesty</span>
           <span class="badge" style="background:var(--primary-light);color:var(--primary);padding:8px 14px;cursor:pointer;">Gratitude</span>
-          <span class="badge" style="background:var(--primary-light);color:var(--primary);padding:8px 14px;cursor:pointer;">Kindness</span>
         </div>
       </div>
 
@@ -2300,6 +2540,98 @@ body.light-mode .analyze-circle::after{
 </div>
 <p class="screen-label">Add Child</p>
 </div>
+
+
+<!-- ═══════════════════════════════════════════
+     SCREEN — CHILD PROFILE & AI MENTOR
+══════════════════════════════════════════════ -->
+<div>
+<div class="phone flow-new float-bubbles">
+  <div class="inner">
+    <div class="step-wrap" style="padding-bottom:90px;">
+      <div class="status-bar light"><span>9:41</span><div class="status-icons"><svg viewBox="0 0 24 24" width="16" height="16" fill="currentColor"><rect x="2" y="7" width="16" height="10" rx="2"/><path d="M20 10.5v3a2 2 0 000-3z"/></svg></div></div>
+
+      <div style="padding:18px 22px 8px;">
+        <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:14px;">
+          <div>
+            <p style="font-size:12px;font-weight:800;color:var(--brand-dark);">Child Profile</p>
+            <h2 style="font-size:24px;font-weight:900;color:var(--ink);margin-top:3px;">Ahmed’s Profile</h2>
+          </div>
+          <div style="width:42px;height:42px;border-radius:15px;background:#DDF8F1;color:#16A98C;display:flex;align-items:center;justify-content:center;">
+            <i class="fa-solid fa-pen"></i>
+          </div>
+        </div>
+
+        <div class="child-natural-header">
+          <div class="child-photo"><i class="fa-solid fa-child-reaching"></i></div>
+          <div style="flex:1;">
+            <div class="child-name-title">Ahmed Hassan</div>
+            <p style="font-size:12px;color:var(--muted);line-height:1.45;margin-top:5px;">A growing child profile that improves as parents add more observations and daily learnings.</p>
+            <div class="child-meta">
+              <span>Age 5</span>
+              <span>Boy</span>
+              <span>First Child</span>
+            </div>
+          </div>
+        </div>
+
+        <div class="mentor-card-natural">
+          <div class="mentor-mini-top">
+            <div class="mentor-mini-left">
+              <div class="mentor-mini-avatar"><i class="fa-solid fa-robot"></i></div>
+              <div>
+                <div style="font-size:16px;font-weight:900;color:var(--ink);">Mentor Zara</div>
+                <p style="font-size:12px;color:var(--muted);line-height:1.45;margin-top:3px;">Ahmed’s personal AI mentor. Each child gets a different mentor based on their profile and learning history.</p>
+              </div>
+            </div>
+            <span class="mentor-status">Active</span>
+          </div>
+        </div>
+
+        <div class="child-learning-card">
+          <div class="child-learning-title">
+            <h3 style="font-size:16px;font-weight:900;color:var(--ink);">Mentor Learnings</h3>
+            <span style="font-size:11px;font-weight:800;color:var(--brand-dark);">4 notes</span>
+          </div>
+
+          <div class="natural-learning-item">
+            <div class="natural-learning-dot"><i class="fa-solid fa-check"></i></div>
+            <p>Ahmed responds better to short instructions and visual routines.</p>
+          </div>
+          <div class="natural-learning-item">
+            <div class="natural-learning-dot"><i class="fa-solid fa-check"></i></div>
+            <p>He needs a 5-minute reminder before switching away from devices.</p>
+          </div>
+          <div class="natural-learning-item">
+            <div class="natural-learning-dot"><i class="fa-solid fa-check"></i></div>
+            <p>Positive praise helps him feel more confident during homework.</p>
+          </div>
+          <div class="natural-learning-item">
+            <div class="natural-learning-dot"><i class="fa-solid fa-check"></i></div>
+            <p>Bedtime works best when story time starts before 8:30 PM.</p>
+          </div>
+
+          <button class="add-learning-natural"><i class="fa-solid fa-plus" style="margin-right:8px;"></i>Add New Learning</button>
+        </div>
+
+        <div class="custom-field-box">
+          <label>Add a new learning manually</label>
+          <textarea placeholder="Example: Ahmed feels calmer when we give him two choices instead of one command."></textarea>
+        </div>
+      </div>
+
+      <div class="bnav">
+        <div class="bnav-btn"><i class="fa-solid fa-house"></i><span>Home</span></div>
+        <div class="bnav-btn active"><i class="fa-solid fa-child"></i><span>Child</span></div>
+        <div class="bnav-btn"><i class="fa-solid fa-robot"></i><span>AI</span></div>
+        <div class="bnav-btn"><i class="fa-solid fa-list-check"></i><span>Tasks</span></div>
+      </div>
+    </div>
+  </div>
+</div>
+<p class="screen-label">Child Profile & AI Mentor</p>
+</div>
+
 
 <!-- ═══════════════════════════════════════════
      SCREEN 4 — CHILD PROFILE
@@ -2340,7 +2672,6 @@ body.light-mode .analyze-circle::after{
               <circle cx="35" cy="35" r="28" fill="none" stroke="#1a7a4a" stroke-width="6" stroke-dasharray="175.9" stroke-dashoffset="31.7" stroke-linecap="round" transform="rotate(-90 35 35)"/>
               <text x="35" y="39" text-anchor="middle" font-size="14" font-weight="800" fill="#1a2e1a">82%</text>
             </svg>
-            <p style="font-size:11px;color:var(--muted);font-weight:600;margin-top:4px;">Kindness</p>
           </div>
           <!-- Routine ring -->
           <div style="text-align:center;">
@@ -2454,12 +2785,7 @@ body.light-mode .analyze-circle::after{
     </div>
 
     <!-- Quick topics -->
-    <div style="padding:12px 16px;background:white;border-bottom:1px solid #f0f4f0;flex-shrink:0;display:flex;gap:8px;overflow-x:auto;scrollbar-width:none;">
-      <span class="badge" style="background:var(--primary);color:white;white-space:nowrap;padding:7px 14px;cursor:pointer;">Honesty</span>
-      <span class="badge" style="background:#f0f4f0;color:var(--text);white-space:nowrap;padding:7px 14px;cursor:pointer;">Daily habits</span>
-      <span class="badge" style="background:#f0f4f0;color:var(--text);white-space:nowrap;padding:7px 14px;cursor:pointer;">Screen time</span>
-      <span class="badge" style="background:#f0f4f0;color:var(--text);white-space:nowrap;padding:7px 14px;cursor:pointer;">Anger</span>
-    </div>
+    <div style="padding:12px 16px;background:white;border-bottom:1px solid #f0f4f0;flex-shrink:0;display:flex;gap:8px;overflow-x:auto;scrollbar-width:none;"></div>
 
     <!-- Chat body -->
     <div style="flex:1;padding:16px;display:flex;flex-direction:column;gap:14px;overflow-y:auto;background:#f8fbf8;">
@@ -2559,13 +2885,9 @@ body.light-mode .analyze-circle::after{
       <!-- Category tabs -->
       <div style="display:flex;gap:8px;margin-bottom:18px;overflow-x:auto;scrollbar-width:none;">
         <span class="badge" style="background:var(--primary);color:white;padding:8px 16px;white-space:nowrap;cursor:pointer;">All Tasks</span>
-        <span class="badge" style="background:#f0f4f0;color:var(--muted);padding:8px 16px;white-space:nowrap;cursor:pointer;">Daily Habits</span>
-        <span class="badge" style="background:#f0f4f0;color:var(--muted);padding:8px 16px;white-space:nowrap;cursor:pointer;">Kindness</span>
-        <span class="badge" style="background:#f0f4f0;color:var(--muted);padding:8px 16px;white-space:nowrap;cursor:pointer;">Study</span>
       </div>
 
       <!-- Daily Habits section -->
-      <p style="font-size:12px;font-weight:700;color:var(--muted);text-transform:uppercase;letter-spacing:.5px;margin-bottom:10px;">Daily Habits</p>
       <div class="card" style="margin-bottom:16px;">
         <div class="task-row">
           <div class="task-check done"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="3"><polyline points="20 6 9 17 4 12"/></svg></div>
@@ -2590,7 +2912,6 @@ body.light-mode .analyze-circle::after{
       </div>
 
       <!-- Kindness section -->
-      <p style="font-size:12px;font-weight:700;color:var(--muted);text-transform:uppercase;letter-spacing:.5px;margin-bottom:10px;">Kindness</p>
       <div class="card" style="margin-bottom:16px;">
         <div class="task-row">
           <div class="task-check done"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="3"><polyline points="20 6 9 17 4 12"/></svg></div>
@@ -2948,18 +3269,14 @@ body.light-mode .analyze-circle::after{
   function setTheme(mode){
     body.classList.toggle('dark-mode', mode === 'dark');
     body.classList.toggle('light-mode', mode !== 'dark');
-
     label.textContent = mode === 'dark' ? 'Dark' : 'Light';
-
     icon.innerHTML = mode === 'dark'
       ? '<i class="fa-solid fa-moon"></i>'
       : '<i class="fa-solid fa-sun"></i>';
-
     localStorage.setItem('nurture-theme', mode);
   }
 
-  // Default theme dark
-  const saved = localStorage.getItem('nurture-theme') || 'dark';
+  const saved = localStorage.getItem('nurture-theme') || 'light';
   setTheme(saved);
 
   btn.addEventListener('click', function(){
